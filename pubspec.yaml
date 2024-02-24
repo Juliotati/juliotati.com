@@ -1,0 +1,44 @@
+name: juliotati
+description: "Júlio Tati is a curious being interested in the human mind. As for what he spends his on, he helps translate and transform ideas to usable products in form of well engineered software."
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  cupertino_icons: ^1.0.6
+  flutter:
+    sdk: flutter
+
+  flutter_gen: ^5.4.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_localizations:
+    sdk: flutter
+  go_router: ^13.2.0
+  google_fonts: ^6.1.0
+  http: ^1.2.1
+  intl: ^0.18.1
+  provider: ^6.1.1
+  url_launcher: ^6.2.5
+
+flutter_intl:
+  enabled: true
+  class_name: AppLocal
+
+dev_dependencies:
+  build_runner: ^2.4.8
+  build_version: ^2.1.1
+  flutter_gen_runner: ^5.4.0
+  flutter_lints: ^3.0.0
+  flutter_test:
+    sdk: flutter
+
+  go_router_builder: ^2.4.1
+  lint: ^2.3.0
+flutter:
+  assets:
+    - assets/
+    - assets/app_images/
+
+  uses-material-design: true

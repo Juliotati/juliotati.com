@@ -1,0 +1,10 @@
+flutter_icons:
+  android: false
+  ios: false
+  remove_alpha_ios: true
+  image_path: 'assets/app_images/juliotati.png'
+  web:
+    generate: true
+    image_path: 'assets/app_images/juliotati.png'
+  macos:
+    generate: false

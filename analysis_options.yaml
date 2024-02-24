@@ -1,0 +1,63 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/generated/**"
+    - "**/*.freezed.dart"
+    - "**/*.config.dart"
+  errors:
+    always_put_required_named_parameters_first: error
+
+    camel_case_extensions: error
+    camel_case_types: error
+    close_sinks: warning
+    cancel_subscriptions: warning
+
+    invalid_annotation_target: ignore
+
+    lines_longer_than_80_chars: error
+
+    prefer_const_constructors: error
+
+    sort_unnamed_constructors_first: error
+    sort_pub_dependencies: warning
+
+    require_trailing_commas: error
+
+    unnecessary_new: error
+    use_super_parameters: error
+
+    no_leading_underscores_for_library_prefixes: error
+
+linter:
+  # https://dart-lang.github.io/linter/lints/index.html.
+  # https://dart.dev/guides/language/analysis-options
+  rules:
+    always_use_package_imports: true
+    always_put_required_named_parameters_first: true
+    await_only_futures: true
+
+    camel_case_extensions: true
+    camel_case_types: true
+    close_sinks: true
+    cancel_subscriptions: true
+
+    empty_statements: false
+    empty_catches: false
+
+    lines_longer_than_80_chars: false
+
+    no_leading_underscores_for_library_prefixes: true
+
+    prefer_single_quotes: true
+
+    require_trailing_commas: true
+
+    sort_constructors_first: true
+    sort_unnamed_constructors_first: true
+    sort_pub_dependencies: true
+
+    use_colored_box: true
+    use_decorated_box: true
+    use_super_parameters: true
