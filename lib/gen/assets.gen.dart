@@ -12,16 +12,54 @@ import 'package:flutter/widgets.dart';
 class $AssetsAppImagesGen {
   const $AssetsAppImagesGen();
 
+  /// File path: assets/app_images/ae86_trueno.png
+  AssetGenImage get ae86Trueno =>
+      const AssetGenImage('assets/app_images/ae86_trueno.png');
+
+  /// File path: assets/app_images/bmw_1_series_hatchback_2017.png
+  AssetGenImage get bmw1SeriesHatchback2017 =>
+      const AssetGenImage('assets/app_images/bmw_1_series_hatchback_2017.png');
+
+  /// File path: assets/app_images/bmw_m2_comp_2023_back.png
+  AssetGenImage get bmwM2Comp2023Back =>
+      const AssetGenImage('assets/app_images/bmw_m2_comp_2023_back.png');
+
+  /// File path: assets/app_images/bmw_m2_comp_2023_front.png
+  AssetGenImage get bmwM2Comp2023Front =>
+      const AssetGenImage('assets/app_images/bmw_m2_comp_2023_front.png');
+
+  /// File path: assets/app_images/future_in_motion.gif
+  AssetGenImage get futureInMotion =>
+      const AssetGenImage('assets/app_images/future_in_motion.gif');
+
+  /// File path: assets/app_images/julio_stare.png
+  AssetGenImage get julioStare =>
+      const AssetGenImage('assets/app_images/julio_stare.png');
+
   /// File path: assets/app_images/juliotati.png
   AssetGenImage get juliotati =>
       const AssetGenImage('assets/app_images/juliotati.png');
 
-  /// File path: assets/app_images/kingdom.jpeg
-  AssetGenImage get kingdom =>
-      const AssetGenImage('assets/app_images/kingdom.jpeg');
+  /// File path: assets/app_images/kingdom_no_bg.png
+  AssetGenImage get kingdomNoBg =>
+      const AssetGenImage('assets/app_images/kingdom_no_bg.png');
+
+  /// File path: assets/app_images/toyota_gr_86_trueno.png
+  AssetGenImage get toyotaGr86Trueno =>
+      const AssetGenImage('assets/app_images/toyota_gr_86_trueno.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [juliotati, kingdom];
+  List<AssetGenImage> get values => [
+        ae86Trueno,
+        bmw1SeriesHatchback2017,
+        bmwM2Comp2023Back,
+        bmwM2Comp2023Front,
+        futureInMotion,
+        julioStare,
+        juliotati,
+        kingdomNoBg,
+        toyotaGr86Trueno
+      ];
 }
 
 class Assets {

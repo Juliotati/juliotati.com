@@ -6,6 +6,7 @@ class _ExtendedBio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displaySmall = context.textTheme.displaySmall;
     return _PageAutoPadding(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -14,9 +15,9 @@ class _ExtendedBio extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 20.0, bottom: 16.0),
             child: Text(
-              context.i18n.longBioTitle,
-              style: context.textTheme.displayLarge?.copyWith(
-                fontSize: 20.0,
+              context.i18n.imGreaterThanMyName,
+              style: displaySmall?.copyWith(
+                color: displaySmall.color?.withOpacity(0.3),
               ),
             ),
           ),
@@ -24,9 +25,22 @@ class _ExtendedBio extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               Positioned(
-                top: -150.0,
-                right: -150.0,
+                top: -120.0,
+                right: -100.0,
                 child: Image.asset(Assets.appImages.juliotati.path),
+              ),
+              Positioned(
+                top: 3.0,
+                right: -60.0,
+                child: Container(
+                  height: 160.0,
+                  width: 160.0,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100.0),
+                  ),
+                  child: Image.asset(Assets.appImages.julioStare.path),
+                ),
               ),
               ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 790.0),

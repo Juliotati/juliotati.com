@@ -4,38 +4,30 @@ part of '../home.dart';
 class _Footer extends StatelessWidget {
   const _Footer({super.key});
 
+  static List<String> images = [
+    Assets.appImages.bmwM2Comp2023Front.path,
+    Assets.appImages.toyotaGr86Trueno.path,
+    Assets.appImages.bmwM2Comp2023Back.path,
+    Assets.appImages.ae86Trueno.path,
+    Assets.appImages.ae86Trueno.path,
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final year = DateTime.now().year;
-    final labelSmall = context.textTheme.bodyMedium;
-    final color = labelSmall?.color?.withOpacity(0.2);
-    final style = labelSmall?.copyWith(letterSpacing: 1.9);
-    return Column(
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      clipBehavior: Clip.none,
       children: [
-        const SizedBox(height: 30.0),
-        Divider(
-          color: color?.withOpacity(0.09),
-          thickness: 1.0,
-          endIndent: 40.0,
-          indent: 40.0,
+        SizedBox(
+          width: 777,
+          child: Image.asset(images.randomElement, fit: BoxFit.fitWidth),
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(40.0, 30, 40.0, 40.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                context.i18n.craftedByAndAllRightsReserved(year),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: style,
-              ),
-              const _AppLinkText(
-                'getsocial@gmail.com',
-                url: 'mailto:getsocial@gmail.com',
-              ),
-            ],
-          ),
+        const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _FooterLinks(key: Key('app_footer_links')),
+            _FooterCopyRights(key: Key('app_footer_copy_rights')),
+          ],
         ),
       ],
     );
@@ -50,7 +42,11 @@ class _FooterLinks extends StatelessWidget {
   Widget build(BuildContext context) {
     const linkSize = 18.0;
     return Padding(
-      padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 200.0),
+      padding: const EdgeInsets.only(
+        left: 40.0,
+        right: 40.0,
+        top: 200.0,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,6 +57,7 @@ class _FooterLinks extends StatelessWidget {
             links: [
               _AppLinkText(
                 'SELF.DEV',
+                key: const Key('footer_selfdev_link'),
                 url: Links.selfdev,
                 fontSize: linkSize,
               ),
@@ -72,21 +69,25 @@ class _FooterLinks extends StatelessWidget {
             links: [
               _AppLinkText(
                 'GitHub',
+                key: const Key('footer_github_link'),
                 url: Links.github,
                 fontSize: linkSize,
               ),
               _AppLinkText(
                 'LinkedIn',
+                key: const Key('footer_linkedin_link'),
                 url: Links.linkedIn,
                 fontSize: linkSize,
               ),
               _AppLinkText(
                 'Twitter',
+                key: const Key('footer_twitter_link'),
                 url: Links.twitter,
                 fontSize: linkSize,
               ),
               _AppLinkText(
                 'Instagram',
+                key: const Key('footer_instagram_link'),
                 url: Links.instagram,
                 fontSize: linkSize,
               ),
@@ -94,6 +95,50 @@ class _FooterLinks extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+@immutable
+class _FooterCopyRights extends StatelessWidget {
+  const _FooterCopyRights({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final year = DateTime.now().year;
+    final labelSmall = context.textTheme.bodyMedium;
+    final color = labelSmall?.color?.withOpacity(0.2);
+    final style = labelSmall?.copyWith(letterSpacing: 1.9);
+    const myEmail = 'getsocial@gmail.com';
+    return Column(
+      children: [
+        const SizedBox(height: 30.0),
+        Divider(
+          color: color?.withOpacity(0.09),
+          thickness: 1.0,
+          endIndent: 40.0,
+          indent: 40.0,
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(40.0, 30, 40.0, 40.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  context.i18n.craftedByAndAllRightsReserved(year),
+                  maxLines: 1,
+                  softWrap: false,
+                  overflow: TextOverflow.fade,
+                  style: style,
+                ),
+              ),
+              const _AppLinkText(myEmail, url: 'mailto:$myEmail'),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -114,6 +159,7 @@ class _FooterLinksColumn extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 50.0),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -168,17 +214,20 @@ class _AppLinkTextState extends State<_AppLinkText> {
       child: Text.rich(
         TextSpan(
           text: widget.label,
-          style: context.textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w200,
-            fontSize: widget.fontSize,
-            letterSpacing: 1.9,
-            decoration:
-                _isHovering ? TextDecoration.underline : TextDecoration.none,
-          ),
           onExit: _onExit,
           onEnter: _onEnter,
           recognizer: TapGestureRecognizer()
             ..onTap = () => launchUrl(Uri.parse(widget.url)),
+        ),
+        maxLines: 1,
+        softWrap: false,
+        overflow: TextOverflow.fade,
+        style: context.textTheme.bodyMedium?.copyWith(
+          fontWeight: FontWeight.w200,
+          fontSize: widget.fontSize,
+          letterSpacing: 1.9,
+          decoration:
+              _isHovering ? TextDecoration.underline : TextDecoration.none,
         ),
       ),
     );

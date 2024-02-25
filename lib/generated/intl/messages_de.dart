@@ -25,9 +25,47 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "actionableCreate": MessageLookupByLibrary.simpleMessage("Erstellen"),
+        "actionableCreateDescription": MessageLookupByLibrary.simpleMessage(
+            "Erstellen Sie mit Ihrer Fantasie"),
+        "actionableDiscover": MessageLookupByLibrary.simpleMessage("Entdecken"),
+        "actionableDiscoverDescription":
+            MessageLookupByLibrary.simpleMessage("Neue Wege entdecken"),
+        "actionableExplore": MessageLookupByLibrary.simpleMessage("Entdecken"),
+        "actionableExploreDescription": MessageLookupByLibrary.simpleMessage(
+            "Entdecken Sie die Welt und ihre Wunder"),
+        "actionableLearn": MessageLookupByLibrary.simpleMessage("Lernen"),
+        "actionableLearnDescription": MessageLookupByLibrary.simpleMessage(
+            "Lernen Sie, wie Sie nicht alles wissen"),
+        "actionableMaster": MessageLookupByLibrary.simpleMessage("Meistern"),
+        "actionableMasterDescription": MessageLookupByLibrary.simpleMessage(
+            "Meistern Sie Ihr eigenes Handwerk"),
+        "actionableTune": MessageLookupByLibrary.simpleMessage("Optimieren"),
+        "actionableTuneDescription":
+            MessageLookupByLibrary.simpleMessage("Optimieren Sie Ihr Handwerk"),
+        "bioDartShooter":
+            MessageLookupByLibrary.simpleMessage("Dart Shooter 🎯"),
+        "bioJoyMachine": MessageLookupByLibrary.simpleMessage("Joy Machine 😎"),
+        "bioLoudIntrovert":
+            MessageLookupByLibrary.simpleMessage("LOUD introvertiert 🗿"),
+        "bioMatrixBurner":
+            MessageLookupByLibrary.simpleMessage("Matrix BURNER 🔥"),
+        "bioOtakuOverlord":
+            MessageLookupByLibrary.simpleMessage("OTAKU Overlord 🤫"),
+        "bioSoftwareCraftsman":
+            MessageLookupByLibrary.simpleMessage("Software Craftsman ⚒️"),
+        "bioStoryteller":
+            MessageLookupByLibrary.simpleMessage("Storyteller 📚"),
+        "bioWeebMaster": MessageLookupByLibrary.simpleMessage("WEEB Master 🍱"),
         "craftedByAndAllRightsReserved": m0,
+        "imGreaterThanMyName":
+            MessageLookupByLibrary.simpleMessage("Ich bin > mein name"),
+        "myMotto": MessageLookupByLibrary.simpleMessage("Mein Motto"),
         "myName": MessageLookupByLibrary.simpleMessage("Júlio Tati"),
         "shortBio": MessageLookupByLibrary.simpleMessage(
-            "Júlio Tati ist ein neugieriges Wesen, das sich für den menschlichen Geist interessiert. Was sein Geld betrifft, so hilft er dabei, Ideen in brauchbare Produkte in Form ausgereifter Software zu übersetzen und umzuwandeln.")
+            "Júlio Tati ist ein neugieriges Wesen, das sich für den menschlichen Geist interessiert. Was sein Geld betrifft, so hilft er dabei, Ideen in brauchbare Produkte in Form ausgereifter Software zu übersetzen und umzuwandeln."),
+        "tldr": MessageLookupByLibrary.simpleMessage("TL;DR"),
+        "tldrCaption": MessageLookupByLibrary.simpleMessage(
+            "Die Art und Weise, wie sich die Welt bewegt, durch Software-Handwerkskunst für BMW BIMMERS bei Critical TechWorks als Rockstar-Entwickler (Mobile Software Engineer) in Portugal, Lissabon, verändern.")
       };
 }

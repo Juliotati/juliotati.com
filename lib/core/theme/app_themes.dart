@@ -48,7 +48,7 @@ final class _AppThemeHelper {
   }
 
   TextSelectionThemeData textSelectionTheme() {
-    final color = darkMode ? Colors.blue[900] : Colors.black;
+    final color = darkMode ? Colors.white : Colors.black;
     return TextSelectionThemeData(
       cursorColor: color,
       selectionColor: color,

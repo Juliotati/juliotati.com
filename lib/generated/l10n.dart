@@ -50,6 +50,206 @@ class AppLocal {
     return Localizations.of<AppLocal>(context, AppLocal);
   }
 
+  /// `Explore`
+  String get actionableExplore {
+    return Intl.message(
+      'Explore',
+      name: 'actionableExplore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Explore The world and its wonders`
+  String get actionableExploreDescription {
+    return Intl.message(
+      'Explore The world and its wonders',
+      name: 'actionableExploreDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learn`
+  String get actionableLearn {
+    return Intl.message(
+      'Learn',
+      name: 'actionableLearn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Learn as you know not all`
+  String get actionableLearnDescription {
+    return Intl.message(
+      'Learn as you know not all',
+      name: 'actionableLearnDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discover`
+  String get actionableDiscover {
+    return Intl.message(
+      'Discover',
+      name: 'actionableDiscover',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discover new paths`
+  String get actionableDiscoverDescription {
+    return Intl.message(
+      'Discover new paths',
+      name: 'actionableDiscoverDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create`
+  String get actionableCreate {
+    return Intl.message(
+      'Create',
+      name: 'actionableCreate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create with your imagination`
+  String get actionableCreateDescription {
+    return Intl.message(
+      'Create with your imagination',
+      name: 'actionableCreateDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tune`
+  String get actionableTune {
+    return Intl.message(
+      'Tune',
+      name: 'actionableTune',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tune your craft`
+  String get actionableTuneDescription {
+    return Intl.message(
+      'Tune your craft',
+      name: 'actionableTuneDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Master`
+  String get actionableMaster {
+    return Intl.message(
+      'Master',
+      name: 'actionableMaster',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Master your own craft`
+  String get actionableMasterDescription {
+    return Intl.message(
+      'Master your own craft',
+      name: 'actionableMasterDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Software Craftsman ⚒️`
+  String get bioSoftwareCraftsman {
+    return Intl.message(
+      'Software Craftsman ⚒️',
+      name: 'bioSoftwareCraftsman',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Joy Machine 😎`
+  String get bioJoyMachine {
+    return Intl.message(
+      'Joy Machine 😎',
+      name: 'bioJoyMachine',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dart Shooter 🎯`
+  String get bioDartShooter {
+    return Intl.message(
+      'Dart Shooter 🎯',
+      name: 'bioDartShooter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OTAKU Overlord 🤫`
+  String get bioOtakuOverlord {
+    return Intl.message(
+      'OTAKU Overlord 🤫',
+      name: 'bioOtakuOverlord',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Storyteller 📚`
+  String get bioStoryteller {
+    return Intl.message(
+      'Storyteller 📚',
+      name: 'bioStoryteller',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `WEEB Master 🍱`
+  String get bioWeebMaster {
+    return Intl.message(
+      'WEEB Master 🍱',
+      name: 'bioWeebMaster',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `LOUD introvert 🗿`
+  String get bioLoudIntrovert {
+    return Intl.message(
+      'LOUD introvert 🗿',
+      name: 'bioLoudIntrovert',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Matrix BURNER 🔥`
+  String get bioMatrixBurner {
+    return Intl.message(
+      'Matrix BURNER 🔥',
+      name: 'bioMatrixBurner',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Craft by @Juliotati | {year} © All rights reserved`
   String craftedByAndAllRightsReserved(Object year) {
     return Intl.message(
@@ -60,21 +260,31 @@ class AppLocal {
     );
   }
 
-  /// `Júlio Tati`
-  String get myName {
+  /// `I'm > my name`
+  String get imGreaterThanMyName {
     return Intl.message(
-      'Júlio Tati',
-      name: 'myName',
+      'I\'m > my name',
+      name: 'imGreaterThanMyName',
       desc: '',
       args: [],
     );
   }
 
-  /// `A little more`
-  String get longBioTitle {
+  /// `My Motto`
+  String get myMotto {
     return Intl.message(
-      'A little more',
-      name: 'longBioTitle',
+      'My Motto',
+      name: 'myMotto',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Júlio Tati`
+  String get myName {
+    return Intl.message(
+      'Júlio Tati',
+      name: 'myName',
       desc: '',
       args: [],
     );
@@ -90,41 +300,31 @@ class AppLocal {
     );
   }
 
-  /// `Hi there!`
-  String get shortBioGreeting {
-    return Intl.message(
-      'Hi there!',
-      name: 'shortBioGreeting',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `I'm Júlio,`
-  String get shortBioWho {
-    return Intl.message(
-      'I\'m Júlio,',
-      name: 'shortBioWho',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Currently based in Portugal and specializing in mobile development with Dart / Flutter. Advocating for the long term, proactively learning and refining skills.`
-  String get shortBioCaption {
-    return Intl.message(
-      'Currently based in Portugal and specializing in mobile development with Dart / Flutter. Advocating for the long term, proactively learning and refining skills.',
-      name: 'shortBioCaption',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Júlio Tati's a curious being interested in the human mind. As for what he spends his on, he helps translate and transform ideas to usable products in form of well engineered software.`
   String get shortBio {
     return Intl.message(
       'Júlio Tati\'s a curious being interested in the human mind. As for what he spends his on, he helps translate and transform ideas to usable products in form of well engineered software.',
       name: 'shortBio',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `TL;DR`
+  String get tldr {
+    return Intl.message(
+      'TL;DR',
+      name: 'tldr',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Changing how the world moves through Software Craftsmanship for BMW BIMMERS at Critical TechWorks as a Rockstar Developer (Mobile Software Engineer) in Portugal Lisbon.`
+  String get tldrCaption {
+    return Intl.message(
+      'Changing how the world moves through Software Craftsmanship for BMW BIMMERS at Critical TechWorks as a Rockstar Developer (Mobile Software Engineer) in Portugal Lisbon.',
+      name: 'tldrCaption',
       desc: '',
       args: [],
     );

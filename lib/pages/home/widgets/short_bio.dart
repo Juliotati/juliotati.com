@@ -6,26 +6,24 @@ class _ShortBio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displaySmall = context.textTheme.displaySmall;
     return _PageAutoPadding(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 300.0),
+          const SizedBox(height: 250.0),
+          const _ShortBioRotatingText(key: Key('short_bio_rotating_text')),
           Text(
-            context.i18n.shortBioGreeting,
-            style: context.textTheme.displaySmall?.copyWith(
-              fontSize: 20.0,
+            context.i18n.tldr,
+            style: displaySmall?.copyWith(
+              color: displaySmall.color?.withOpacity(0.3),
             ),
           ),
-          Text(
-            context.i18n.shortBioWho,
-            style: context.textTheme.displayMedium,
-          ),
-          const _ShortBioRotatingText(key: Key('short_bio_rotating_text')),
+          const SizedBox(height: 10.0),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 900.0),
             child: Text(
-              context.i18n.shortBioCaption,
+              context.i18n.tldrCaption,
               style: context.textTheme.titleLarge,
             ),
           ),
@@ -49,17 +47,20 @@ class _ShortBioRotatingTextState extends State<_ShortBioRotatingText> {
 
   Timer? _timer;
 
-  String get currentText => _rotatingTexts[_currentTextIndex];
+  List<String> get _rotatingTexts {
+    return [
+      context.i18n.bioSoftwareCraftsman,
+      context.i18n.bioJoyMachine,
+      context.i18n.bioDartShooter,
+      context.i18n.bioOtakuOverlord,
+      context.i18n.bioStoryteller,
+      context.i18n.bioWeebMaster,
+      context.i18n.bioLoudIntrovert,
+      context.i18n.bioMatrixBurner,
+    ];
+  }
 
-  final List<String> _rotatingTexts = [
-    'Software Craftsman ⚒️',
-    'Joy machine 😎',
-    'Dart Shooter 🎯',
-    'OTAKU Overlord 🤫',
-    'Storyteller 📚',
-    'WEEB Master 🍱',
-    'LOUD introvert 🗿',
-  ];
+  String get currentText => _rotatingTexts[_currentTextIndex];
 
   void _rotateText() {
     _currentText = currentText;
@@ -78,9 +79,9 @@ class _ShortBioRotatingTextState extends State<_ShortBioRotatingText> {
   }
 
   @override
-  void initState() {
+  void didChangeDependencies() {
     _rotateText();
-    super.initState();
+    super.didChangeDependencies();
   }
 
   @override
@@ -103,7 +104,7 @@ class _ShortBioRotatingTextState extends State<_ShortBioRotatingText> {
           alignment: Alignment.centerLeft,
           child: ShaderMask(
             shaderCallback: (Rect bounds) {
-              return  LinearGradient(
+              return LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: <Color>[
@@ -115,18 +116,23 @@ class _ShortBioRotatingTextState extends State<_ShortBioRotatingText> {
                 ],
               ).createShader(bounds);
             },
-            child: Text(
-              _currentText,
-              key: ValueKey<String>(_currentText),
-              textAlign: TextAlign.start,
-              maxLines: 1,
-              softWrap: false,
-              overflow: TextOverflow.fade,
-              style: context.textTheme.displayLarge?.copyWith(
-                fontWeight: FontWeight.w900,
-                fontSize: 80.0,
-                color: Colors.white,
-              ),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final smallScreen = constraints.maxWidth < 800;
+                return Text(
+                  _currentText,
+                  key: ValueKey<String>(_currentText),
+                  textAlign: TextAlign.start,
+                  maxLines: smallScreen ? 2 : 1,
+                  softWrap: smallScreen,
+                  overflow: TextOverflow.fade,
+                  style: context.textTheme.displayLarge?.copyWith(
+                    fontWeight: FontWeight.w900,
+                    fontSize: smallScreen ? 70.0 : 85.0,
+                    color: Colors.white,
+                  ),
+                );
+              },
             ),
           ),
         ),
