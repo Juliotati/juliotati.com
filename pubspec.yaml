@@ -39,6 +39,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - assets/cars/
     - assets/app_images/
 
   uses-material-design: true

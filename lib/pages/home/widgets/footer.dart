@@ -5,11 +5,11 @@ class _Footer extends StatelessWidget {
   const _Footer({super.key});
 
   static List<String> images = [
-    Assets.appImages.bmwM2Comp2023Front.path,
-    Assets.appImages.toyotaGr86Trueno.path,
-    Assets.appImages.bmwM2Comp2023Back.path,
-    Assets.appImages.ae86Trueno.path,
-    Assets.appImages.ae86Trueno.path,
+    Assets.cars.bmwM2Comp2023Black.path,
+    Assets.cars.toyotaGr86Trueno.path,
+    Assets.cars.bmwM2Comp2023White.path,
+    Assets.cars.bmw1SeriesHatchback2017.path,
+    Assets.cars.ae86Trueno.path,
   ];
 
   @override
@@ -18,8 +18,11 @@ class _Footer extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       clipBehavior: Clip.none,
       children: [
-        SizedBox(
-          width: 777,
+        ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxHeight: 500,
+            maxWidth: 777,
+          ),
           child: Image.asset(images.randomElement, fit: BoxFit.fitWidth),
         ),
         const Column(

@@ -12,22 +12,6 @@ import 'package:flutter/widgets.dart';
 class $AssetsAppImagesGen {
   const $AssetsAppImagesGen();
 
-  /// File path: assets/app_images/ae86_trueno.png
-  AssetGenImage get ae86Trueno =>
-      const AssetGenImage('assets/app_images/ae86_trueno.png');
-
-  /// File path: assets/app_images/bmw_1_series_hatchback_2017.png
-  AssetGenImage get bmw1SeriesHatchback2017 =>
-      const AssetGenImage('assets/app_images/bmw_1_series_hatchback_2017.png');
-
-  /// File path: assets/app_images/bmw_m2_comp_2023_back.png
-  AssetGenImage get bmwM2Comp2023Back =>
-      const AssetGenImage('assets/app_images/bmw_m2_comp_2023_back.png');
-
-  /// File path: assets/app_images/bmw_m2_comp_2023_front.png
-  AssetGenImage get bmwM2Comp2023Front =>
-      const AssetGenImage('assets/app_images/bmw_m2_comp_2023_front.png');
-
   /// File path: assets/app_images/future_in_motion.gif
   AssetGenImage get futureInMotion =>
       const AssetGenImage('assets/app_images/future_in_motion.gif');
@@ -44,20 +28,40 @@ class $AssetsAppImagesGen {
   AssetGenImage get kingdomNoBg =>
       const AssetGenImage('assets/app_images/kingdom_no_bg.png');
 
-  /// File path: assets/app_images/toyota_gr_86_trueno.png
+  /// List of all assets
+  List<AssetGenImage> get values =>
+      [futureInMotion, julioStare, juliotati, kingdomNoBg];
+}
+
+class $AssetsCarsGen {
+  const $AssetsCarsGen();
+
+  /// File path: assets/cars/ae86_trueno.png
+  AssetGenImage get ae86Trueno =>
+      const AssetGenImage('assets/cars/ae86_trueno.png');
+
+  /// File path: assets/cars/bmw_1_series_hatchback_2017.png
+  AssetGenImage get bmw1SeriesHatchback2017 =>
+      const AssetGenImage('assets/cars/bmw_1_series_hatchback_2017.png');
+
+  /// File path: assets/cars/bmw_m2_comp_2023_black.png
+  AssetGenImage get bmwM2Comp2023Black =>
+      const AssetGenImage('assets/cars/bmw_m2_comp_2023_black.png');
+
+  /// File path: assets/cars/bmw_m2_comp_2023_white.png
+  AssetGenImage get bmwM2Comp2023White =>
+      const AssetGenImage('assets/cars/bmw_m2_comp_2023_white.png');
+
+  /// File path: assets/cars/toyota_gr_86_trueno.png
   AssetGenImage get toyotaGr86Trueno =>
-      const AssetGenImage('assets/app_images/toyota_gr_86_trueno.png');
+      const AssetGenImage('assets/cars/toyota_gr_86_trueno.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
         ae86Trueno,
         bmw1SeriesHatchback2017,
-        bmwM2Comp2023Back,
-        bmwM2Comp2023Front,
-        futureInMotion,
-        julioStare,
-        juliotati,
-        kingdomNoBg,
+        bmwM2Comp2023Black,
+        bmwM2Comp2023White,
         toyotaGr86Trueno
       ];
 }
@@ -66,6 +70,7 @@ class Assets {
   Assets._();
 
   static const $AssetsAppImagesGen appImages = $AssetsAppImagesGen();
+  static const $AssetsCarsGen cars = $AssetsCarsGen();
 }
 
 class AssetGenImage {
