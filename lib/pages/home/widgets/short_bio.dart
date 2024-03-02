@@ -119,6 +119,12 @@ class _ShortBioRotatingTextState extends State<_ShortBioRotatingText> {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final smallScreen = constraints.maxWidth < 800;
+                final mobileScreen = constraints.maxWidth < 650;
+                final fontSize = mobileScreen
+                    ? 50.0
+                    : smallScreen
+                        ? 70.0
+                        : 85.0;
                 return Text(
                   _currentText,
                   key: ValueKey<String>(_currentText),
@@ -128,7 +134,7 @@ class _ShortBioRotatingTextState extends State<_ShortBioRotatingText> {
                   overflow: TextOverflow.fade,
                   style: context.textTheme.displayLarge?.copyWith(
                     fontWeight: FontWeight.w900,
-                    fontSize: smallScreen ? 70.0 : 85.0,
+                    fontSize: fontSize,
                     color: Colors.white,
                   ),
                 );
