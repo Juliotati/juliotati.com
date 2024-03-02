@@ -12,10 +12,6 @@ import 'package:flutter/widgets.dart';
 class $AssetsAppImagesGen {
   const $AssetsAppImagesGen();
 
-  /// File path: assets/app_images/future_in_motion.gif
-  AssetGenImage get futureInMotion =>
-      const AssetGenImage('assets/app_images/future_in_motion.gif');
-
   /// File path: assets/app_images/julio_stare.png
   AssetGenImage get julioStare =>
       const AssetGenImage('assets/app_images/julio_stare.png');
@@ -29,8 +25,7 @@ class $AssetsAppImagesGen {
       const AssetGenImage('assets/app_images/kingdom_no_bg.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [futureInMotion, julioStare, juliotati, kingdomNoBg];
+  List<AssetGenImage> get values => [julioStare, juliotati, kingdomNoBg];
 }
 
 class $AssetsCarsGen {
