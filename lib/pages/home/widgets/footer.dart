@@ -45,58 +45,76 @@ class _FooterLinks extends StatelessWidget {
   Widget build(BuildContext context) {
     const linkSize = 18.0;
     return Padding(
-      padding: const EdgeInsets.only(
-        left: 40.0,
-        right: 40.0,
-        top: 200.0,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _FooterLinksColumn(
-            key: const Key('footer_links_column_1'),
-            title: 'Links',
-            links: [
-              _AppLinkText(
-                'SELF.DEV',
-                key: const Key('footer_selfdev_link'),
-                url: Links.selfdev,
-                fontSize: linkSize,
-              ),
-            ],
-          ),
-          _FooterLinksColumn(
-            key: const Key('footer_links_column_2'),
-            title: 'Connect',
-            links: [
-              _AppLinkText(
-                'GitHub',
-                key: const Key('footer_github_link'),
-                url: Links.github,
-                fontSize: linkSize,
-              ),
-              _AppLinkText(
-                'LinkedIn',
-                key: const Key('footer_linkedin_link'),
-                url: Links.linkedIn,
-                fontSize: linkSize,
-              ),
-              _AppLinkText(
-                'Twitter',
-                key: const Key('footer_twitter_link'),
-                url: Links.twitter,
-                fontSize: linkSize,
-              ),
-              _AppLinkText(
-                'Instagram',
-                key: const Key('footer_instagram_link'),
-                url: Links.instagram,
-                fontSize: linkSize,
-              ),
-            ],
-          ),
-        ],
+      padding: const EdgeInsets.only(top: 200.0),
+      child: _FooterPadding(
+        key: const Key('footer_links_padding'),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _FooterLinksColumn(
+              key: const Key('footer_links_column_1'),
+              title: 'Links',
+              links: [
+                _AppLinkText(
+                  'SELF.DEV',
+                  key: const Key('footer_selfdev_link'),
+                  url: Links.selfdev,
+                  fontSize: linkSize,
+                  enableHyphen: true,
+                ),
+                _AppLinkText(
+                  'Station',
+                  key: const Key('footer_station_link'),
+                  url: Links.station,
+                  fontSize: linkSize,
+                  enableHyphen: true,
+                ),
+                _AppLinkText(
+                  'Despesas',
+                  key: const Key('footer_despesas_link'),
+                  url: Links.despesas,
+                  fontSize: linkSize,
+                  enableHyphen: true,
+                ),
+              ],
+            ),
+            _FooterLinksColumn(
+              key: const Key('footer_links_column_2'),
+              title: 'Connect',
+              links: [
+                _AppLinkText(
+                  'GitHub',
+                  key: const Key('footer_github_link'),
+                  url: Links.github,
+                  fontSize: linkSize,
+                  enableHyphen: true,
+                ),
+                _AppLinkText(
+                  'LinkedIn',
+                  key: const Key('footer_linkedin_link'),
+                  url: Links.linkedIn,
+                  fontSize: linkSize,
+                  enableHyphen: true,
+                ),
+                _AppLinkText(
+                  'Twitter',
+                  key: const Key('footer_twitter_link'),
+                  url: Links.twitter,
+                  fontSize: linkSize,
+                  enableHyphen: true,
+                ),
+                _AppLinkText(
+                  'Instagram',
+                  key: const Key('footer_instagram_link'),
+                  url: Links.instagram,
+                  fontSize: linkSize,
+                  enableHyphen: true,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -110,35 +128,31 @@ class _FooterCopyRights extends StatelessWidget {
   Widget build(BuildContext context) {
     final year = DateTime.now().year;
     final labelSmall = context.textTheme.bodyMedium;
-    final color = labelSmall?.color?.withOpacity(0.2);
     final style = labelSmall?.copyWith(letterSpacing: 1.9);
-    const myEmail = 'getsocial@gmail.com';
     return Column(
       children: [
         const SizedBox(height: 30.0),
-        Divider(
-          color: color?.withOpacity(0.09),
-          thickness: 1.0,
-          endIndent: 40.0,
-          indent: 40.0,
-        ),
+        const _FooterDivider(key: Key('footer_divider')),
         Padding(
-          padding: const EdgeInsets.fromLTRB(40.0, 30, 40.0, 40.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  context.i18n.craftedByAndAllRightsReserved(year),
-                  maxLines: 1,
-                  softWrap: false,
-                  overflow: TextOverflow.fade,
-                  style: style,
+          padding: const EdgeInsets.only(top: 30, bottom: 40.0),
+          child: _FooterPadding(
+            key: const Key('footer_copy_rights_padding'),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    context.i18n.craftedByAndAllRightsReserved(year),
+                    maxLines: 1,
+                    softWrap: false,
+                    overflow: TextOverflow.fade,
+                    style: style,
+                  ),
                 ),
-              ),
-              const _AppLinkText(myEmail, url: 'mailto:$myEmail'),
-            ],
+                _AppLinkText(url: Links.mailTo, Links.myEmail),
+              ],
+            ),
           ),
         ),
       ],
@@ -188,11 +202,13 @@ class _AppLinkText extends StatefulWidget {
     this.label, {
     required this.url,
     this.fontSize,
+    this.enableHyphen = false,
     super.key,
   });
 
   final String label;
   final String url;
+  final bool enableHyphen;
   final double? fontSize;
 
   @override
@@ -210,13 +226,19 @@ class _AppLinkTextState extends State<_AppLinkText> {
     setState(() => _isHovering = false);
   }
 
+  String get _linkLabel {
+    final isWeekend = DateTime.now().weekday > DateTime.friday;
+    final label = widget.label;
+    return (widget.enableHyphen && isWeekend) ? '- $label' : label;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: Text.rich(
         TextSpan(
-          text: widget.label,
+          text: _linkLabel,
           onExit: _onExit,
           onEnter: _onEnter,
           recognizer: TapGestureRecognizer()
@@ -233,6 +255,48 @@ class _AppLinkTextState extends State<_AppLinkText> {
               _isHovering ? TextDecoration.underline : TextDecoration.none,
         ),
       ),
+    );
+  }
+}
+
+@immutable
+class _FooterPadding extends StatelessWidget {
+  const _FooterPadding({required this.child, super.key});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final insets = constraints.maxWidth > 1200 ? 60.0 : 40.0;
+        return AppPadding(
+          padding: EdgeInsets.symmetric(horizontal: insets),
+          child: child,
+        );
+      },
+    );
+  }
+}
+
+@immutable
+class _FooterDivider extends StatelessWidget {
+  const _FooterDivider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final color = context.textTheme.bodyMedium?.color?.withOpacity(0.09);
+        final indent = constraints.maxWidth > 1200 ? 0.0 : 40.0;
+        return AnimatedContainer(
+          height: 1.0,
+          color: color,
+          width: double.infinity,
+          duration: const Duration(milliseconds: 300),
+          margin: EdgeInsets.symmetric(horizontal: indent),
+        );
+      },
     );
   }
 }
