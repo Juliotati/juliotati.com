@@ -4,14 +4,7 @@ on:
     branches:
       - release
 
-  # Enable manual run on gh actions in case a manual deployment is needed
-  # https://github.com/Juliotati/animewatchlist/actions/workflows/cd_release_web.yml
   workflow_dispatch:
-    inputs:
-      environment:
-        description: "Send me to war!! (push live build)"
-        required: false
-        default: "production"
 
 jobs:
   build-and-deploy:
@@ -26,14 +19,14 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           cache: true
-          cache-key: 'flutter-macos-stable-3.19.0-x64'
-          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-3.19.0-x64-hash'
+          cache-key: 'flutter-macos-stable-3.24.0-x64'
+          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-3.24.0-x64-hash'
           channel: 'stable'
-          flutter-version: '3.19.0'
+          flutter-version: '3.24.0'
       - name: build web release canvaskit
         run: |
           flutter pub get
-          flutter build web --release --web-renderer canvaskit
+          flutter build web --release --wasm
 
       - name: Install firebase tools
         uses: actions/setup-node@v4
