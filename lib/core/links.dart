@@ -7,6 +7,8 @@ final class Links {
 
   static String get myEmail => 'getsocial@gmail.com';
 
+  static String get linkTarget => '${_https}pub.dev/packages/link_target';
+
   static String get mailTo => 'mailto:$myEmail';
 
   static String get github => '${_https}github.com/juliotati';

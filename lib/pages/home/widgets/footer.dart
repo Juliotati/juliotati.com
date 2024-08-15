@@ -77,6 +77,13 @@ class _FooterLinks extends StatelessWidget {
                   fontSize: linkSize,
                   enableHyphen: true,
                 ),
+                _AppLinkText(
+                  'Link Target (package)',
+                  key: const Key('footer_link-target_link'),
+                  url: Links.linkTarget,
+                  fontSize: linkSize,
+                  enableHyphen: true,
+                ),
               ],
             ),
             _FooterLinksColumn(
@@ -236,23 +243,26 @@ class _AppLinkTextState extends State<_AppLinkText> {
   Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      child: Text.rich(
-        TextSpan(
-          text: _linkLabel,
-          onExit: _onExit,
-          onEnter: _onEnter,
-          recognizer: TapGestureRecognizer()
-            ..onTap = () => launchUrl(Uri.parse(widget.url)),
-        ),
-        maxLines: 1,
-        softWrap: false,
-        overflow: TextOverflow.fade,
-        style: context.textTheme.bodyMedium?.copyWith(
-          fontWeight: FontWeight.w200,
-          fontSize: widget.fontSize,
-          letterSpacing: 1.9,
-          decoration:
-              _isHovering ? TextDecoration.underline : TextDecoration.none,
+      child: LinkTargetDetector(
+        target: widget.url,
+        child: Text.rich(
+          TextSpan(
+            text: _linkLabel,
+            onExit: _onExit,
+            onEnter: _onEnter,
+            recognizer: TapGestureRecognizer()
+              ..onTap = () => launchUrl(Uri.parse(widget.url)),
+          ),
+          maxLines: 1,
+          softWrap: false,
+          overflow: TextOverflow.fade,
+          style: context.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w200,
+            fontSize: widget.fontSize,
+            letterSpacing: 1.9,
+            decoration:
+                _isHovering ? TextDecoration.underline : TextDecoration.none,
+          ),
         ),
       ),
     );
