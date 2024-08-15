@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:juliotati/core/router/app_tab.dart';
 import 'package:juliotati/generated/l10n.dart';
+import 'package:link_target/link_target.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -29,7 +30,7 @@ final GoRouter appRouter = GoRouter(
   routes: <RouteBase>[
     ShellRoute(
       restorationScopeId: 'MainWrapper<root>',
-      builder: (context, state, child) => child,
+      builder: (context, state, child) => LinkTargetRegion(child: child),
       routes: [
         for (final tab in AppTab.values)
           GoRoute(

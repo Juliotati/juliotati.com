@@ -3,7 +3,6 @@ library home;
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:juliotati/core/extensions/build_context.dart';
@@ -13,14 +12,12 @@ import 'package:juliotati/core/widgets/app_padding.dart';
 import 'package:juliotati/core/widgets/on_hover.dart';
 import 'package:juliotati/gen/assets.gen.dart';
 import 'package:juliotati/generated/l10n.dart';
+import 'package:link_target/link_target.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'widgets/actionable_values.dart';
-
 part 'widgets/extended_bio.dart';
-
 part 'widgets/footer.dart';
-
 part 'widgets/short_bio.dart';
 
 @immutable
