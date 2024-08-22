@@ -64,14 +64,14 @@ class _FooterLinks extends StatelessWidget {
                   enableHyphen: true,
                 ),
                 _AppLinkText(
-                  'Station',
+                  'Station (App)',
                   key: const Key('footer_station_link'),
                   url: Links.station,
                   fontSize: linkSize,
                   enableHyphen: true,
                 ),
                 _AppLinkText(
-                  'Despesas',
+                  'Despesas (App)',
                   key: const Key('footer_despesas_link'),
                   url: Links.despesas,
                   fontSize: linkSize,

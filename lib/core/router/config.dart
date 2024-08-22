@@ -16,7 +16,7 @@ final GoRouter appRouter = GoRouter(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            '404 - Not Found',
+            '"Pick up a shovel and ddo something"',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           ElevatedButton(
