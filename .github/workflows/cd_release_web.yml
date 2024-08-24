@@ -1,8 +1,13 @@
 name: Web deployments
 on:
   push:
+    paths:
+      - 'lib/**'
+      - '.github/workflows/cd_release_web.yml'
+      - 'pubspec.yaml'
+      - 'assets/*.json'
     branches:
-      - release
+      - main
 
   workflow_dispatch:
 
@@ -23,12 +28,12 @@ jobs:
           cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-3.24.0-x64-hash'
           channel: 'stable'
           flutter-version: '3.24.0'
-      - name: build web release wasm
+      - name: build-web-with-wasm
         run: |
           flutter pub get
           flutter build web --release --wasm
 
-      - name: Install firebase tools
+      - name: Install-firebase-tools
         uses: actions/setup-node@v4
         with:
           node-version: "21.2.0"
