@@ -20,7 +20,7 @@ jobs:
         run: |
           chmod +x "${GITHUB_WORKSPACE}/scripts/functions.sh"
           chmod +x "${GITHUB_WORKSPACE}/scripts/sort_translations_file_content.sh"
-          bash "${GITHUB_WORKSPACE}/lib/scripts/sort_translations_file_content.sh"
+          bash "${GITHUB_WORKSPACE}/scripts/sort_translations_file_content.sh"
 
   build-and-deploy:
     needs:
