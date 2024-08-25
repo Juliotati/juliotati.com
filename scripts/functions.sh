@@ -49,13 +49,11 @@ function sort_translations_file_content {
     fi
   done
 
-  echo "🙂 Sorted all .arb files."
-
   # Check if there is any modification in lib/l10n directory, if so create a commit including that
   # directory only.
   if [ -n "$(git status --porcelain $targetDir)" ]; then
     git add $targetDir
-    git commit -m "chore: sort translation files"
+    git commit -m "chore[🤖]: sort translation files"
     echo "🤖 Created a commit for sorted translation files."
 
     # Push the change/commit from github workflow to the main branch
@@ -63,5 +61,7 @@ function sort_translations_file_content {
       git push origin HEAD:$GITHUB_REF
       echo "🚀 Pushed the commit to $GITHUB_REF"
     fi
+    exit 0
   fi
+  echo "🙂 No changes detected"
 }
