@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'lib/**'
+      - 'scripts/functions.sh'
       - '.github/workflows/cd_release_web.yml'
       - 'pubspec.yaml'
     branches:
