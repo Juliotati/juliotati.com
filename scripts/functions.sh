@@ -52,10 +52,16 @@ function sort_translations_file_content {
   echo "🙂 Sorted all .arb files."
 
   # Check if there is any modification in lib/l10n directory, if so create a commit including that
-  # directory only. This should work on github actions too
+  # directory only.
   if [ -n "$(git status --porcelain $targetDir)" ]; then
     git add $targetDir
     git commit -m "chore: sort translation files"
     echo "🤖 Created a commit for sorted translation files."
+
+    # Push the change/commit from github workflow to the main branch
+    if [ -n "$GITHUB_ACTIONS" ]; then
+      git push origin HEAD:$GITHUB_REF
+      echo "🚀 Pushed the commit to $GITHUB_REF"
+    fi
   fi
 }
