@@ -470,10 +470,10 @@ packages:
     dependency: "direct main"
     description:
       name: link_target
-      sha256: b39571da29ace4941f2b7f20c817587c86ecc4a91fd3b2cd6b22c89acf13c8b2
+      sha256: d8b74e3f2d8342a7b57d4e79ca7a08f3383835fbd8d8c8042198003613041e2a
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.2"
+    version: "0.1.1"
   lint:
     dependency: "direct dev"
     description:
