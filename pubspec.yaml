@@ -26,6 +26,9 @@ dependencies:
 flutter_intl:
   enabled: true
   class_name: AppLocal
+  main_locale: en
+  arb_dir: lib/translations
+  output_dir: lib/translations
 
 dev_dependencies:
   build_runner: ^2.4.8

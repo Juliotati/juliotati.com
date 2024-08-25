@@ -50,6 +50,46 @@ class AppLocal {
     return Localizations.of<AppLocal>(context, AppLocal);
   }
 
+  /// `Create`
+  String get actionableCreate {
+    return Intl.message(
+      'Create',
+      name: 'actionableCreate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create with your imagination`
+  String get actionableCreateDescription {
+    return Intl.message(
+      'Create with your imagination',
+      name: 'actionableCreateDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discover`
+  String get actionableDiscover {
+    return Intl.message(
+      'Discover',
+      name: 'actionableDiscover',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Discover new paths`
+  String get actionableDiscoverDescription {
+    return Intl.message(
+      'Discover new paths',
+      name: 'actionableDiscoverDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Explore`
   String get actionableExplore {
     return Intl.message(
@@ -90,41 +130,21 @@ class AppLocal {
     );
   }
 
-  /// `Discover`
-  String get actionableDiscover {
+  /// `Master`
+  String get actionableMaster {
     return Intl.message(
-      'Discover',
-      name: 'actionableDiscover',
+      'Master',
+      name: 'actionableMaster',
       desc: '',
       args: [],
     );
   }
 
-  /// `Discover new paths`
-  String get actionableDiscoverDescription {
+  /// `Master your own craft`
+  String get actionableMasterDescription {
     return Intl.message(
-      'Discover new paths',
-      name: 'actionableDiscoverDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Create`
-  String get actionableCreate {
-    return Intl.message(
-      'Create',
-      name: 'actionableCreate',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Create with your imagination`
-  String get actionableCreateDescription {
-    return Intl.message(
-      'Create with your imagination',
-      name: 'actionableCreateDescription',
+      'Master your own craft',
+      name: 'actionableMasterDescription',
       desc: '',
       args: [],
     );
@@ -150,46 +170,6 @@ class AppLocal {
     );
   }
 
-  /// `Master`
-  String get actionableMaster {
-    return Intl.message(
-      'Master',
-      name: 'actionableMaster',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Master your own craft`
-  String get actionableMasterDescription {
-    return Intl.message(
-      'Master your own craft',
-      name: 'actionableMasterDescription',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Software Craftsman ⚒️`
-  String get bioSoftwareCraftsman {
-    return Intl.message(
-      'Software Craftsman ⚒️',
-      name: 'bioSoftwareCraftsman',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Joy Machine 😎`
-  String get bioJoyMachine {
-    return Intl.message(
-      'Joy Machine 😎',
-      name: 'bioJoyMachine',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Dart Shooter 🎯`
   String get bioDartShooter {
     return Intl.message(
@@ -200,31 +180,11 @@ class AppLocal {
     );
   }
 
-  /// `OTAKU Overlord 🤫`
-  String get bioOtakuOverlord {
+  /// `Joy Machine 😎`
+  String get bioJoyMachine {
     return Intl.message(
-      'OTAKU Overlord 🤫',
-      name: 'bioOtakuOverlord',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Storyteller 📚`
-  String get bioStoryteller {
-    return Intl.message(
-      'Storyteller 📚',
-      name: 'bioStoryteller',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `WEEB Master 🍱`
-  String get bioWeebMaster {
-    return Intl.message(
-      'WEEB Master 🍱',
-      name: 'bioWeebMaster',
+      'Joy Machine 😎',
+      name: 'bioJoyMachine',
       desc: '',
       args: [],
     );
@@ -250,6 +210,46 @@ class AppLocal {
     );
   }
 
+  /// `OTAKU Overlord 🤫`
+  String get bioOtakuOverlord {
+    return Intl.message(
+      'OTAKU Overlord 🤫',
+      name: 'bioOtakuOverlord',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Software Craftsman ⚒️`
+  String get bioSoftwareCraftsman {
+    return Intl.message(
+      'Software Craftsman ⚒️',
+      name: 'bioSoftwareCraftsman',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Storyteller 📚`
+  String get bioStoryteller {
+    return Intl.message(
+      'Storyteller 📚',
+      name: 'bioStoryteller',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `WEEB Master 🍱`
+  String get bioWeebMaster {
+    return Intl.message(
+      'WEEB Master 🍱',
+      name: 'bioWeebMaster',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Craft by @Juliotati | {year} © All rights reserved`
   String craftedByAndAllRightsReserved(Object year) {
     return Intl.message(
@@ -270,6 +270,16 @@ class AppLocal {
     );
   }
 
+  /// `I’m someone who embraces change, advocates for the long term, loves to have things in order but when things are not in order, I devote myself into ferociously (with care), cleaning up before proceeding, and I’m proactively learning and refining skills.\nSolving problems and learning how to learn is one of the things I appreciate and value the most.\n\nFrom a very young age I have always been driven by self-motivation and work ethic beyond what people would expect, and this to me has become an embedded habit/behavior when I want, have, or need to get something done, which has always set me apart from many in the eyes of those that have watched me.`
+  String get longBio {
+    return Intl.message(
+      'I’m someone who embraces change, advocates for the long term, loves to have things in order but when things are not in order, I devote myself into ferociously (with care), cleaning up before proceeding, and I’m proactively learning and refining skills.\nSolving problems and learning how to learn is one of the things I appreciate and value the most.\n\nFrom a very young age I have always been driven by self-motivation and work ethic beyond what people would expect, and this to me has become an embedded habit/behavior when I want, have, or need to get something done, which has always set me apart from many in the eyes of those that have watched me.',
+      name: 'longBio',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `My Motto`
   String get myMotto {
     return Intl.message(
@@ -285,16 +295,6 @@ class AppLocal {
     return Intl.message(
       'Júlio Tati',
       name: 'myName',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `I’m someone who embraces change, advocates for the long term, loves to have things in order but when things are not in order, I devote myself into ferociously (with care), cleaning up before proceeding, and I’m proactively learning and refining skills.\nSolving problems and learning how to learn is one of the things I appreciate and value the most.\n\nFrom a very young age I have always been driven by self-motivation and work ethic beyond what people would expect, and this to me has become an embedded habit/behavior when I want, have, or need to get something done, which has always set me apart from many in the eyes of those that have watched me.`
-  String get longBio {
-    return Intl.message(
-      'I’m someone who embraces change, advocates for the long term, loves to have things in order but when things are not in order, I devote myself into ferociously (with care), cleaning up before proceeding, and I’m proactively learning and refining skills.\nSolving problems and learning how to learn is one of the things I appreciate and value the most.\n\nFrom a very young age I have always been driven by self-motivation and work ethic beyond what people would expect, and this to me has become an embedded habit/behavior when I want, have, or need to get something done, which has always set me apart from many in the eyes of those that have watched me.',
-      name: 'longBio',
       desc: '',
       args: [],
     );

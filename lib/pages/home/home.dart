@@ -11,7 +11,7 @@ import 'package:juliotati/core/links.dart';
 import 'package:juliotati/core/widgets/app_padding.dart';
 import 'package:juliotati/core/widgets/on_hover.dart';
 import 'package:juliotati/gen/assets.gen.dart';
-import 'package:juliotati/generated/l10n.dart';
+import 'package:juliotati/translations/l10n.dart';
 import 'package:link_target/link_target.dart';
 import 'package:url_launcher/url_launcher.dart';
 

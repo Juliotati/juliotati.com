@@ -11,7 +11,20 @@ on:
   workflow_dispatch:
 
 jobs:
+  sort-translations-file-content:
+    runs-on: macos-latest
+    steps:
+      - name: setup-repo
+        uses: actions/checkout@v4
+      - name: verify-config-existence-and-content
+        run: |
+          chmod +x "${GITHUB_WORKSPACE}/lib/scripts/functions.sh"
+          chmod +x "${GITHUB_WORKSPACE}/lib/scripts/sort_translations_file_content.sh"
+          bash "${GITHUB_WORKSPACE}/lib/scripts/sort_translations_file_content.sh"
+
   build-and-deploy:
+    needs:
+      - sort-translations-file-content
     runs-on: macos-latest
     environment: production
     steps:
