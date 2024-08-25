@@ -5,7 +5,6 @@ on:
       - 'lib/**'
       - '.github/workflows/cd_release_web.yml'
       - 'pubspec.yaml'
-      - 'assets/*.json'
     branches:
       - main
 
@@ -24,10 +23,10 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           cache: true
-          cache-key: 'flutter-macos-stable-3.24.0-x64'
-          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-3.24.0-x64-hash'
+          cache-key: 'flutter-macos-stable-3.24.1-x64'
+          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-3.24.1-x64-hash'
           channel: 'stable'
-          flutter-version: '3.24.0'
+          flutter-version: '3.24.1'
       - name: build-web-with-wasm
         run: |
           flutter pub get
