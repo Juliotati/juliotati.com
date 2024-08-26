@@ -59,11 +59,12 @@ function sort_intl_file_content {
     # Push the change/commit from github workflow to the current branch
     if [ -n "$GITHUB_ACTIONS" ]; then
       git push origin $GITHUB_REF
-      echo "🚀 Pushed the commit to $GITHUB_REF"
+      echo "🚀 Pushed commit to $GITHUB_REF"
     fi
     exit 0
   fi
   echo "🙂 No changes detected"
+  exit 0
 }
 
 function verify_config_content {
