@@ -13,12 +13,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  sort-translations-file-content:
-    uses: Juliotati/juliotati_app/.github/workflows/sort_translations_json.yml@test-pipelines
+  sort-intl-file-content:
+    uses: Juliotati/juliotati_app/.github/workflows/sort_intl_json.yml@test-pipelines
 
   build-and-deploy-old:
     needs:
-      - sort-translations-file-content
+      - sort-intl-file-content
     strategy:
       matrix:
         target: [ production ]
