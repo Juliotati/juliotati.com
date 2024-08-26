@@ -27,7 +27,7 @@ jobs:
       - name: setup-jdk
         uses: actions/setup-java@v4
         with:
-          java-version: '12.x'
+          java-version: '21'
           distribution: 'zulu'
 
       - uses: subosito/flutter-action@v2
