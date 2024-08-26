@@ -17,7 +17,7 @@ function brb {
   dart format --line-length 80 .
 }
 
-function sort_translations_file_content {
+function sort_intl_file_content {
   targetDir="lib/translations"
 
   # Check if the targetDir exists
@@ -49,7 +49,7 @@ function sort_translations_file_content {
     fi
   done
 
-  # Check if there is any modification in lib/l10n directory, if so create a commit including that
+  # Check if there is any modification in target directory, if so create a commit including that
   # directory only.
   if [ -n "$(git status --porcelain $targetDir)" ]; then
     git add $targetDir

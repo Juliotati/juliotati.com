@@ -1,4 +1,4 @@
-name: Web deployments
+name: 🚀 Deploy web
 on:
   workflow_call:
     inputs:

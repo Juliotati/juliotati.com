@@ -1,9 +1,9 @@
-name: Sort Translations Json
+name: 🧹 Sort intl Json
 on:
   workflow_call:
 
 jobs:
-  sort-translations-json-content:
+  sort-intl-json-content:
     runs-on: macos-latest
     steps:
       - name: setup-repo
@@ -11,5 +11,5 @@ jobs:
       - name: sort-files-content
         run: |
           chmod +x "${GITHUB_WORKSPACE}/scripts/functions.sh"
-          chmod +x "${GITHUB_WORKSPACE}/scripts/sort_translations_file_content.sh"
-          bash "${GITHUB_WORKSPACE}/scripts/sort_translations_file_content.sh"
+          chmod +x "${GITHUB_WORKSPACE}/scripts/sort_intl_file_content.sh"
+          bash "${GITHUB_WORKSPACE}/scripts/sort_intl_file_content.sh"

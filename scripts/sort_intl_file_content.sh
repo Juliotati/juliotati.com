@@ -5,4 +5,4 @@ source "$DIR/functions.sh"
 
 change_to_root_dir
 
-sort_translations_file_content
+sort_intl_file_content
