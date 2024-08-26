@@ -2,6 +2,10 @@ name: Web deployments
 on:
   workflow_call:
     inputs:
+      target:
+        required: true
+        type: string
+        description: 'The target environment to deploy to'
       flutterVersion:
         required: true
         type: string
@@ -12,22 +16,22 @@ on:
         type: string
         default: 'wasm'
         description: 'The renderer to use for the workflow run'
-      repoToken:
-        required: true
-        type: string
-        description: 'Your repos GitHub token'
-      firebaseServiceAccount:
-        required: true
-        type: string
-        description: 'Projects Firebase service account'
       projectId:
         required: true
         type: string
         description: 'Your Firebase project ID'
+    secrets:
+      repoToken:
+        required: true
+        description: 'Your repos GitHub token'
+      firebaseServiceAccount:
+        required: true
+        description: 'Projects Firebase service account'
 
 jobs:
   build-and-deploy:
     runs-on: macos-latest
+    environment: ${{ inputs.target }}
     env:
       FLUTTER_VERSION: '${{ inputs.flutterVersion }}'
     steps:
@@ -62,7 +66,7 @@ jobs:
       - run: npm install -g firebase-tools@11.0.1
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: '${{ inputs.repoToken }}'
-          firebaseServiceAccount: '${{ inputs.firebaseServiceAccount }}'
+          repoToken: '${{ secrets.repoToken }}'
+          firebaseServiceAccount: '${{ secrets.firebaseServiceAccount }}'
           channelId: live
           projectId: ${{ inputs.projectId }}
