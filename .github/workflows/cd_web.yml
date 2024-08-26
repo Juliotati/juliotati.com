@@ -1,0 +1,87 @@
+name: 🚀 Deploy Firebase Web
+on:
+  workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
+        description: 'The target environment to deploy to'
+      flutterVersion:
+        required: false
+        type: string
+        default: '3.24.1'
+        description: 'The version of Flutter to use for the workflow run'
+      renderer:
+        required: false
+        type: string
+        default: 'wasm'
+        description: 'The renderer to use for the workflow run'
+      projectId:
+        required: true
+        type: string
+        description: 'Your Firebase project ID'
+    secrets:
+      encodedContent:
+        required: false
+        description: 'Encoded json file'
+      repoToken:
+        required: true
+        description: 'Your repos GitHub token'
+      firebaseServiceAccount:
+        required: true
+        description: 'Projects Firebase service account'
+
+jobs:
+  build-and-deploy:
+    runs-on: macos-latest
+    environment: ${{ inputs.target }}
+    env:
+      ENCODED_CONFIGS: ${{ secrets.encodedContent }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+      - uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          cache-key: 'flutter-macos-stable-${{ inputs.flutterVersion }}-x64'
+          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-key: 'flutter-pub-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-path: '${{ runner.tool_cache }}/flutter/stable-${{ inputs.flutterVersion }}-x64'
+          channel: 'stable'
+          flutter-version: ${{ inputs.flutterVersion }}
+      - name: build-web
+        run: |
+          flutter pub get
+          if [ "$ENCODED_CONFIGS" == "" ]; then
+            echo "⚒️ Building without extra config"
+            if [ "${{ inputs.renderer }}" != "wasm" ]; then
+              flutter build web --release --web-renderer ${{ inputs.renderer }}
+            else
+               flutter build web --wasm
+            fi
+            exit 0
+          fi
+
+          echo "⚒️ Setting up extra config file"
+          echo $ENCODED_CONFIGS | base64 --decode > config.json
+
+          if [ "${{ inputs.renderer }}" != "wasm" ]; then
+            flutter build web --release --web-renderer ${{ inputs.renderer }} --dart-define-from-file=config.json
+          else
+            flutter build web --wasm --dart-define-from-file=config.json
+          fi
+
+      - name: Install-firebase-tools
+        uses: actions/setup-node@v4
+        with:
+          node-version: "21.2.0"
+      - run: npm install -g firebase-tools@11.0.1
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          channelId: live
+          projectId: ${{ inputs.projectId }}
+          repoToken: ${{ secrets.repoToken }}
+          firebaseServiceAccount: ${{ secrets.firebaseServiceAccount }}

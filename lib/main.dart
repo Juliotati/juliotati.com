@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:juliotati/core/localization_delegate.dart';
 import 'package:juliotati/core/router/config.dart';
 import 'package:juliotati/core/theme/app_themes.dart';
-import 'package:juliotati/generated/l10n.dart';
+import 'package:juliotati/translations/l10n.dart';
 
 void main() {
   runApp(const JulioTatiApp());

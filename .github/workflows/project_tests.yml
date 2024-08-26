@@ -1,0 +1,40 @@
+name: 🧪 Project Tests
+on:
+  workflow_call:
+    inputs:
+      flutterVersion:
+        required: false
+        type: string
+        default: '3.24.1'
+        description: 'The version of Flutter to use for the workflow run'
+jobs:
+  test-project:
+    runs-on: macos-latest
+    steps:
+      - name: setup-repo
+        uses: actions/checkout@v4
+
+      - name: setup-jdk
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'zulu'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          cache-key: 'flutter-macos-stable-${{ inputs.flutterVersion }}-x64'
+          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-key: 'flutter-pub-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-path: '${{ runner.tool_cache }}/flutter/stable-${{ inputs.flutterVersion }}-x64'
+          channel: 'stable'
+          flutter-version: ${{ inputs.flutterVersion }}
+
+      - name: load-dependencies
+        run: flutter pub get
+
+      - name: validate-format
+        run: dart format  --line-length 80 --set-exit-if-changed .
+
+      - name: run-tests
+        run: flutter test

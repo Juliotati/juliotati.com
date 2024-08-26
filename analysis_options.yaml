@@ -3,8 +3,9 @@ include: package:flutter_lints/flutter.yaml
 analyzer:
   exclude:
     - "**/*.g.dart"
-    - "**/generated/**"
     - "**/*.freezed.dart"
+    - "**/l10n.dart"
+    - "**/**/intl/**"
     - "**/*.config.dart"
   errors:
     always_put_required_named_parameters_first: error

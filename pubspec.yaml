@@ -1,7 +1,7 @@
 name: juliotati
 description: "Júlio Tati is a curious being interested in the human mind. As for what he spends his on, he helps translate and transform ideas to usable products in form of well engineered software."
 
-version: 0.0.2+2
+version: 0.0.3+3
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -19,13 +19,16 @@ dependencies:
   google_fonts: ^6.2.0
   http: ^1.2.1
   intl: ^0.19.0
-  link_target: ^0.0.2
+  link_target: ^0.1.1
   provider: ^6.1.2
   url_launcher: ^6.2.5
 
 flutter_intl:
   enabled: true
   class_name: AppLocal
+  main_locale: en
+  arb_dir: lib/translations
+  output_dir: lib/translations
 
 dev_dependencies:
   build_runner: ^2.4.8
@@ -39,7 +42,6 @@ dev_dependencies:
   lint: ^2.3.0
 flutter:
   assets:
-    - assets/
     - assets/cars/
     - assets/app_images/
 

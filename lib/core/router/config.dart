@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:juliotati/core/router/app_tab.dart';
-import 'package:juliotati/generated/l10n.dart';
+import 'package:juliotati/translations/l10n.dart';
 import 'package:link_target/link_target.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -16,7 +16,7 @@ final GoRouter appRouter = GoRouter(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            '404 - Not Found',
+            '"Pick up a shovel and ddo something"',
             style: Theme.of(context).textTheme.titleLarge,
           ),
           ElevatedButton(

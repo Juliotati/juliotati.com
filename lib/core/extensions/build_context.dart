@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart'
     show BuildContext, ColorScheme, TextTheme, Theme, ThemeData;
-import 'package:juliotati/generated/l10n.dart';
+import 'package:juliotati/translations/l10n.dart';
 
 extension ExtBuildContext on BuildContext {
   ThemeData get theme => Theme.of(this);
