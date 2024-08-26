@@ -2,11 +2,6 @@ name: 🧪 Project Tests
 on:
   workflow_call:
     inputs:
-      skipTests:
-        required: false
-        type: boolean
-        default: false
-        description: 'Whether or not tests should be skipped'
       flutterVersion:
         required: false
         type: string
@@ -14,7 +9,6 @@ on:
         description: 'The version of Flutter to use for the workflow run'
 jobs:
   test-project:
-    if: ${{ !inputs.skipTests }}
     runs-on: macos-latest
     steps:
       - name: setup-repo
