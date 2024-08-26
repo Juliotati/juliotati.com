@@ -65,3 +65,51 @@ function sort_intl_file_content {
   fi
   echo "🙂 No changes detected"
 }
+
+function verify_config_content {
+  # Check if config.json file exists
+  if [ ! -f config.json ]; then
+    echo "😹 You're missing the config.json file!"
+    exit 1
+  fi
+
+  # Check if config.json file is valid JSON
+  if ! jq . config.json > /dev/null 2>&1; then
+    echo "💔 config.json file is not a valid JSON file!"
+    exit 1
+  fi
+
+  # Verifies if json keys in "config.json" match "config_template.json". To prevent building and
+  # deploying with missing or empty keys in "config.json" file.
+  configKeys=$(jq -r 'keys[]' config.json)
+  templateKeys=$(jq -r 'keys[]' config_template.json)
+
+  if [ "$configKeys" == "$templateKeys" ]; then
+      echo "🤝 Configuration keys match!"
+  else
+      echo "🤔 Misconfiguration in config.json ‼️Please fix that first ‼️"
+      echo "Differences:"
+      diff <(echo "$configKeys") <(echo "$templateKeys") | while IFS= read -r line; do
+        echo "  $line"
+      done
+  fi
+
+  empty_keys=()
+  for key in $configKeys; do
+    value=$(jq -r ".$key" config.json)
+    if [ -z "$value" ]; then
+      empty_keys+=("$key")
+    fi
+  done
+
+  # echo those empty keys if any and exit with error to prevent deployment
+  if [ ${#empty_keys[@]} -ne 0 ]; then
+    echo "🫙BUT ‼️found empty keys in config.json:"
+    for empty_key in "${empty_keys[@]}"; do
+      echo " $empty_key is empty"
+    done
+    exit 1
+  fi
+
+  echo "🤝 config.json file is valid!"
+}

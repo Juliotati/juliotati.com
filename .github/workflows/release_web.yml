@@ -1,4 +1,4 @@
-name: 🚀 Deploy web
+name: 🚀 Firebase Deploy Web
 on:
   workflow_call:
     inputs:

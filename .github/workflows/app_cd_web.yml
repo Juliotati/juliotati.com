@@ -1,9 +1,9 @@
-name: Web deployments
+name: 🚀 Deploy Júlio Tati
 on:
   push:
     paths:
       - 'lib/**'
-      - 'scripts/functions.sh'
+      - 'scripts/all_functions.sh'
       - '.github/workflows/app_cd_web.yml'
       - 'pubspec.yaml'
     branches:
@@ -13,12 +13,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  sort-intl-file-content:
+  sort-intl-file-contents:
     uses: Juliotati/juliotati_app/.github/workflows/sort_intl_json.yml@test-pipelines
 
   build-and-deploy-old:
     needs:
-      - sort-intl-file-content
+      - sort-intl-file-contents
     strategy:
       matrix:
         target: [ production ]

@@ -3,13 +3,13 @@ on:
   workflow_call:
 
 jobs:
-  sort-intl-json-content:
+  sort-intl-json-contents:
     runs-on: macos-latest
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
-      - name: sort-files-content
+      - name: sort-files-contents
         run: |
-          chmod +x "${GITHUB_WORKSPACE}/scripts/functions.sh"
-          chmod +x "${GITHUB_WORKSPACE}/scripts/sort_intl_file_content.sh"
-          bash "${GITHUB_WORKSPACE}/scripts/sort_intl_file_content.sh"
+          chmod +x "${GITHUB_WORKSPACE}/scripts/all_functions.sh"
+          chmod +x "${GITHUB_WORKSPACE}/scripts/sort_intl_file_contents.sh"
+          bash "${GITHUB_WORKSPACE}/scripts/sort_intl_file_contents.sh"
