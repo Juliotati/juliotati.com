@@ -56,9 +56,9 @@ function sort_translations_file_content {
     git commit -m "chore[🤖]: sort translation files"
     echo "🤖 Created a commit for sorted translation files."
 
-    # Push the change/commit from github workflow to the main branch
+    # Push the change/commit from github workflow to the current branch
     if [ -n "$GITHUB_ACTIONS" ]; then
-      git push origin HEAD:$GITHUB_REF
+      git push origin $GITHUB_REF
       echo "🚀 Pushed the commit to $GITHUB_REF"
     fi
     exit 0
