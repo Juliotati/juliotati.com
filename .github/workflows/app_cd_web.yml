@@ -16,7 +16,7 @@ jobs:
   sort-intl-file-contents:
     uses: Juliotati/juliotati_app/.github/workflows/sort_intl_json.yml@test-pipelines
 
-  build-and-deploy-old:
+  build-and-deploy:
     needs:
       - sort-intl-file-contents
     strategy:
