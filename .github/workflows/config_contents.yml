@@ -1,4 +1,4 @@
-name: 🧐 Verify config contents
+name: 🧐 Config contents
 on:
   workflow_call:
     inputs:

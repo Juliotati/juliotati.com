@@ -1,4 +1,4 @@
-name: 🚀 Firebase Deploy Web
+name: 🚀 Firebase Web
 on:
   workflow_call:
     inputs:
@@ -45,6 +45,8 @@ jobs:
           cache: true
           cache-key: 'flutter-macos-stable-${{ inputs.flutterVersion }}-x64'
           cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-key: 'flutter-pub-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-path: '${{ runner.tool_cache }}/flutter/stable-${{ inputs.flutterVersion }}-x64'
           channel: 'stable'
           flutter-version: ${{ inputs.flutterVersion }}
       - name: build-web
