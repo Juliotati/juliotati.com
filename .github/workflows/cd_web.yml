@@ -7,7 +7,7 @@ on:
         type: string
         description: 'The target environment to deploy to'
       flutterVersion:
-        required: true
+        required: false
         type: string
         default: '3.24.1'
         description: 'The version of Flutter to use for the workflow run'
