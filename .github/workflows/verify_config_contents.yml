@@ -1,0 +1,27 @@
+name: 🧐 Verify config contents
+on:
+  workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
+        description: 'The target environment to deploy to'
+    secrets:
+      encodedContent:
+        required: true
+        description: 'Encoded json file. An equivalent "config_template" must exist at the root of the repository'
+jobs:
+  validate-config:
+    runs-on: macos-latest
+    environment: ${{ inputs.target }}
+    env:
+      ENCODED_CONTENT: ${{ secrets.encodedContent }}
+    steps:
+      - name: setup-repo
+        uses: actions/checkout@v4
+      - name: verify-config-existence-and-contents
+        run: |
+          echo $ENCODED_CONTENT | base64 --decode > config.json
+          chmod +x "${GITHUB_WORKSPACE}/lib/scripts/all_functions.sh"
+          chmod +x "${GITHUB_WORKSPACE}/lib/scripts/verify_config_contents.sh"
+          bash "${GITHUB_WORKSPACE}/lib/scripts/verify_config_contents.sh"
