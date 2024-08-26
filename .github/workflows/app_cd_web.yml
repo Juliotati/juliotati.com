@@ -4,7 +4,7 @@ on:
     paths:
       - 'lib/**'
       - 'scripts/functions.sh'
-      - '.github/workflows/cd_release_web.yml'
+      - '.github/workflows/app_cd_web.yml'
       - 'pubspec.yaml'
     branches:
       - main
@@ -14,12 +14,12 @@ on:
 
 jobs:
   sort-translations-file-content:
-    uses: Juliotati/juliotati_app/.github/actions/sort_translations_json.yml@main
+    uses: Juliotati/juliotati_app/.github/workflows/sort_translations_json.yml@test-pipelines
 
   build-and-deploy-old:
     needs:
       - sort-translations-file-content
-    uses: Juliotati/juliotati_app/.github/actions/release_web.yml@main
+    uses: Juliotati/juliotati_app/.github/workflows/release_web.yml@test-pipelines
     with:
       flutterVersion: '3.24.1'
       projectId: 'juliotatiapp'

@@ -11,7 +11,6 @@ on:
         required: false
         type: string
         default: 'wasm'
-        options: [ 'wasm', 'html', 'canvaskit', 'auto' ]
         description: 'The renderer to use for the workflow run'
       repoToken:
         required: true
