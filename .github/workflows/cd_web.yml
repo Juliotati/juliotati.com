@@ -54,10 +54,8 @@ jobs:
           flutter pub get
 
           if [ "${{ inputs.renderer }}" != "wasm" ]; then
-            echo "Building web with: ${{ inputs.renderer }}"
             flutter build web --release --web-renderer ${{ inputs.renderer }}
           else
-            echo "Building web with wasm"
             flutter build web --wasm
           fi
 
