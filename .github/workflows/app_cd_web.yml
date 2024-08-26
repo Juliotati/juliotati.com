@@ -8,13 +8,12 @@ on:
       - 'pubspec.yaml'
     branches:
       - main
-      - test-pipelines
 
   workflow_dispatch:
 
 jobs:
   sort-intl-file-contents:
-    uses: Juliotati/juliotati_app/.github/workflows/sort_intl_json.yml@test-pipelines
+    uses: Juliotati/juliotati_app/.github/workflows/sort_intl_json.yml@main
 
   build-and-deploy:
     needs:
@@ -22,7 +21,7 @@ jobs:
     strategy:
       matrix:
         target: [ production ]
-    uses: Juliotati/juliotati_app/.github/workflows/release_web.yml@test-pipelines
+    uses: Juliotati/juliotati_app/.github/workflows/release_web.yml@main
     with:
       target: ${{ matrix.target }}
       projectId: 'juliotatiapp'
