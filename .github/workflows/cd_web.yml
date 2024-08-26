@@ -1,4 +1,4 @@
-name: 🚀 Firebase Web
+name: 🚀 Deploy Firebase Web
 on:
   workflow_call:
     inputs:
@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          java-version: '17.x'
+          java-version: '21'
           distribution: 'zulu'
       - uses: subosito/flutter-action@v2
         with:
