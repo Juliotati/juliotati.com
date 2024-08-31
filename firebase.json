@@ -12,5 +12,17 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "juliotatiapp",
+          "configurations": {
+            "web": "1:153629450754:web:6458217f59244a0011fd1b"
+          }
+        }
+      }
+    }
   }
 }

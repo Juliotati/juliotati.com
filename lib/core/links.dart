@@ -2,6 +2,10 @@ final class Links {
   static const _https = 'https://';
   static const _notion = '${_https}juliot.notion.site';
 
+  static String get myWebsite => '${_https}juliotati.com';
+
+  static String get firebaseDomain => 'firebaseapp.com';
+
   static String get despesas => '${_https}despesas.juliotati.com';
 
   static String get instagram => '${_https}instagram.com/_juliotati';
