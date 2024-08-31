@@ -1,6 +1,3 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -9,6 +6,7 @@ import 'package:juliotati/core/router/app_tab.dart';
 import 'package:juliotati/firebase_options.dart';
 import 'package:logger/logger.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:web/web.dart' as web;
 
 final logMin = Logger(
   printer: PrettyPrinter(
@@ -51,7 +49,7 @@ class AppConfig {
     final base = Uri.base;
     if (base.host.contains(Links.firebaseHostname) ||
         base.host.contains(Links.firebaseAppHostname)) {
-      window.location.replace(Links.app);
+      web.window.location.replace(Links.app);
       return null;
     }
 

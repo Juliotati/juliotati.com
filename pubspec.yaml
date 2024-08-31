@@ -25,6 +25,7 @@ dependencies:
   provider: ^6.1.2
   url_launcher: ^6.2.5
   url_strategy: ^0.3.0
+  web: ^1.0.0
 
 flutter_intl:
   enabled: true

@@ -1,8 +1,6 @@
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:juliotati/core/links.dart';
+import 'package:web/web.dart' as web;
 
 @immutable
 class NotFount extends StatelessWidget {
@@ -21,7 +19,7 @@ class NotFount extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             FilledButton(
-              onPressed: () => window.location.replace(Links.app),
+              onPressed: () => web.window.location.replace(Links.app),
               child: const Text('Be my babe'),
             ),
           ],
