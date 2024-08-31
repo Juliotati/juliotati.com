@@ -23,7 +23,9 @@ class _Footer extends StatelessWidget {
             maxHeight: 500,
             maxWidth: 777,
           ),
-          child: Image.asset(images.randomElement, fit: BoxFit.fitWidth),
+          child: _ChangeLanguageButton(
+            child: Image.asset(images.randomElement, fit: BoxFit.fitWidth),
+          ),
         ),
         const Column(
           mainAxisSize: MainAxisSize.min,
@@ -301,6 +303,28 @@ class _FooterDivider extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: indent),
         );
       },
+    );
+  }
+}
+
+@immutable
+class _ChangeLanguageButton extends StatelessWidget {
+  const _ChangeLanguageButton({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: InkWell(
+        splashColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        focusColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: context.read<AppSettingsProvider>().nextLanguage,
+        child: child,
+      ),
     );
   }
 }
