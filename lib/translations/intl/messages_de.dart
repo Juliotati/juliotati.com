@@ -60,6 +60,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "craftedByAndAllRightsReserved": m0,
         "imGreaterThanMyName":
             MessageLookupByLibrary.simpleMessage("Ich bin > mein name"),
+        "longBio": MessageLookupByLibrary.simpleMessage(
+            "Willkommen in meiner Ecke des Internets! Ich bin ein Energiebündel, das im Wind der Veränderung aufblüht und in allen Bereichen des Lebens eine langfristige Vision vertritt. Ordnung ist meine Leinwand, und wenn sie gestört wird, tauche ich mit akribischer (aber rücksichtsvoller) Begeisterung ein, um die Harmonie wiederherzustellen, bevor ich weitermache.\n\nMein Wissensdurst ist unersättlich; ich verfeinere ständig meine Fähigkeiten und genieße die Freude, zu lernen, wie man lernt.\n\nSeit den ersten Kapiteln meines Lebens waren Selbstmotivation und eine außergewöhnliche Arbeitsmoral die Eckpfeiler meines Charakters. Dieser innere Antrieb ist tief in meinem Wesen verwoben und treibt mich mit einer Hartnäckigkeit an, die oft die Aufmerksamkeit von Beobachtern auf sich zieht ... Ich meine, das ist es, was man aus einer Mischung aus Leidenschaft und Beharrlichkeit herausholt!"),
         "myMotto": MessageLookupByLibrary.simpleMessage("Mein Motto"),
         "myName": MessageLookupByLibrary.simpleMessage("Júlio Tati"),
         "shortBio": MessageLookupByLibrary.simpleMessage(
