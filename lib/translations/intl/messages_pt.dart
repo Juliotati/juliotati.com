@@ -48,11 +48,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "bioJoyMachine":
             MessageLookupByLibrary.simpleMessage("Máquina da Alegria 😎"),
         "bioLoudIntrovert":
-            MessageLookupByLibrary.simpleMessage("INTROVERTIDO ALTO 🗿"),
+            MessageLookupByLibrary.simpleMessage("Introvertido BARULHENTO 🗿"),
         "bioMatrixBurner":
             MessageLookupByLibrary.simpleMessage("QUEIMADOR de Matrizes 🔥"),
         "bioOtakuOverlord":
-            MessageLookupByLibrary.simpleMessage("OTAKU Overlord 🤫"),
+            MessageLookupByLibrary.simpleMessage("Senhor Supremo OTAKU 🤫"),
         "bioSoftwareCraftsman":
             MessageLookupByLibrary.simpleMessage("Produtor de Software ⚒️"),
         "bioStoryteller":
@@ -66,7 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "myMotto": MessageLookupByLibrary.simpleMessage("Meu Lema"),
         "myName": MessageLookupByLibrary.simpleMessage("Júlio Tati"),
         "shortBio": MessageLookupByLibrary.simpleMessage(
-            "Júlio Tati é um ser curioso e interessado na mente humana. Quanto ao que gasta, ele ajuda a traduzir e transformar ideias em produtos utilizáveis na forma de software bem projetado."),
+            "Conheça Júlio Tati — um buscador intrigado pelo labirinto da mente humana. Dedica o seu tempo a uma alquimia única: traduzir pensamentos fugazes em realidade tangível. Através da arte refinada da engenharia de software, transforma ideias em produtos sofisticados que integram-se perfeitamente no nosso quotidiano."),
         "tldr": MessageLookupByLibrary.simpleMessage("TL;DR"),
         "tldrCaption": MessageLookupByLibrary.simpleMessage(
             "Mudando a forma como o mundo se move através do Software Craftsmanship para BMW BIMMERS na Critical TechWorks como Rockstar Developer (Mobile Software Engineer) em Portugal Lisboa.")

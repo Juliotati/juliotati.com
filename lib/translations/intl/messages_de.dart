@@ -45,17 +45,17 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Optimieren Sie Ihr Handwerk"),
         "bioDartShooter":
             MessageLookupByLibrary.simpleMessage("Dart Shooter 🎯"),
-        "bioJoyMachine": MessageLookupByLibrary.simpleMessage("Joy Machine 😎"),
+        "bioJoyMachine":
+            MessageLookupByLibrary.simpleMessage("Freude-Maschine 😎"),
         "bioLoudIntrovert":
-            MessageLookupByLibrary.simpleMessage("LOUD introvertiert 🗿"),
+            MessageLookupByLibrary.simpleMessage("LAUTER Introvertiert 🗿"),
         "bioMatrixBurner":
-            MessageLookupByLibrary.simpleMessage("Matrix BURNER 🔥"),
+            MessageLookupByLibrary.simpleMessage("Matrix-BRENNER 🔥"),
         "bioOtakuOverlord":
-            MessageLookupByLibrary.simpleMessage("OTAKU Overlord 🤫"),
+            MessageLookupByLibrary.simpleMessage("OTAKU-Oberherr 🤫"),
         "bioSoftwareCraftsman":
             MessageLookupByLibrary.simpleMessage("Software Craftsman ⚒️"),
-        "bioStoryteller":
-            MessageLookupByLibrary.simpleMessage("Storyteller 📚"),
+        "bioStoryteller": MessageLookupByLibrary.simpleMessage("Erzähler 📚"),
         "bioWeebMaster": MessageLookupByLibrary.simpleMessage("WEEB Master 🍱"),
         "craftedByAndAllRightsReserved": m0,
         "imGreaterThanMyName":
@@ -65,7 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "myMotto": MessageLookupByLibrary.simpleMessage("Mein Motto"),
         "myName": MessageLookupByLibrary.simpleMessage("Júlio Tati"),
         "shortBio": MessageLookupByLibrary.simpleMessage(
-            "Júlio Tati ist ein neugieriges Wesen, das sich für den menschlichen Geist interessiert. Was sein Geld betrifft, so hilft er dabei, Ideen in brauchbare Produkte in Form ausgereifter Software zu übersetzen und umzuwandeln."),
+            "Lernen Sie Júlio Tati kennen – einen Suchenden, der vom Labyrinth des menschlichen Geistes fasziniert ist. Er widmet seine Zeit einer einzigartigen Alchemie: der Umsetzung flüchtiger Gedanken in greifbare Realität. Durch das raffinierte Handwerk der Softwareentwicklung formt er Ideen zu ausgefeilten Produkten, die sich nahtlos in unser tägliches Leben integrieren lassen. Er besitzt die stille Magie der Innovation, die das Abstrakte in das Unverzichtbare verwandelt."),
         "tldr": MessageLookupByLibrary.simpleMessage("TL;DR"),
         "tldrCaption": MessageLookupByLibrary.simpleMessage(
             "Die Art und Weise, wie sich die Welt bewegt, durch Software-Handwerkskunst für BMW BIMMERS bei Critical TechWorks als Rockstar-Entwickler (Mobile Software Engineer) in Portugal, Lissabon, verändern.")

@@ -134,8 +134,7 @@ class _FooterCopyRights extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final year = DateTime.now().year;
-    final labelSmall = context.textTheme.bodyMedium;
-    final style = labelSmall?.copyWith(letterSpacing: 1.9);
+    final footer = context.i18n.craftedByAndAllRightsReserved(year).split('|');
     return Column(
       children: [
         const SizedBox(height: 30.0),
@@ -148,16 +147,8 @@ class _FooterCopyRights extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: Text(
-                    context.i18n.craftedByAndAllRightsReserved(year),
-                    maxLines: 1,
-                    softWrap: false,
-                    overflow: TextOverflow.fade,
-                    style: style,
-                  ),
-                ),
-                _AppLinkText(url: Links.mailTo, Links.myEmail),
+                Expanded(child: _AppLinkText(url: Links.notion, footer.first)),
+                _AppLinkText(url: Links.mailTo, footer.last),
               ],
             ),
           ),
@@ -247,7 +238,7 @@ class _AppLinkTextState extends State<_AppLinkText> {
         target: widget.url,
         child: Text.rich(
           TextSpan(
-            text: _linkLabel,
+            text: _linkLabel.trim(),
             onExit: _onExit,
             onEnter: _onEnter,
             recognizer: TapGestureRecognizer()
@@ -259,6 +250,9 @@ class _AppLinkTextState extends State<_AppLinkText> {
           style: context.textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w200,
             fontSize: widget.fontSize,
+            backgroundColor: widget.enableHyphen
+                ? context.theme.scaffoldBackgroundColor.withOpacity(0.55)
+                : null,
             letterSpacing: 1.9,
             decoration:
                 _isHovering ? TextDecoration.underline : TextDecoration.none,
