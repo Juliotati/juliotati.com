@@ -1,3 +1,6 @@
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -46,7 +49,11 @@ class AppConfig {
 
   static String? get redirectStrategy {
     final base = Uri.base;
-    if (base.host.contains(Links.firebaseHost)) return Links.myWebsite;
+    if (base.host.contains(Links.firebaseHostname)) {
+      window.location.replace(Links.myWebsite);
+      return null;
+    }
+
     if (base.path.toLowerCase().contains('home')) return AppTab.home.path;
 
     return null;

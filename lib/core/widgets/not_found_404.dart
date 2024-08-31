@@ -1,6 +1,8 @@
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:html';
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:juliotati/core/router/app_tab.dart';
+import 'package:juliotati/core/links.dart';
 
 @immutable
 class NotFount extends StatelessWidget {
@@ -19,7 +21,7 @@ class NotFount extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             FilledButton(
-              onPressed: () => context.go(AppTab.home.path),
+              onPressed: () => window.location.replace(Links.myWebsite),
               child: const Text('Be my babe'),
             ),
           ],
