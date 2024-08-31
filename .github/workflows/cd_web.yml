@@ -54,6 +54,8 @@ jobs:
           flutter-version: ${{ inputs.flutterVersion }}
       - name: build-web
         run: |
+          echo "🔥Preparing to release with ${{ inputs.renderer }} renderer"
+
           flutter pub get
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building without extra config"
