@@ -4,7 +4,7 @@ final class Links {
 
   static String get myWebsite => '${_https}juliotati.com';
 
-  static String get firebaseDomain => 'firebaseapp.com';
+  static String get firebaseHost => 'juliotatiapp';
 
   static String get despesas => '${_https}despesas.juliotati.com';
 

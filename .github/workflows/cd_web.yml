@@ -54,25 +54,27 @@ jobs:
           flutter-version: ${{ inputs.flutterVersion }}
       - name: build-web
         run: |
-          echo "🔥Preparing to release with ${{ inputs.renderer }} renderer"
-
           flutter pub get
           if [ "$ENCODED_CONFIGS" == "" ]; then
-            echo "⚒️ Building without extra config"
+            echo "⚒️ Building WITHOUT extra config"
             if [ "${{ inputs.renderer }}" != "wasm" ]; then
+              echo "🔥Preparing to release with ${{ inputs.renderer }} renderer"
               flutter build web --release --web-renderer ${{ inputs.renderer }}
             else
-               flutter build web --wasm
+              echo "🔥Preparing to release with wasm renderer"
+              flutter build web --wasm
             fi
             exit 0
           fi
 
-          echo "⚒️ Setting up extra config file"
+          echo "⚒️ SETTING-UP extra config file"
           echo $ENCODED_CONFIGS | base64 --decode > config.json
 
           if [ "${{ inputs.renderer }}" != "wasm" ]; then
+            echo "🔥Preparing to release with ${{ inputs.renderer }} renderer"
             flutter build web --release --web-renderer ${{ inputs.renderer }} --dart-define-from-file=config.json
           else
+            echo "🔥Preparing to release with wasm renderer"
             flutter build web --wasm --dart-define-from-file=config.json
           fi
 

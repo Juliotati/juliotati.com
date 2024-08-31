@@ -46,7 +46,7 @@ class AppConfig {
 
   static String? get redirectStrategy {
     final base = Uri.base;
-    if (base.authority.contains(Links.firebaseDomain)) return Links.myWebsite;
+    if (base.host.contains(Links.firebaseHost)) return Links.myWebsite;
     if (base.path.toLowerCase().contains('home')) return AppTab.home.path;
 
     return null;
