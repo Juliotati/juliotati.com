@@ -21,7 +21,7 @@ class NotFount extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             FilledButton(
-              onPressed: () => window.location.replace(Links.myWebsite),
+              onPressed: () => window.location.replace(Links.app),
               child: const Text('Be my babe'),
             ),
           ],

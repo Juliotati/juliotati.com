@@ -23,6 +23,7 @@ jobs:
         target: [ production ]
     uses: Juliotati/juliotati_app/.github/workflows/cd_web.yml@main
     with:
+      renderer: 'canvaskit'
       target: ${{ matrix.target }}
       projectId: 'juliotatiapp'
     secrets:

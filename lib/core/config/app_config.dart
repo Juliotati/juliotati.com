@@ -49,8 +49,9 @@ class AppConfig {
 
   static String? get redirectStrategy {
     final base = Uri.base;
-    if (base.host.contains(Links.firebaseHostname)) {
-      window.location.replace(Links.myWebsite);
+    if (base.host.contains(Links.firebaseHostname) ||
+        base.host.contains(Links.firebaseAppHostname)) {
+      window.location.replace(Links.app);
       return null;
     }
 
