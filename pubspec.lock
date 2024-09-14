@@ -494,10 +494,10 @@ packages:
     dependency: "direct main"
     description:
       name: link_target
-      sha256: d8b74e3f2d8342a7b57d4e79ca7a08f3383835fbd8d8c8042198003613041e2a
+      sha256: "1b7963c638b64f48fc752d64f684d6931c7088b204c6bfd6b8ff80499ef5e373"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.1"
+    version: "0.1.2"
   lint:
     dependency: "direct dev"
     description:
@@ -984,5 +984,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.5.0 <4.0.0"
+  dart: ">=3.5.0-259.0.dev <4.0.0"
   flutter: ">=3.22.0"
