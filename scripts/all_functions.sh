@@ -70,13 +70,25 @@ function sort_intl_file_content {
 function verify_config_content {
   # Check if config.json file exists
   if [ ! -f config.json ]; then
-    echo "😹 You're missing the config.json file!"
+    echo "😹 You're missing config.json file!!"
+    exit 1
+  fi
+
+  # Check if config_template file exists
+  if [ ! -f config_template.json ]; then
+    echo "😹 You're missing config_template.json file!!"
     exit 1
   fi
 
   # Check if config.json file is valid JSON
   if ! jq . config.json > /dev/null 2>&1; then
     echo "💔 config.json file is not a valid JSON file!"
+    exit 1
+  fi
+
+  # Check if config_template.json file is valid JSON
+  if ! jq . config_template.json > /dev/null 2>&1; then
+    echo "💔 config_template.json file is not a valid JSON file!"
     exit 1
   fi
 
@@ -93,6 +105,7 @@ function verify_config_content {
       diff <(echo "$configKeys") <(echo "$templateKeys") | while IFS= read -r line; do
         echo "  $line"
       done
+      exit 1
   fi
 
   empty_keys=()
