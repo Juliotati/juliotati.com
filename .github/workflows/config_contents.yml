@@ -24,11 +24,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Juliotati/juliotati_app
+          path: scripts
           sparse-checkout: scripts/
 
       - name: verify-config-existence-and-contents
         run: |
           echo $ENCODED_CONTENT | base64 --decode > config.json
-          chmod +x "${GITHUB_WORKSPACE}/scripts/all_functions.sh"
-          chmod +x "${GITHUB_WORKSPACE}/scripts/verify_config_contents.sh"
-          bash "${GITHUB_WORKSPACE}/scripts/verify_config_contents.sh"
+          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/all_functions.sh"
+          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/verify_config_contents.sh"
+          bash "${GITHUB_WORKSPACE}/scripts/scripts/verify_config_contents.sh"
