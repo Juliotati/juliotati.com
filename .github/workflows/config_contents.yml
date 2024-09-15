@@ -19,6 +19,14 @@ jobs:
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
+
+      - name: get-scripts
+        uses: actions/checkout@v4
+        with:
+          repository: Juliotati/juliotati_app
+          ref: main
+          sparse-checkout: './scripts/'
+
       - name: verify-config-existence-and-contents
         run: |
           echo $ENCODED_CONTENT | base64 --decode > config.json
