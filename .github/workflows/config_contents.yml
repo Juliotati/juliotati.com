@@ -25,7 +25,7 @@ jobs:
         with:
           repository: Juliotati/juliotati_app
           ref: main
-          sparse-checkout: scripts/
+          sparse-checkout: scripts
           path: scripts
 
       - name: verify-config-existence-and-contents
