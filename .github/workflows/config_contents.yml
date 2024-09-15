@@ -24,7 +24,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Juliotati/juliotati_app
-          path: scripts/
           sparse-checkout: scripts/
 
       - name: verify-config-existence-and-contents
