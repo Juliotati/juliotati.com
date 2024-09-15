@@ -24,9 +24,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Juliotati/juliotati_app
-          ssh-strict: false
-          sparse-checkout: scripts/
           path: scripts/
+          sparse-checkout: scripts/
 
       - name: verify-config-existence-and-contents
         run: |
