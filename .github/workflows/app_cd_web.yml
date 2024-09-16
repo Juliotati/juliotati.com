@@ -4,7 +4,7 @@ on:
     paths:
       - 'lib/**'
       - 'scripts/all_functions.sh'
-      - '.github/workflows/app_cd_web.yml'
+      - '.github/workflows/**'
       - 'pubspec.yaml'
     branches:
       - main
