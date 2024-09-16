@@ -4,14 +4,6 @@ part of '../home.dart';
 class _Footer extends StatelessWidget {
   const _Footer({super.key});
 
-  static List<String> images = [
-    Assets.cars.bmwM2Comp2023Black.path,
-    Assets.cars.toyotaGr86Trueno.path,
-    Assets.cars.bmwM2Comp2023White.path,
-    Assets.cars.bmw1SeriesHatchback2017.path,
-    Assets.cars.ae86Trueno.path,
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -24,7 +16,10 @@ class _Footer extends StatelessWidget {
             maxWidth: 777,
           ),
           child: _ChangeLanguageButton(
-            child: Image.asset(images.randomElement, fit: BoxFit.fitWidth),
+            child: Image.asset(
+              Assets.cars.values.randomElement.path,
+              fit: BoxFit.fitWidth,
+            ),
           ),
         ),
         const Column(

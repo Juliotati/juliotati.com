@@ -31,33 +31,33 @@ class $AssetsAppImagesGen {
 class $AssetsCarsGen {
   const $AssetsCarsGen();
 
-  /// File path: assets/cars/ae86_trueno.png
-  AssetGenImage get ae86Trueno =>
-      const AssetGenImage('assets/cars/ae86_trueno.png');
-
-  /// File path: assets/cars/bmw_1_series_hatchback_2017.png
-  AssetGenImage get bmw1SeriesHatchback2017 =>
-      const AssetGenImage('assets/cars/bmw_1_series_hatchback_2017.png');
-
-  /// File path: assets/cars/bmw_m2_comp_2023_black.png
-  AssetGenImage get bmwM2Comp2023Black =>
-      const AssetGenImage('assets/cars/bmw_m2_comp_2023_black.png');
+  /// File path: assets/cars/bmw_m120_sport_pro_2025.png
+  AssetGenImage get bmwM120SportPro2025 =>
+      const AssetGenImage('assets/cars/bmw_m120_sport_pro_2025.png');
 
   /// File path: assets/cars/bmw_m2_comp_2023_white.png
   AssetGenImage get bmwM2Comp2023White =>
       const AssetGenImage('assets/cars/bmw_m2_comp_2023_white.png');
 
+  /// File path: assets/cars/takumi_ae86.png
+  AssetGenImage get takumiAe86 =>
+      const AssetGenImage('assets/cars/takumi_ae86.png');
+
   /// File path: assets/cars/toyota_gr_86_trueno.png
   AssetGenImage get toyotaGr86Trueno =>
       const AssetGenImage('assets/cars/toyota_gr_86_trueno.png');
 
+  /// File path: assets/cars/truenoAE86.png
+  AssetGenImage get truenoAE86 =>
+      const AssetGenImage('assets/cars/truenoAE86.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
-        ae86Trueno,
-        bmw1SeriesHatchback2017,
-        bmwM2Comp2023Black,
+        bmwM120SportPro2025,
         bmwM2Comp2023White,
-        toyotaGr86Trueno
+        takumiAe86,
+        toyotaGr86Trueno,
+        truenoAE86
       ];
 }
 
