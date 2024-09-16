@@ -18,13 +18,10 @@ jobs:
   build-and-deploy:
     needs:
       - sort-intl-file-contents
-    strategy:
-      matrix:
-        target: [ production ]
     uses: Juliotati/juliotati_app/.github/workflows/cd_web.yml@main
     with:
       renderer: 'canvaskit'
-      target: ${{ matrix.target }}
+      target: 'production'
       projectId: 'juliotatiapp'
     secrets:
       firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JULIOTATIAPP }}
