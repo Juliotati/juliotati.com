@@ -38,45 +38,14 @@ jobs:
     env:
       ENCODED_CONFIGS: ${{ secrets.encodedContent }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - name: do it
+        uses: Juliotati/juliotati_app/.github/workflows/ci_builds.yml@main
         with:
-          java-version: '21'
-          distribution: 'zulu'
-      - uses: subosito/flutter-action@v2
-        with:
-          cache: true
-          cache-key: 'flutter-macos-stable-${{ inputs.flutterVersion }}-x64'
-          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
-          pub-cache-key: 'flutter-pub-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
-          pub-cache-path: '${{ runner.tool_cache }}/flutter/stable-${{ inputs.flutterVersion }}-x64'
-          channel: 'stable'
-          flutter-version: ${{ inputs.flutterVersion }}
-      - name: build-web
-        run: |
-          flutter pub get
-          if [ "$ENCODED_CONFIGS" == "" ]; then
-            echo "⚒️ Building WITHOUT extra config"
-            if [ "${{ inputs.renderer }}" != "wasm" ]; then
-              echo "🔥Preparing to release with ${{ inputs.renderer }} renderer"
-              flutter build web --release --web-renderer ${{ inputs.renderer }}
-            else
-              echo "🔥Preparing to release with wasm renderer"
-              flutter build web --wasm
-            fi
-            exit 0
-          fi
-
-          echo "⚒️ SETTING-UP extra config file"
-          echo $ENCODED_CONFIGS | base64 --decode > config.json
-
-          if [ "${{ inputs.renderer }}" != "wasm" ]; then
-            echo "🔥Preparing to release with ${{ inputs.renderer }} renderer"
-            flutter build web --release --web-renderer ${{ inputs.renderer }} --dart-define-from-file=config.json
-          else
-            echo "🔥Preparing to release with wasm renderer"
-            flutter build web --wasm --dart-define-from-file=config.json
-          fi
+          buildTargets: 'web'
+          renderer: ${{ inputs.renderer }}
+          buildEnvironment: ${{ inputs.target }}
+        secrets:
+          encodedContent: ${{ secrets.encodedContent }}
 
       - name: Install-firebase-tools
         uses: actions/setup-node@v4
