@@ -53,7 +53,7 @@ env:
 
 jobs:
   build-web:
-    if: ${{ inputs.buildWeb }} || contains(github.event.pull_request.labels.*.name, 'release') || contains(github.event.pull_request.labels.*.name, 'release-web')
+    if: ${{ inputs.buildWeb }}
     runs-on: macos-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
@@ -104,7 +104,7 @@ jobs:
           echo "🔥 web ${{ env.SUCCESS_MSG }}"
 
   build-android:
-    if: ${{ inputs.buildAndroid }} || contains(github.event.pull_request.labels.*.name, 'release') || contains(github.event.pull_request.labels.*.name, 'release-android')
+    if: ${{ inputs.buildAndroid }}
     runs-on: macos-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
@@ -143,7 +143,7 @@ jobs:
 
 
   build-ios:
-    if: ${{ inputs.buildIOS }} || contains(github.event.pull_request.labels.*.name, 'release') || contains(github.event.pull_request.labels.*.name, 'release-ios')
+    if: ${{ inputs.buildIOS }}
     runs-on: macos-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
@@ -181,7 +181,7 @@ jobs:
           echo "🔥 iOS ${{ env.SUCCESS_MSG }}"
 
   build-macos:
-    if: ${{ inputs.buildMacOS }} || contains(github.event.pull_request.labels.*.name, 'release') || contains(github.event.pull_request.labels.*.name, 'release-macos')
+    if: ${{ inputs.buildMacOS }}
     runs-on: macos-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
@@ -220,7 +220,7 @@ jobs:
           echo "🔥 macOS ${{ env.SUCCESS_MSG }}"
 
   build-windows:
-    if: ${{ inputs.buildWindows }} || contains(github.event.pull_request.labels.*.name, 'release') || contains(github.event.pull_request.labels.*.name, 'release-windows')
+    if: ${{ inputs.buildWindows }}
     runs-on: windows-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
