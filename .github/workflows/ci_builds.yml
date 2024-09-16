@@ -138,6 +138,7 @@ jobs:
             echo $ENCODED_CONFIGS | base64 --decode > config.json
             flutter pub get
             flutter build apk --profile --dart-define-from-file=config.json
+          fi
           echo "🔥 android ${{ env.SUCCESS_MSG }}"
 
 
@@ -176,6 +177,7 @@ jobs:
             echo $ENCODED_CONFIGS | base64 --decode > config.json
             flutter pub get
             flutter build ios --release --no-codesign --dart-define-from-file=config.json
+          fi
           echo "🔥 iOS ${{ env.SUCCESS_MSG }}"
 
   build-macos:
@@ -214,6 +216,7 @@ jobs:
             flutter config --enable-macos-desktop
             flutter pub get
             flutter build macos --release --dart-define-from-file=config.json
+          fi
           echo "🔥 macOS ${{ env.SUCCESS_MSG }}"
 
   build-windows:
@@ -254,4 +257,5 @@ jobs:
             flutter config --enable-windows-desktop
             flutter pub get
             flutter build windows --release --dart-define-from-file=config.json
+          fi
           echo "🔥 windows ${{ env.SUCCESS_MSG }}"
