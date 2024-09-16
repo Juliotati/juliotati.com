@@ -3,8 +3,6 @@ on:
   push:
     paths:
       - 'lib/**'
-      - 'scripts/all_functions.sh'
-      - '.github/workflows/**'
       - 'pubspec.yaml'
     branches:
       - main

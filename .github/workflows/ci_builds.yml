@@ -6,11 +6,31 @@ on:
         required: true
         type: string
         description: 'The target environment to build for'
-      buildTargets:
+      buildWeb:
         required: false
-        type: string
-        default: 'web'
-        description: 'The target platforms to build for (web, android, iOS, macOS, windows, all)'
+        type: boolean
+        default: true
+        description: 'Whether to build for web'
+      buildAndroid:
+        required: false
+        type: boolean
+        default: false
+        description: 'Whether to build for android'
+      buildIOS:
+        required: false
+        type: boolean
+        default: false
+        description: 'Whether to build for iOS'
+      buildMacOS:
+        required: false
+        type: boolean
+        default: false
+        description: 'Whether to build for macOS'
+      buildWindows:
+        required: false
+        type: boolean
+        default: false
+        description: 'Whether to build for windows'
       flutterVersion:
         required: false
         type: string
@@ -33,7 +53,7 @@ env:
 
 jobs:
   build-web:
-    if: contains(github.event.inputs.buildTargets, 'all') || contains(github.event.inputs.buildTargets, 'web')
+    if: ${{ inputs.buildWeb }}
     runs-on: macos-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
@@ -84,7 +104,7 @@ jobs:
           echo "🔥 web ${{ env.SUCCESS_MSG }}"
 
   build-android:
-    if: contains(github.event.inputs.buildTargets, 'all') || contains(github.event.inputs.buildTargets, 'android')
+    if: ${{ inputs.buildAndroid }}
     runs-on: macos-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
@@ -122,7 +142,7 @@ jobs:
 
 
   build-ios:
-    if: contains(github.event.inputs.buildTargets, 'all') || contains(github.event.inputs.buildTargets, 'iOS')
+    if: ${{ inputs.buildIOS }}
     runs-on: macos-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
@@ -159,7 +179,7 @@ jobs:
           echo "🔥 iOS ${{ env.SUCCESS_MSG }}"
 
   build-macos:
-    if: contains(github.event.inputs.buildTargets, 'all') || contains(github.event.inputs.buildTargets, 'macOS')
+    if: ${{ inputs.buildMacOS }}
     runs-on: macos-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
@@ -197,7 +217,7 @@ jobs:
           echo "🔥 macOS ${{ env.SUCCESS_MSG }}"
 
   build-windows:
-    if: contains(github.event.inputs.buildTargets, 'all') || contains(github.event.inputs.buildTargets, 'windows')
+    if: ${{ inputs.buildWindows }}
     runs-on: windows-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
