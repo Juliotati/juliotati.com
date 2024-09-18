@@ -38,13 +38,20 @@ final class _AppThemeHelper {
 
   ColorScheme scheme() {
     if (darkMode) {
-      return ColorScheme.dark(primary: Colors.blue[900]!);
+      return ColorScheme.dark(primary: Colors.blue[600]!);
     }
     return const ColorScheme.light(primary: Colors.black);
   }
 
   CardTheme cardTheme() {
-    return CardTheme(elevation: darkMode ? 5.0 : 1.0);
+    final color = darkMode
+        ? const Color.fromRGBO(20, 20, 20, 1.0)
+        : const Color.fromRGBO(245, 245, 245, 1.0);
+    return CardTheme(
+      elevation: darkMode ? 5.0 : 1.0,
+      surfaceTintColor: color,
+      color: color,
+    );
   }
 
   TextSelectionThemeData textSelectionTheme() {
