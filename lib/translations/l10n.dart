@@ -50,46 +50,6 @@ class AppLocal {
     return Localizations.of<AppLocal>(context, AppLocal);
   }
 
-  /// `App`
-  String get app {
-    return Intl.message(
-      'App',
-      name: 'app',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Connect`
-  String get connect {
-    return Intl.message(
-      'Connect',
-      name: 'connect',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Package`
-  String get package {
-    return Intl.message(
-      'Package',
-      name: 'package',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Links`
-  String get links {
-    return Intl.message(
-      'Links',
-      name: 'links',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Create`
   String get actionableCreate {
     return Intl.message(
@@ -210,6 +170,16 @@ class AppLocal {
     );
   }
 
+  /// `App`
+  String get app {
+    return Intl.message(
+      'App',
+      name: 'app',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Dart Shooter 🎯`
   String get bioDartShooter {
     return Intl.message(
@@ -290,6 +260,16 @@ class AppLocal {
     );
   }
 
+  /// `Connect`
+  String get connect {
+    return Intl.message(
+      'Connect',
+      name: 'connect',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Craft by @Juliotati | {year} © All rights reserved`
   String craftedByAndAllRightsReserved(Object year) {
     return Intl.message(
@@ -305,6 +285,16 @@ class AppLocal {
     return Intl.message(
       'I\'m > my name',
       name: 'imGreaterThanMyName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Links`
+  String get links {
+    return Intl.message(
+      'Links',
+      name: 'links',
       desc: '',
       args: [],
     );
@@ -335,6 +325,16 @@ class AppLocal {
     return Intl.message(
       'Júlio Tati',
       name: 'myName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Package`
+  String get package {
+    return Intl.message(
+      'Package',
+      name: 'package',
       desc: '',
       args: [],
     );
