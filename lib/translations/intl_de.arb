@@ -1,5 +1,9 @@
 {
   "@@locale": "de",
+  "app": "App",
+  "connect": "Verbinden",
+  "package": "Paket",
+  "links": "Links",
   "actionableCreate": "Erstellen",
   "actionableCreateDescription": "Erstellen Sie mit Ihrer Fantasie",
   "actionableDiscover": "Entdecken",

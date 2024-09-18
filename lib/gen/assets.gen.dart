@@ -31,17 +31,17 @@ class $AssetsAppImagesGen {
 class $AssetsCarsGen {
   const $AssetsCarsGen();
 
-  /// File path: assets/cars/bmw_m120_sport_pro_2025.png
-  AssetGenImage get bmwM120SportPro2025 =>
-      const AssetGenImage('assets/cars/bmw_m120_sport_pro_2025.png');
+  /// File path: assets/cars/bmw_120_sport_pro_2025.png
+  AssetGenImage get bmw120SportPro2025 =>
+      const AssetGenImage('assets/cars/bmw_120_sport_pro_2025.png');
+
+  /// File path: assets/cars/bmw_m135_2025.png
+  AssetGenImage get bmwM1352025 =>
+      const AssetGenImage('assets/cars/bmw_m135_2025.png');
 
   /// File path: assets/cars/bmw_m2_comp_2023_white.png
   AssetGenImage get bmwM2Comp2023White =>
       const AssetGenImage('assets/cars/bmw_m2_comp_2023_white.png');
-
-  /// File path: assets/cars/takumi_ae86.png
-  AssetGenImage get takumiAe86 =>
-      const AssetGenImage('assets/cars/takumi_ae86.png');
 
   /// File path: assets/cars/toyota_gr_86_trueno.png
   AssetGenImage get toyotaGr86Trueno =>
@@ -53,9 +53,9 @@ class $AssetsCarsGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
-        bmwM120SportPro2025,
+        bmw120SportPro2025,
+        bmwM1352025,
         bmwM2Comp2023White,
-        takumiAe86,
         toyotaGr86Trueno,
         truenoAE86
       ];

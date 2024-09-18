@@ -50,6 +50,46 @@ class AppLocal {
     return Localizations.of<AppLocal>(context, AppLocal);
   }
 
+  /// `App`
+  String get app {
+    return Intl.message(
+      'App',
+      name: 'app',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Connect`
+  String get connect {
+    return Intl.message(
+      'Connect',
+      name: 'connect',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Package`
+  String get package {
+    return Intl.message(
+      'Package',
+      name: 'package',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Links`
+  String get links {
+    return Intl.message(
+      'Links',
+      name: 'links',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Create`
   String get actionableCreate {
     return Intl.message(

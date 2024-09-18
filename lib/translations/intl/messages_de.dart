@@ -43,6 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "actionableTune": MessageLookupByLibrary.simpleMessage("Optimieren"),
         "actionableTuneDescription":
             MessageLookupByLibrary.simpleMessage("Optimieren Sie Ihr Handwerk"),
+        "app": MessageLookupByLibrary.simpleMessage("App"),
         "bioDartShooter":
             MessageLookupByLibrary.simpleMessage("Dart Shooter 🎯"),
         "bioJoyMachine":
@@ -57,13 +58,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Software Craftsman ⚒️"),
         "bioStoryteller": MessageLookupByLibrary.simpleMessage("Erzähler 📚"),
         "bioWeebMaster": MessageLookupByLibrary.simpleMessage("WEEB Master 🍱"),
+        "connect": MessageLookupByLibrary.simpleMessage("Verbinden"),
         "craftedByAndAllRightsReserved": m0,
         "imGreaterThanMyName":
             MessageLookupByLibrary.simpleMessage("Ich bin > mein name"),
+        "links": MessageLookupByLibrary.simpleMessage("Links"),
         "longBio": MessageLookupByLibrary.simpleMessage(
             "Willkommen in meiner Ecke des Internets! Ich bin ein Energiebündel, das im Wind der Veränderung aufblüht und in allen Bereichen des Lebens eine langfristige Vision vertritt. Ordnung ist meine Leinwand, und wenn sie gestört wird, tauche ich mit akribischer (aber rücksichtsvoller) Begeisterung ein, um die Harmonie wiederherzustellen, bevor ich weitermache.\n\nMein Wissensdurst ist unersättlich; ich verfeinere ständig meine Fähigkeiten und genieße die Freude, zu lernen, wie man lernt.\n\nSeit den ersten Kapiteln meines Lebens waren Selbstmotivation und eine außergewöhnliche Arbeitsmoral die Eckpfeiler meines Charakters. Dieser innere Antrieb ist tief in meinem Wesen verwoben und treibt mich mit einer Hartnäckigkeit an, die oft die Aufmerksamkeit von Beobachtern auf sich zieht ... Ich meine, das ist es, was man aus einer Mischung aus Leidenschaft und Beharrlichkeit herausholt!"),
         "myMotto": MessageLookupByLibrary.simpleMessage("Mein Motto"),
         "myName": MessageLookupByLibrary.simpleMessage("Júlio Tati"),
+        "package": MessageLookupByLibrary.simpleMessage("Paket"),
         "shortBio": MessageLookupByLibrary.simpleMessage(
             "Lernen Sie Júlio Tati kennen – einen Suchenden, der vom Labyrinth des menschlichen Geistes fasziniert ist. Er widmet seine Zeit einer einzigartigen Alchemie: der Umsetzung flüchtiger Gedanken in greifbare Realität. Durch das raffinierte Handwerk der Softwareentwicklung formt er Ideen zu ausgefeilten Produkten, die sich nahtlos in unser tägliches Leben integrieren lassen. Er besitzt die stille Magie der Innovation, die das Abstrakte in das Unverzichtbare verwandelt."),
         "tldr": MessageLookupByLibrary.simpleMessage("TL;DR"),

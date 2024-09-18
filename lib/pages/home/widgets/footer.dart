@@ -6,6 +6,9 @@ class _Footer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final car = Assets.cars.values.randomElement.path;
+    // ignore: avoid_print
+    print('Current car: ${car.split('/').last}');
     return Stack(
       alignment: Alignment.bottomCenter,
       clipBehavior: Clip.none,
@@ -16,10 +19,7 @@ class _Footer extends StatelessWidget {
             maxWidth: 777,
           ),
           child: _ChangeLanguageButton(
-            child: Image.asset(
-              Assets.cars.values.randomElement.path,
-              fit: BoxFit.fitWidth,
-            ),
+            child: Image.asset(car, fit: BoxFit.fitWidth),
           ),
         ),
         const Column(
@@ -51,7 +51,7 @@ class _FooterLinks extends StatelessWidget {
           children: [
             _FooterLinksColumn(
               key: const Key('footer_links_column_1'),
-              title: 'Links',
+              title: context.i18n.links,
               links: [
                 _AppLinkText(
                   'SELF.DEV',
@@ -61,21 +61,21 @@ class _FooterLinks extends StatelessWidget {
                   enableHyphen: true,
                 ),
                 _AppLinkText(
-                  'Station (App)',
+                  'Station (${context.i18n.app})',
                   key: const Key('footer_station_link'),
                   url: Links.station,
                   fontSize: linkSize,
                   enableHyphen: true,
                 ),
                 _AppLinkText(
-                  'Despesas (App)',
+                  'Despesas (${context.i18n.app})',
                   key: const Key('footer_despesas_link'),
                   url: Links.despesas,
                   fontSize: linkSize,
                   enableHyphen: true,
                 ),
                 _AppLinkText(
-                  'Link Target (package)',
+                  'Link Target (${context.i18n.package})',
                   key: const Key('footer_link-target_link'),
                   url: Links.linkTarget,
                   fontSize: linkSize,
@@ -85,7 +85,7 @@ class _FooterLinks extends StatelessWidget {
             ),
             _FooterLinksColumn(
               key: const Key('footer_links_column_2'),
-              title: 'Connect',
+              title: context.i18n.connect,
               links: [
                 _AppLinkText(
                   'GitHub',

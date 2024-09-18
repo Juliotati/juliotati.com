@@ -1,5 +1,9 @@
 {
   "@@locale": "pt",
+  "app": "App",
+  "connect": "Conecta",
+  "package": "Pacote",
+  "links": "Links",
   "actionableCreate": "Crie",
   "actionableCreateDescription": "Crie com sua imaginação",
   "actionableDiscover": "Descobra",
