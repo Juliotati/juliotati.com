@@ -2,6 +2,7 @@ name: 🚀 Deploy Júlio Tati
 on:
   push:
     paths:
+      - 'assets/**'
       - 'lib/**'
       - 'pubspec.yaml'
     branches:
