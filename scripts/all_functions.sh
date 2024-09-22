@@ -57,10 +57,17 @@ function sort_intl_file_content {
     echo "🤖 Created a commit for sorted translation files."
 
     # Push the change/commit from github workflow to the current branch
-    if [ -n "$GITHUB_ACTIONS" ]; then
-      git push origin $GITHUB_REF
-      echo "🚀 Pushed commit to $GITHUB_REF"
-    fi
+    # If push fails because branch is protected, open a PR on "patch-translations"
+
+    git push origin HEAD || {
+      echo "🤖 Push failed, opening a PR for you..."
+      git checkout -b patch-translations
+      git push origin patch-translations
+      gh pr create --base main --head patch-translations --title "chore[🤖]: sort translation files"
+      echo "🤖 PR opened successfully."
+    }
+
+    echo "🤖 DONE DONE!!"
     exit 0
   fi
   echo "🙂 No changes detected"

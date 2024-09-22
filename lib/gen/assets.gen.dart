@@ -35,10 +35,6 @@ class $AssetsCarsGen {
   AssetGenImage get bmw120SportPro =>
       const AssetGenImage('assets/cars/bmw_120_sport_pro.webp');
 
-  /// File path: assets/cars/bmw_m2_comp_2023_white.png
-  AssetGenImage get bmwM2Comp2023White =>
-      const AssetGenImage('assets/cars/bmw_m2_comp_2023_white.png');
-
   /// File path: assets/cars/toyota_gr_86_trueno.png
   AssetGenImage get toyotaGr86Trueno =>
       const AssetGenImage('assets/cars/toyota_gr_86_trueno.png');
@@ -47,18 +43,9 @@ class $AssetsCarsGen {
   AssetGenImage get truenoAE86 =>
       const AssetGenImage('assets/cars/truenoAE86.png');
 
-  /// File path: assets/cars/x2_sDrive20i.webp
-  AssetGenImage get x2SDrive20i =>
-      const AssetGenImage('assets/cars/x2_sDrive20i.webp');
-
   /// List of all assets
-  List<AssetGenImage> get values => [
-        bmw120SportPro,
-        bmwM2Comp2023White,
-        toyotaGr86Trueno,
-        truenoAE86,
-        x2SDrive20i
-      ];
+  List<AssetGenImage> get values =>
+      [bmw120SportPro, toyotaGr86Trueno, truenoAE86];
 }
 
 class Assets {
