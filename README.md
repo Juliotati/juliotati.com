@@ -1,4 +1,4 @@
-[![🚀 Deploy Júlio Tati](https://github.com/Juliotati/juliotati_app/actions/workflows/app_cd_web.yml/badge.svg)](https://github.com/Juliotati/juliotati_app/actions/workflows/app_cd_web.yml)
+[![🚀 Deploy Júlio Tati](https://github.com/Juliotati/juliotati.com/actions/workflows/app_cd_web.yml/badge.svg)](https://github.com/Juliotati/juliotati.com/actions/workflows/app_cd_web.yml)
 
 # Julio Tati
 

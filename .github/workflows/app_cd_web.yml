@@ -12,12 +12,12 @@ on:
 
 jobs:
   sort-intl-file-contents:
-    uses: Juliotati/juliotati_app/.github/workflows/sort_intl_json.yml@main
+    uses: Juliotati/juliotati.com/.github/workflows/sort_intl_json.yml@main
 
   build-and-deploy:
     needs:
       - sort-intl-file-contents
-    uses: Juliotati/juliotati_app/.github/workflows/cd_web.yml@main
+    uses: Juliotati/juliotati.com/.github/workflows/cd_web.yml@main
     with:
       renderer: 'canvaskit'
       target: 'production'
