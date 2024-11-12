@@ -31,9 +31,9 @@ class $AssetsAppImagesGen {
 class $AssetsCarsGen {
   const $AssetsCarsGen();
 
-  /// File path: assets/cars/bmw_120_sport_pro.webp
-  AssetGenImage get bmw120SportPro =>
-      const AssetGenImage('assets/cars/bmw_120_sport_pro.webp');
+  /// File path: assets/cars/116_sportsM.webp
+  AssetGenImage get a116SportsM =>
+      const AssetGenImage('assets/cars/116_sportsM.webp');
 
   /// File path: assets/cars/toyota_gr_86_trueno.png
   AssetGenImage get toyotaGr86Trueno =>
@@ -44,8 +44,7 @@ class $AssetsCarsGen {
       const AssetGenImage('assets/cars/truenoAE86.png');
 
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [bmw120SportPro, toyotaGr86Trueno, truenoAE86];
+  List<AssetGenImage> get values => [a116SportsM, toyotaGr86Trueno, truenoAE86];
 }
 
 class Assets {

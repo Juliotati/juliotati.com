@@ -7,8 +7,7 @@ class _Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final car = Assets.cars.values.randomElement.path;
-    // ignore: avoid_print
-    print('Current car: 🚙 ${car.split('/').last}');
+    log('Current car: 🚙 ${car.split('/').last}');
     return Stack(
       alignment: Alignment.bottomCenter,
       clipBehavior: Clip.none,
