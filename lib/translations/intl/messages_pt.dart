@@ -25,24 +25,24 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "actionableCreate": MessageLookupByLibrary.simpleMessage("Crie"),
+        "actionableCreate": MessageLookupByLibrary.simpleMessage("Cria"),
         "actionableCreateDescription":
-            MessageLookupByLibrary.simpleMessage("Crie com sua imaginação"),
-        "actionableDiscover": MessageLookupByLibrary.simpleMessage("Descobra"),
+            MessageLookupByLibrary.simpleMessage("Cria com tua imaginação"),
+        "actionableDiscover": MessageLookupByLibrary.simpleMessage("Descobre"),
         "actionableDiscoverDescription":
             MessageLookupByLibrary.simpleMessage("Descubra novos caminhos"),
-        "actionableExplore": MessageLookupByLibrary.simpleMessage("Explore"),
+        "actionableExplore": MessageLookupByLibrary.simpleMessage("Explora"),
         "actionableExploreDescription": MessageLookupByLibrary.simpleMessage(
-            "Explore o mundo e suas maravilhas"),
-        "actionableLearn": MessageLookupByLibrary.simpleMessage("Aprenda"),
+            "Explora o mundo e suas maravilhas"),
+        "actionableLearn": MessageLookupByLibrary.simpleMessage("Aprende"),
         "actionableLearnDescription": MessageLookupByLibrary.simpleMessage(
-            "Aprenda como você não sabe tudo"),
-        "actionableMaster": MessageLookupByLibrary.simpleMessage("Domine"),
+            "Aprenda pois não sabes de tudo"),
+        "actionableMaster": MessageLookupByLibrary.simpleMessage("Domina"),
         "actionableMasterDescription":
-            MessageLookupByLibrary.simpleMessage("Domine seu próprio ofício"),
-        "actionableTune": MessageLookupByLibrary.simpleMessage("Ajuste"),
+            MessageLookupByLibrary.simpleMessage("Domine a sua arte"),
+        "actionableTune": MessageLookupByLibrary.simpleMessage("Aprimore"),
         "actionableTuneDescription":
-            MessageLookupByLibrary.simpleMessage("Ajuste sua arte"),
+            MessageLookupByLibrary.simpleMessage("Aprimore a tua arte"),
         "app": MessageLookupByLibrary.simpleMessage("App"),
         "bioDartShooter":
             MessageLookupByLibrary.simpleMessage("Atirador de dardos 🎯"),
