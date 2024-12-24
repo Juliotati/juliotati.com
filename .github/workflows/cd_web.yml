@@ -9,7 +9,7 @@ on:
       flutterVersion:
         required: false
         type: string
-        default: '3.24.3'
+        default: '3.27.1'
         description: 'The version of Flutter to use for the workflow run'
       renderer:
         required: false
