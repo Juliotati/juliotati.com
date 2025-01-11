@@ -5,11 +5,17 @@ on:
       flutterVersion:
         required: false
         type: string
-        default: '3.27.1'
+        default: '3.27.4'
         description: 'The version of Flutter to use for the workflow run'
+      skipTests:
+        required: false
+        type: boolean
+        default: false
+        description: 'Whether to skip the tests or not'
 jobs:
   test-project:
     runs-on: macos-latest
+    if: ${{ !inputs.skipTests }}
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
