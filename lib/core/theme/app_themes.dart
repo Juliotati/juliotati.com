@@ -43,11 +43,11 @@ final class _AppThemeHelper {
     return const ColorScheme.light(primary: Colors.black);
   }
 
-  CardTheme cardTheme() {
+  CardThemeData cardTheme() {
     final color = darkMode
         ? const Color.fromRGBO(20, 20, 20, 1.0)
         : const Color.fromRGBO(245, 245, 245, 1.0);
-    return CardTheme(
+    return CardThemeData(
       elevation: darkMode ? 5.0 : 1.0,
       surfaceTintColor: color,
       color: color,

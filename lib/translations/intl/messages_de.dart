@@ -25,53 +25,65 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "actionableCreate": MessageLookupByLibrary.simpleMessage("Erstellen"),
-        "actionableCreateDescription": MessageLookupByLibrary.simpleMessage(
-            "Erstellen Sie mit Ihrer Fantasie"),
-        "actionableDiscover": MessageLookupByLibrary.simpleMessage("Entdecken"),
-        "actionableDiscoverDescription":
-            MessageLookupByLibrary.simpleMessage("Neue Wege entdecken"),
-        "actionableExplore": MessageLookupByLibrary.simpleMessage("Entdecken"),
-        "actionableExploreDescription": MessageLookupByLibrary.simpleMessage(
-            "Entdecken Sie die Welt und ihre Wunder"),
-        "actionableLearn": MessageLookupByLibrary.simpleMessage("Lernen"),
-        "actionableLearnDescription": MessageLookupByLibrary.simpleMessage(
-            "Lernen Sie, wie Sie nicht alles wissen"),
-        "actionableMaster": MessageLookupByLibrary.simpleMessage("Meistern"),
-        "actionableMasterDescription": MessageLookupByLibrary.simpleMessage(
-            "Meistern Sie Ihr eigenes Handwerk"),
-        "actionableTune": MessageLookupByLibrary.simpleMessage("Optimieren"),
-        "actionableTuneDescription":
-            MessageLookupByLibrary.simpleMessage("Optimieren Sie Ihr Handwerk"),
-        "app": MessageLookupByLibrary.simpleMessage("App"),
-        "bioDartShooter":
-            MessageLookupByLibrary.simpleMessage("Dart Shooter 🎯"),
-        "bioJoyMachine":
-            MessageLookupByLibrary.simpleMessage("Freude-Maschine 😎"),
-        "bioLoudIntrovert":
-            MessageLookupByLibrary.simpleMessage("LAUTER Introvertiert 🗿"),
-        "bioMatrixBurner":
-            MessageLookupByLibrary.simpleMessage("Matrix-BRENNER 🔥"),
-        "bioOtakuOverlord":
-            MessageLookupByLibrary.simpleMessage("OTAKU-Oberherr 🤫"),
-        "bioSoftwareCraftsman":
-            MessageLookupByLibrary.simpleMessage("Software Craftsman ⚒️"),
-        "bioStoryteller": MessageLookupByLibrary.simpleMessage("Erzähler 📚"),
-        "bioWeebMaster": MessageLookupByLibrary.simpleMessage("WEEB Master 🍱"),
-        "connect": MessageLookupByLibrary.simpleMessage("Verbinden"),
-        "craftedByAndAllRightsReserved": m0,
-        "imGreaterThanMyName":
-            MessageLookupByLibrary.simpleMessage("Ich bin > mein name"),
-        "links": MessageLookupByLibrary.simpleMessage("Links"),
-        "longBio": MessageLookupByLibrary.simpleMessage(
-            "Willkommen in meiner Ecke des Internets! Ich bin ein Energiebündel, das im Wind der Veränderung aufblüht und in allen Bereichen des Lebens eine langfristige Vision vertritt. Ordnung ist meine Leinwand, und wenn sie gestört wird, tauche ich mit akribischer (aber rücksichtsvoller) Begeisterung ein, um die Harmonie wiederherzustellen, bevor ich weitermache.\n\nMein Wissensdurst ist unersättlich; ich verfeinere ständig meine Fähigkeiten und genieße die Freude, zu lernen, wie man lernt.\n\nSeit den ersten Kapiteln meines Lebens waren Selbstmotivation und eine außergewöhnliche Arbeitsmoral die Eckpfeiler meines Charakters. Dieser innere Antrieb ist tief in meinem Wesen verwoben und treibt mich mit einer Hartnäckigkeit an, die oft die Aufmerksamkeit von Beobachtern auf sich zieht ... Ich meine, das ist es, was man aus einer Mischung aus Leidenschaft und Beharrlichkeit herausholt!"),
-        "myMotto": MessageLookupByLibrary.simpleMessage("Mein Motto"),
-        "myName": MessageLookupByLibrary.simpleMessage("Júlio Tati"),
-        "package": MessageLookupByLibrary.simpleMessage("Paket"),
-        "shortBio": MessageLookupByLibrary.simpleMessage(
-            "Lernen Sie Júlio Tati kennen – einen Suchenden, der vom Labyrinth des menschlichen Geistes fasziniert ist. Er widmet seine Zeit einer einzigartigen Alchemie: der Umsetzung flüchtiger Gedanken in greifbare Realität. Durch das raffinierte Handwerk der Softwareentwicklung formt er Ideen zu ausgefeilten Produkten, die sich nahtlos in unser tägliches Leben integrieren lassen. Er besitzt die stille Magie der Innovation, die das Abstrakte in das Unverzichtbare verwandelt."),
-        "tldr": MessageLookupByLibrary.simpleMessage("TL;DR"),
-        "tldrCaption": MessageLookupByLibrary.simpleMessage(
-            "Die Art und Weise, wie sich die Welt bewegt, durch Software-Handwerkskunst für BMW BIMMERS bei Critical TechWorks als Rockstar-Entwickler (Mobile Software Engineer) in Portugal, Lissabon, verändern.")
-      };
+    "actionableCreate": MessageLookupByLibrary.simpleMessage("Erstellen"),
+    "actionableCreateDescription": MessageLookupByLibrary.simpleMessage(
+      "Erstellen Sie mit Ihrer Fantasie",
+    ),
+    "actionableDiscover": MessageLookupByLibrary.simpleMessage("Entdecken"),
+    "actionableDiscoverDescription": MessageLookupByLibrary.simpleMessage(
+      "Neue Wege entdecken",
+    ),
+    "actionableExplore": MessageLookupByLibrary.simpleMessage("Entdecken"),
+    "actionableExploreDescription": MessageLookupByLibrary.simpleMessage(
+      "Entdecken Sie die Welt und ihre Wunder",
+    ),
+    "actionableLearn": MessageLookupByLibrary.simpleMessage("Lernen"),
+    "actionableLearnDescription": MessageLookupByLibrary.simpleMessage(
+      "Lernen Sie, wie Sie nicht alles wissen",
+    ),
+    "actionableMaster": MessageLookupByLibrary.simpleMessage("Meistern"),
+    "actionableMasterDescription": MessageLookupByLibrary.simpleMessage(
+      "Meistern Sie Ihr eigenes Handwerk",
+    ),
+    "actionableTune": MessageLookupByLibrary.simpleMessage("Optimieren"),
+    "actionableTuneDescription": MessageLookupByLibrary.simpleMessage(
+      "Optimieren Sie Ihr Handwerk",
+    ),
+    "app": MessageLookupByLibrary.simpleMessage("App"),
+    "bioDartShooter": MessageLookupByLibrary.simpleMessage("Dart Shooter 🎯"),
+    "bioJoyMachine": MessageLookupByLibrary.simpleMessage("Freude-Maschine 😎"),
+    "bioLoudIntrovert": MessageLookupByLibrary.simpleMessage(
+      "LAUTER Introvertiert 🗿",
+    ),
+    "bioMatrixBurner": MessageLookupByLibrary.simpleMessage(
+      "Matrix-BRENNER 🔥",
+    ),
+    "bioOtakuOverlord": MessageLookupByLibrary.simpleMessage(
+      "OTAKU-Oberherr 🤫",
+    ),
+    "bioSoftwareCraftsman": MessageLookupByLibrary.simpleMessage(
+      "Software Craftsman ⚒️",
+    ),
+    "bioStoryteller": MessageLookupByLibrary.simpleMessage("Erzähler 📚"),
+    "bioWeebMaster": MessageLookupByLibrary.simpleMessage("WEEB Master 🍱"),
+    "connect": MessageLookupByLibrary.simpleMessage("Verbinden"),
+    "craftedByAndAllRightsReserved": m0,
+    "imGreaterThanMyName": MessageLookupByLibrary.simpleMessage(
+      "Ich bin > mein name",
+    ),
+    "links": MessageLookupByLibrary.simpleMessage("Links"),
+    "longBio": MessageLookupByLibrary.simpleMessage(
+      "Willkommen in meiner Ecke des Internets! Ich bin ein Energiebündel, das im Wind der Veränderung aufblüht und in allen Bereichen des Lebens eine langfristige Vision vertritt. Ordnung ist meine Leinwand, und wenn sie gestört wird, tauche ich mit akribischer (aber rücksichtsvoller) Begeisterung ein, um die Harmonie wiederherzustellen, bevor ich weitermache.\n\nMein Wissensdurst ist unersättlich; ich verfeinere ständig meine Fähigkeiten und genieße die Freude, zu lernen, wie man lernt.\n\nSeit den ersten Kapiteln meines Lebens waren Selbstmotivation und eine außergewöhnliche Arbeitsmoral die Eckpfeiler meines Charakters. Dieser innere Antrieb ist tief in meinem Wesen verwoben und treibt mich mit einer Hartnäckigkeit an, die oft die Aufmerksamkeit von Beobachtern auf sich zieht ... Ich meine, das ist es, was man aus einer Mischung aus Leidenschaft und Beharrlichkeit herausholt!",
+    ),
+    "myMotto": MessageLookupByLibrary.simpleMessage("Mein Motto"),
+    "myName": MessageLookupByLibrary.simpleMessage("Júlio Tati"),
+    "package": MessageLookupByLibrary.simpleMessage("Paket"),
+    "shortBio": MessageLookupByLibrary.simpleMessage(
+      "Lernen Sie Júlio Tati kennen – einen Suchenden, der vom Labyrinth des menschlichen Geistes fasziniert ist. Er widmet seine Zeit einer einzigartigen Alchemie: der Umsetzung flüchtiger Gedanken in greifbare Realität. Durch das raffinierte Handwerk der Softwareentwicklung formt er Ideen zu ausgefeilten Produkten, die sich nahtlos in unser tägliches Leben integrieren lassen. Er besitzt die stille Magie der Innovation, die das Abstrakte in das Unverzichtbare verwandelt.",
+    ),
+    "tldr": MessageLookupByLibrary.simpleMessage("TL;DR"),
+    "tldrCaption": MessageLookupByLibrary.simpleMessage(
+      "Die Art und Weise, wie sich die Welt bewegt, durch Software-Handwerkskunst für BMW BIMMERS bei Critical TechWorks als Rockstar-Entwickler (Mobile Software Engineer) in Portugal, Lissabon, verändern.",
+    ),
+  };
 }

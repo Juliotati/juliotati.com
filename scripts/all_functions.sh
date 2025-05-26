@@ -49,6 +49,8 @@ function sort_intl_file_content {
     fi
   done
 
+  dart format --line-length 80 $targetDir
+
   # Check if there is any modification in target directory, if so create a commit including that
   # directory only.
   if [ -n "$(git status --porcelain $targetDir)" ]; then
@@ -64,6 +66,12 @@ function sort_intl_file_content {
       git checkout -b patch-translations
       git push origin patch-translations
       gh pr create --base main --head patch-translations --title "chore[🤖]: sort translation files" --body "Just doing what you're too lazy to do. 🧹"
+
+      if [ $? -ne 0 ]; then
+        echo "👻 FAILED to create PR. Missing actions permissions."
+        exit 1
+      fi
+
       echo "🤖 PR opened successfully."
     }
 

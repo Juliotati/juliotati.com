@@ -18,17 +18,20 @@ class AppLocal {
   static AppLocal? _current;
 
   static AppLocal get current {
-    assert(_current != null,
-        'No instance of AppLocal was loaded. Try to initialize the AppLocal delegate before accessing AppLocal.current.');
+    assert(
+      _current != null,
+      'No instance of AppLocal was loaded. Try to initialize the AppLocal delegate before accessing AppLocal.current.',
+    );
     return _current!;
   }
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
   static Future<AppLocal> load(Locale locale) {
-    final name = (locale.countryCode?.isEmpty ?? false)
-        ? locale.languageCode
-        : locale.toString();
+    final name =
+        (locale.countryCode?.isEmpty ?? false)
+            ? locale.languageCode
+            : locale.toString();
     final localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -41,8 +44,10 @@ class AppLocal {
 
   static AppLocal of(BuildContext context) {
     final instance = AppLocal.maybeOf(context);
-    assert(instance != null,
-        'No instance of AppLocal present in the widget tree. Did you add AppLocal.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of AppLocal present in the widget tree. Did you add AppLocal.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -52,12 +57,7 @@ class AppLocal {
 
   /// `Create`
   String get actionableCreate {
-    return Intl.message(
-      'Create',
-      name: 'actionableCreate',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Create', name: 'actionableCreate', desc: '', args: []);
   }
 
   /// `Create with your imagination`
@@ -112,12 +112,7 @@ class AppLocal {
 
   /// `Learn`
   String get actionableLearn {
-    return Intl.message(
-      'Learn',
-      name: 'actionableLearn',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Learn', name: 'actionableLearn', desc: '', args: []);
   }
 
   /// `Learn as you know not all`
@@ -132,12 +127,7 @@ class AppLocal {
 
   /// `Master`
   String get actionableMaster {
-    return Intl.message(
-      'Master',
-      name: 'actionableMaster',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Master', name: 'actionableMaster', desc: '', args: []);
   }
 
   /// `Master your own craft`
@@ -152,12 +142,7 @@ class AppLocal {
 
   /// `Tune`
   String get actionableTune {
-    return Intl.message(
-      'Tune',
-      name: 'actionableTune',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Tune', name: 'actionableTune', desc: '', args: []);
   }
 
   /// `Tune your craft`
@@ -172,12 +157,7 @@ class AppLocal {
 
   /// `App`
   String get app {
-    return Intl.message(
-      'App',
-      name: 'app',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('App', name: 'app', desc: '', args: []);
   }
 
   /// `Dart Shooter 🎯`
@@ -262,12 +242,7 @@ class AppLocal {
 
   /// `Connect`
   String get connect {
-    return Intl.message(
-      'Connect',
-      name: 'connect',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Connect', name: 'connect', desc: '', args: []);
   }
 
   /// `Craft by @Juliotati | {year} © All rights reserved`
@@ -292,12 +267,7 @@ class AppLocal {
 
   /// `Links`
   String get links {
-    return Intl.message(
-      'Links',
-      name: 'links',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Links', name: 'links', desc: '', args: []);
   }
 
   /// `Welcome to my corner of the internet! I'm a dynamo of diligence who thrives in the winds of change and champions long-term vision in all realms of life. Order is my canvas, and when it's disrupted, I dive in with a meticulous (yet considerate) fervor to restore harmony before pressing forward.\n\nMy appetite for knowledge is voracious; as I am constantly honing my skills and relishing the joy of mastering 'how to learn.'\n\nFrom the earliest chapters of my life, self-motivation and an exceptional work ethic have been the keystones of my character. This intrinsic drive is woven into the very fabric of my being, propelling me to achieve with a tenacity that often captures the eye of observers... I mean, that's what you get out of blend of passion and persistence!`
@@ -312,32 +282,17 @@ class AppLocal {
 
   /// `My Motto`
   String get myMotto {
-    return Intl.message(
-      'My Motto',
-      name: 'myMotto',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('My Motto', name: 'myMotto', desc: '', args: []);
   }
 
   /// `Júlio Tati`
   String get myName {
-    return Intl.message(
-      'Júlio Tati',
-      name: 'myName',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Júlio Tati', name: 'myName', desc: '', args: []);
   }
 
   /// `Package`
   String get package {
-    return Intl.message(
-      'Package',
-      name: 'package',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Package', name: 'package', desc: '', args: []);
   }
 
   /// `Meet Júlio Tati—a seeker intrigued by the labyrinth of the human mind. He dedicates his time to a unique alchemy: translating fleeting thoughts into tangible reality. Through the refined craft of software engineering, he shapes ideas into polished products that seamlessly integrate into our daily lives. His is the silent magic of innovation, transforming the abstract into the indispensable.`
@@ -352,12 +307,7 @@ class AppLocal {
 
   /// `TL;DR`
   String get tldr {
-    return Intl.message(
-      'TL;DR',
-      name: 'tldr',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('TL;DR', name: 'tldr', desc: '', args: []);
   }
 
   /// `Changing how the world moves through Software Craftsmanship for BMW BIMMERS at Critical TechWorks as a Rockstar Developer (Mobile Software Engineer) in Portugal Lisbon.`
