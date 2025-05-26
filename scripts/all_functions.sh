@@ -49,8 +49,6 @@ function sort_intl_file_content {
     fi
   done
 
-  dart format --line-length 80 $targetDir
-
   # Check if there is any modification in target directory, if so create a commit including that
   # directory only.
   if [ -n "$(git status --porcelain $targetDir)" ]; then
