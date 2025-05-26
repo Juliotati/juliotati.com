@@ -19,7 +19,7 @@ jobs:
       - sort-intl-file-contents
     uses: Juliotati/juliotati.com/.github/workflows/cd_web.yml@main
     with:
-      renderer: 'canvaskit'
+      useWasm: false
       target: 'production'
       projectId: 'juliotatiapp'
     secrets:

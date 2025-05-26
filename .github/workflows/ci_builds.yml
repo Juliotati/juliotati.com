@@ -34,13 +34,13 @@ on:
       flutterVersion:
         required: false
         type: string
-        default: '3.27.2'
+        default: '3.32.0'
         description: 'The version of Flutter to use for the workflow run'
-      renderer:
+      useWasm:
         required: false
-        type: string
-        default: 'wasm'
-        description: 'Web renderer your build should build for'
+        type: boolean
+        default: true
+        description: 'Whether or not you want web rendered to use wasm'
 
     secrets:
       encodedContent:
@@ -80,9 +80,9 @@ jobs:
           flutter pub get
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
-            if [ "${{ inputs.renderer }}" != "wasm" ]; then
-              echo "🔥 Using web ${{ inputs.renderer }} renderer"
-              flutter build web --release --web-renderer ${{ inputs.renderer }}
+            if [ "${{ inputs.useWasm }}" = "false" ]; then
+              echo "🔥 Using canvas-kit renderer"
+              flutter build web --release
             else
               echo "🔥 Using wasm renderer"
               flutter build web --wasm
@@ -94,11 +94,11 @@ jobs:
           echo "⚒️ SETTING-UP extra config file"
           echo $ENCODED_CONFIGS | base64 --decode > config.json
 
-          if [ "${{ inputs.renderer }}" != "wasm" ]; then
-            echo "🔥Preparing to release with ${{ inputs.renderer }} renderer"
-            flutter build web --release --web-renderer ${{ inputs.renderer }} --dart-define-from-file=config.json
+          if [ "${{ inputs.useWasm }}" = "false" ]; then
+            echo "🔥 Preparing to release with canvas-kit renderer"
+            flutter build web --release --dart-define-from-file=config.json
           else
-            echo "🔥Preparing to release with wasm renderer"
+            echo "🔥 Preparing to release with wasm renderer"
             flutter build web --wasm --dart-define-from-file=config.json
           fi
           echo "🔥 web ${{ env.SUCCESS_MSG }}"
