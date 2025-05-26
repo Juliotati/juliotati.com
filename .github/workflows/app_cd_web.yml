@@ -2,6 +2,7 @@ name: 🚀 Deploy Júlio Tati
 on:
   push:
     paths:
+      - '.github/workflows/app_cd_web.yml'
       - 'assets/**'
       - 'lib/**'
       - 'pubspec.yaml'
