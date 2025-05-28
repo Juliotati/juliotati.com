@@ -13,10 +13,7 @@ class _Footer extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxHeight: 500,
-            maxWidth: 777,
-          ),
+          constraints: const BoxConstraints(maxHeight: 500, maxWidth: 777),
           child: _ChangeLanguageButton(
             child: Image.asset(car, fit: BoxFit.fitWidth),
           ),
@@ -173,10 +170,7 @@ class _FooterLinksColumn extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: context.textTheme.displaySmall,
-          ),
+          Text(title, style: context.textTheme.displaySmall),
           const SizedBox(height: 20.0),
           ...links.map(
             (link) => Padding(
@@ -250,8 +244,9 @@ class _AppLinkTextState extends State<_AppLinkText> {
                 ? context.theme.scaffoldBackgroundColor.withOpacity(0.55)
                 : null,
             letterSpacing: 1.9,
-            decoration:
-                _isHovering ? TextDecoration.underline : TextDecoration.none,
+            decoration: _isHovering
+                ? TextDecoration.underline
+                : TextDecoration.none,
           ),
         ),
       ),

@@ -62,13 +62,8 @@ class _ActionableValues extends StatelessWidget {
       height: height,
       width: width,
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Image.asset(
-        Assets.appImages.kingdomNoBg.path,
-        fit: BoxFit.cover,
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+      child: Image.asset(Assets.appImages.kingdomNoBg.path, fit: BoxFit.cover),
     );
   }
 
@@ -83,15 +78,9 @@ class _ActionableValues extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const SizedBox(height: 150.0),
-              _actionableImage(
-                width: 550.0,
-                height: 320.0,
-                radius: 80.0,
-              ),
+              _actionableImage(width: 550.0, height: 320.0, radius: 80.0),
               const SizedBox(height: 50.0),
-              Wrap(
-                children: _actionableItems(context.i18n),
-              ),
+              Wrap(children: _actionableItems(context.i18n)),
             ],
           );
         }
@@ -100,11 +89,7 @@ class _ActionableValues extends StatelessWidget {
           children: [
             Column(
               children: [
-                _actionableImage(
-                  height: 300.0,
-                  width: 450.0,
-                  radius: 100.0,
-                ),
+                _actionableImage(height: 300.0, width: 450.0, radius: 100.0),
                 const SizedBox(height: 50.0),
                 Text(
                   context.i18n.myMotto,

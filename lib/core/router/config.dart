@@ -20,10 +20,8 @@ final GoRouter appRouter = GoRouter(
           GoRoute(
             path: tab.path,
             name: tab.name,
-            pageBuilder: (_, state) => NoTransitionPage(
-              key: state.pageKey,
-              child: tab.pageWidget,
-            ),
+            pageBuilder: (_, state) =>
+                NoTransitionPage(key: state.pageKey, child: tab.pageWidget),
           ),
       ],
     ),

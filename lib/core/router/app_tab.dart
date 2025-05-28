@@ -31,11 +31,7 @@ enum AppTab {
 }
 
 class _RootWrapperBody extends StatefulWidget {
-  const _RootWrapperBody({
-    required this.child,
-    required this.tab,
-    super.key,
-  });
+  const _RootWrapperBody({required this.child, required this.tab, super.key});
 
   final Widget child;
   final AppTab tab;
