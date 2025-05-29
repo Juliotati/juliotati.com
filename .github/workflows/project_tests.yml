@@ -37,9 +37,10 @@ jobs:
           flutter-version: ${{ inputs.flutterVersion }}
 
       - name: load-dependencies
-        run: flutter pub get
+        run: dart pub get
 
       - name: format-files
+        if: ${{ github.ref != 'refs/heads/patch-chores' }}
         run: |
           dart format --line-length 80 lib/
           git add lib/
