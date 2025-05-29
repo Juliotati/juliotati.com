@@ -14,6 +14,8 @@ on:
         description: 'Whether to skip the tests or not'
 jobs:
   test-project:
+    env:
+      GH_TOKEN: ${{ github.token }}
     runs-on: macos-latest
     if: ${{ !inputs.skipTests }}
     steps:
