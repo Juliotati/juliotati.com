@@ -63,7 +63,7 @@ function sort_intl_file_content {
       echo "🤖 Push failed, opening a PR for you..."
       git checkout -b patch-translations
       git push origin patch-translations
-      gh pr create --base main --head patch-translations --title "chore[🤖]: sort translation files" --body "Just doing what you're too lazy to do. 🧹"
+      gh pr create --base main --head patch-translations --title "chore[🤖]: sort translation files" --body "Just doing what you're too lazy to do. 🧹" --assign "Juliotati"
 
       if [ $? -ne 0 ]; then
         echo "👻 FAILED to create PR. Missing actions permissions."
