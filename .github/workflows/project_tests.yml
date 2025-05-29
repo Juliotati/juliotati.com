@@ -41,25 +41,5 @@ jobs:
       - name: load-dependencies
         run: dart pub get
 
-      - name: format-files
-        if: ${{ github.ref != 'refs/heads/patch-chores' }}
-        run: |
-          dart format --line-length 80 lib/
-          git add lib/
-          git commit -m "chore[🤖]: Cleaning your mess, again!" || echo "😎 LGTM, Well done!"
-          git push origin HEAD || {
-            echo "🤖 Push failed, opening a PR for you..."
-            git checkout -b patch-chores
-            git push origin patch-chores
-            gh pr create --base main --head patch-chores --title "chore[🤖]: sort translation files" --body "Just doing what you're too lazy to do. 🧹" --assign "Juliotati"
-          
-            if [ $? -ne 0 ]; then
-              echo "👻 FAILED to create PR. Missing actions permissions."
-              exit 1
-            fi
-          
-            echo "🤖 PR opened successfully."
-          }
-
       - name: run-tests
         run: flutter test
