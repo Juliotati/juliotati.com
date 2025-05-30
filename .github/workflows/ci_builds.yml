@@ -218,7 +218,7 @@ jobs:
         run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
 
       - name: get-dependencies
-        run: flutter pub get
+        run: dart pub get
 
       - name: build-macOS-app
         run: |
@@ -258,6 +258,15 @@ jobs:
           flutter-version: ${{ inputs.flutterVersion }}
 
       - uses: dart-lang/setup-dart@v1
+      - name: install-flutterfire-cli
+        run: dart pub global activate flutterfire_cli
+
+      - name: add-pub-global-bin-to-path
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      - name: get-dependencies
+        run: dart pub get
+
       - name: build-windows-app
         shell: bash
         run: |
