@@ -166,16 +166,23 @@ jobs:
           channel: 'stable'
           flutter-version: ${{ inputs.flutterVersion }}
 
+      - name: install-flutterfire-cli
+        run: dart pub global activate flutterfire_cli
+
+      - name: add-pub-global-bin-to-path
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      - name: get-dependencies
+        run: flutter pub get
+
       - name: build-iOS-app
         run: |
           trap 'echo "🚨 iOS ${{ env.FAILURE_MSG }}"' ERR
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
-            flutter pub get
             flutter build ios --release --no-codesign
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
-            flutter pub get
             flutter build ios --release --no-codesign --dart-define-from-file=config.json
           fi
           echo "🔥 iOS ${{ env.SUCCESS_MSG }}"
@@ -204,17 +211,24 @@ jobs:
           channel: 'stable'
           flutter-version: ${{ inputs.flutterVersion }}
 
+      - name: install-flutterfire-cli
+        run: dart pub global activate flutterfire_cli
+
+      - name: add-pub-global-bin-to-path
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      - name: get-dependencies
+        run: flutter pub get
+
       - name: build-macOS-app
         run: |
           trap 'echo "🚨 macOS ${{ env.FAILURE_MSG }}"' ERR
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
-            flutter pub get
             flutter build macos --release
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
             flutter config --enable-macos-desktop
-            flutter pub get
             flutter build macos --release --dart-define-from-file=config.json
           fi
           echo "🔥 macOS ${{ env.SUCCESS_MSG }}"
