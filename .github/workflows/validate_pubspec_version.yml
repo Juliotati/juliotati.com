@@ -8,11 +8,24 @@ jobs:
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
+      - name: Fetch base branch ('${{ github.base_ref }}')
+        run: |
+          echo "Attempting to fetch base branch: ${{ github.base_ref }}"
+          # Fetch the specific base branch from the remote and create a local tracking branch.
+          # The `+` ensures the local ref is updated even if it's not a fast-forward.
+          git fetch origin +refs/heads/${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
+          # Ensure a local branch 'stable' (or whatever base_ref is) exists and points to the fetched commit
+          git branch ${{ github.base_ref }} origin/${{ github.base_ref }}
+        # Add error checking for the fetch if needed:
+        # if [ $? -ne 0 ]; then
+        #   echo "Failed to fetch base branch ${{ github.base_ref }}"
+        #   exit 1
+        # fi
 
       - name: get-base-branch
         run: |
           echo "GITHUB_BASE_REF is: ${{ github.base_ref }}"
-          git show ${{ github.base_ref }}:pubspec.yaml # Try the command directly here
+          git show ${{ github.base_ref }}:pubspec.yaml
 
       - name: verify-pubspec-version
         run: |
