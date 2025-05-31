@@ -14,6 +14,14 @@ jobs:
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
+
+      - name: get-scripts
+        uses: actions/checkout@v4
+        with:
+          repository: Juliotati/juliotati.com
+          path: scripts
+          sparse-checkout: scripts/
+
       - name: fetch-base-branch-('${{ github.base_ref }}')
         run: |
           echo "Attempting to fetch base branch: ${{ github.base_ref }}"
@@ -23,13 +31,6 @@ jobs:
 
           # Ensure a local branch 'stable' (or whatever base_ref is) exists and points to the fetched commit
           git branch ${{ github.base_ref }} origin/${{ github.base_ref }}
-
-      - name: get-scripts
-        uses: actions/checkout@v4
-        with:
-          repository: Juliotati/juliotati.com
-          path: scripts
-          sparse-checkout: scripts/
 
       - name: verify-pubspec-version
         run: |
