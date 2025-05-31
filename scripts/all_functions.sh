@@ -140,3 +140,50 @@ function verify_config_content {
 
   echo "🤝 config.json file is valid!"
 }
+
+function verify_pubspec_version() {
+  # 1. grab the semantic "version" value from pubspec.yaml source branch as a string
+  # 2. grab the semantic "version" value from pubspec.yaml source branch as a string
+  # 3. The version have a "+" for that shows the build number, on the right side of the "+"
+  # 4. verify that the build number is greater in the source branch than the stable branch
+  # 5. also verify that the version is greater that in the base branch
+  # e.g.
+  #    0.1.0+1 > 1.1.0+0 // false
+  #    1.1.0+1 > 1.0.0+1 // false
+  #    1.1.1+1 > 1.1.1+0 // false
+  #    1.1.1+1 > 1.1.2+1 // false
+  #    1.1.1+1 > 1.1.1+2 // false (todo looks like this case in not being handled)
+  #    1.1.1+1 > 1.1.2+2 // true
+  #    1.1.1+1 > 1.2.0+2 // true
+
+  source_version=$(grep -E '^version:' pubspec.yaml | awk '{print $2}')
+  base_version=$(git show $GITHUB_BASE_REF:pubspec.yaml | grep -E '^version:' | awk '{print $2}')
+  source_version_number=$(echo $source_version | cut -d '+' -f 1)
+  base_version_number=$(echo $base_version | cut -d '+' -f 1)
+  source_build_number=$(echo $source_version | cut -d '+' -f 2)
+  base_build_number=$(echo $base_version | cut -d '+' -f 2)
+  if [[ -z "$source_version" || -z "$base_version" ]]; then
+      echo "❗️ Error: version not found in pubspec.yaml"
+      exit 1
+  fi
+  if [[ "$source_version_number" == "$base_version_number" && "$source_build_number" -le "$base_build_number" ]]; then
+      echo "✋️ Hold on, source v($source_version) MUST be greater than base v($base_version)"
+      exit 1
+  fi
+    echo "Source version: $source_version"
+    echo "Base version: $base_version"
+    echo "Source version number: $source_version_number"
+    echo "Base version number: $base_version_number"
+    echo "Source build number: $source_build_number"
+    echo "Base build number: $base_build_number"
+  if [[ "$source_version_number" < "$base_version_number" ]]; then
+      echo "✋️ source v($source_version_number) MUST be greater than base v($base_version_number)"
+      exit 1
+  elif [[ "$source_version_number" == "$base_version_number" && "$source_build_number" -le "$base_build_number" ]]; then
+      echo "🛑️ source build ($source_build_number) MUST be greater than base build ($base_build_number)"
+      exit 1
+  else
+      echo "✅ pubspec version looks valid"
+  fi
+  echo "🫡 You're good to go, source v$source_version is greater than base v$base_version"
+}
