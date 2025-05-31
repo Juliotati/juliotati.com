@@ -4,9 +4,9 @@ on:
 
 jobs:
   sort-intl-json-contents:
+    runs-on: macos-latest
     env:
       GH_TOKEN: ${{ github.token }}
-    runs-on: macos-latest
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
