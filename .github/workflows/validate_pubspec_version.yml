@@ -1,0 +1,16 @@
+name: 🧪 Validate Pubspec
+on:
+  workflow_call:
+
+jobs:
+  validate-pubspec-version:
+    runs-on: macos-latest
+    steps:
+      - name: setup-repo
+        uses: actions/checkout@v4
+
+      - name: Verify Pubspec Version
+        run: |
+          git fetch origin stable
+          git diff --exit-code origin/main -- pubspec.yaml || (echo "Invalid version in pubspec.yaml Please update it!" && exit 1)
+          echo "✅ Valid version in pubspec.yaml"
