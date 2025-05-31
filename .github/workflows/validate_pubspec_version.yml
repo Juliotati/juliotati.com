@@ -9,7 +9,12 @@ jobs:
       - name: setup-repo
         uses: actions/checkout@v4
 
-      - name: Verify Pubspec Version
+      - name: get-base-branch
+        run: |
+          echo "GITHUB_BASE_REF is: ${{ github.base_ref }}"
+          git show ${{ github.base_ref }}:pubspec.yaml # Try the command directly here
+
+      - name: verify-pubspec-version
         run: |
           # 1. grab the semantic "version" value from pubspec.yaml source branch as a string
           # 2. grab the semantic "version" value from pubspec.yaml source branch as a string
