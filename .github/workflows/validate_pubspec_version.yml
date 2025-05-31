@@ -1,4 +1,4 @@
-name: 🧪 Validate Pubspec
+name: 🧪 Validate Pubspec Version
 on:
   workflow_call:
 
