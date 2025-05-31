@@ -10,6 +10,8 @@ jobs:
         uses: actions/checkout@v4
       - name: fetch-base-branch-('${{ github.base_ref }}')
         run: |
+          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/all_functions.sh"
+          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/validate_pubspec_version.sh"
           echo "Attempting to fetch base branch: ${{ github.base_ref }}"
 
           # Fetch the specific base branch from the remote and create a local tracking branch.
@@ -20,7 +22,5 @@ jobs:
 
       - name: verify-pubspec-version
         run: |
-          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/all_functions.sh"
-          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/validate_pubspec_version.sh"
           bash "${GITHUB_WORKSPACE}/scripts/scripts/validate_pubspec_version.sh"
 #          "${GITHUB_WORKSPACE}/pubspec.yaml" "${GITHUB_WORKSPACE}/pubspec.lock" "${GITHUB_WORKSPACE}/scripts/scripts/pubspec_version.txt" "${{ github.base_ref }}"
