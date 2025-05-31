@@ -1,10 +1,16 @@
 name: 🧪 Validate Pubspec Version
 on:
   workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
+        description: 'The target environment to deploy to'
 
 jobs:
   validate-pubspec-version:
     runs-on: macos-latest
+    environment: ${{ inputs.target }}
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
