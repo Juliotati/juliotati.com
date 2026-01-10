@@ -20,12 +20,21 @@ function brb {
 function sort_intl_file_content {
   targetDir="lib/translations"
 
-  # Fallback for branch name if 'git branch' is empty (common in CI)
-  currentBranch=$(git branch --show-current)
+  # If GITHUB_HEAD_REF exists, we are in a PR, so use the source branch.
+  if [ -n "$GITHUB_HEAD_REF" ]; then
+    currentBranch="$GITHUB_HEAD_REF"
+  else
+    currentBranch=$(git branch --show-current)
+  fi
+
+  # Fallback to main/master if still empty
   if [ -z "$currentBranch" ]; then
     currentBranch=${GITHUB_REF_NAME:-"main"}
     echo "🤖 Detected current branch from GITHUB_REF_NAME: $currentBranch"
   fi
+
+  # Remove the 'refs/heads/' prefix if present
+  currentBranch=${currentBranch#refs/heads/}
 
   if [ ! -d "$targetDir" ]; then
     echo "🤷‍ DIRECTORY NOT FOUND: $targetDir"
@@ -67,6 +76,9 @@ function sort_intl_file_content {
     git add "$targetDir"
     git commit -m "chore[🤖]: sort translation files"
     echo "🤖 Created a commit for sorted translation files."
+
+    # IMPORTANT: Ensure we are on the actual branch, not a detached HEAD
+    git checkout "$currentBranch" || git checkout -b "$currentBranch"
 
     echo "🤖 Attempting to push to $currentBranch..."
 
