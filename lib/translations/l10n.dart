@@ -180,21 +180,21 @@ class AppLocal {
     );
   }
 
-  /// `App`
-  String get app {
-    return Intl.message(
-      'App',
-      name: 'app',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Joy Machine 😎`
   String get bioJoyMachine {
     return Intl.message(
       'Joy Machine 😎',
       name: 'bioJoyMachine',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `App`
+  String get app {
+    return Intl.message(
+      'App',
+      name: 'app',
       desc: '',
       args: [],
     );
