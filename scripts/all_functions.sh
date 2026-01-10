@@ -92,14 +92,22 @@ function sort_intl_file_content {
       git checkout -B "$patchBranch"
       git push origin "$patchBranch" --force
 
+      # Attempt to create PR and capture output/error
       pr_url=$(gh pr create \
         --base "$currentBranch" \
         --head "$patchBranch" \
         --title "chore[🤖]: sort translation files" \
         --body "Just doing what you're too lazy to do. 🧹" \
-        --assignee "Juliotati")
+        --assignee "Juliotati" 2>&1)
 
-      if [ $? -ne 0 ]; then
+      # Check if PR creation failed because it already exists
+      if [[ "$pr_url" == *"already exists"* ]]; then
+        echo "🤖 PR already exists. Fetching existing PR info..."
+        pr_url=$(gh pr list --head "$patchBranch" --base "$currentBranch" --json url --jq '.[0].url')
+      fi
+
+      # Validate if we have a valid URL or if a real error occurred
+      if [[ -z "$pr_url" || "$pr_url" == *"error"* ]]; then
         echo "👻 FAILED to create PR. Missing actions permissions."
         exit 1
       fi
@@ -107,12 +115,13 @@ function sort_intl_file_content {
       echo "🤖 PR opened successfully: $pr_url"
 
       echo "🤖 Approving and merging PR..."
-      gh pr review "$pr_url" --approve
+      # Suppress error on review in case it was already approved
+      gh pr review "$pr_url" --approve 2>/dev/null
       gh pr merge "$pr_url" --merge --admin --delete-branch
 
       # Return to original branch and clean up local patchBranch
       git checkout "$currentBranch"
-      git branch -D "$patchBranch"
+      git branch -D "$patchBranch" 2>/dev/null
       echo "🤖 PR approved, merged, and local branch cleaned up."
     fi
 
