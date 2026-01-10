@@ -170,6 +170,16 @@ class AppLocal {
     );
   }
 
+  /// `App`
+  String get app {
+    return Intl.message(
+      'App',
+      name: 'app',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Dart Shooter 🎯`
   String get bioDartShooter {
     return Intl.message(
@@ -185,16 +195,6 @@ class AppLocal {
     return Intl.message(
       'Joy Machine 😎',
       name: 'bioJoyMachine',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `App`
-  String get app {
-    return Intl.message(
-      'App',
-      name: 'app',
       desc: '',
       args: [],
     );
