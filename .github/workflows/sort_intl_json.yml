@@ -23,6 +23,7 @@ jobs:
           sparse-checkout: scripts/
 
       - name: sort-files-contents
+        shell: bash
         run: |
           chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/all_functions.sh"
           chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/sort_intl_file_contents.sh"
