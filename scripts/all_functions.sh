@@ -27,7 +27,13 @@ function sort_intl_file_content {
     exit 1
   fi
 
-  mapfile -t arbFiles < <(find "$targetDir" -name "*.arb")
+  # Safely find files and store them in an array (POSIX & old Bash compatible)
+  arbFiles=()
+  while IFS= read -r line; do
+    arbFiles+=("$line")
+  done < <(find "$targetDir" -name "*.arb")
+
+  # Check if the array is empty
   if [ ${#arbFiles[@]} -eq 0 ]; then
     echo "😑 No .arb FILES FOUND IN $targetDir"
     exit 1
