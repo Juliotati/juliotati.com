@@ -19,6 +19,7 @@ function brb {
 
 function sort_intl_file_content {
   targetDir="lib/translations"
+  patchBranch="patch-translations"
 
   # If GITHUB_HEAD_REF exists, we are in a PR, so use the source branch.
   if [ -n "$GITHUB_HEAD_REF" ]; then
@@ -41,7 +42,7 @@ function sort_intl_file_content {
     exit 1
   fi
 
-  # Find all .arb files safely (compatibile with all Bash versions)
+  # Find all .arb files safely (compatible with all Bash versions)
   arbFiles=()
   while IFS= read -r line; do
     arbFiles+=("$line")
@@ -88,24 +89,31 @@ function sort_intl_file_content {
     else
       echo "🤖 Push failed, opening a PR for you..."
 
-      patchBranch="patch-translations"
-      # Force create the branch to ignore previous state conflicts
       git checkout -B "$patchBranch"
       git push origin "$patchBranch" --force
 
-      gh pr create \
+      pr_url=$(gh pr create \
         --base "$currentBranch" \
         --head "$patchBranch" \
         --title "chore[🤖]: sort translation files" \
         --body "Just doing what you're too lazy to do. 🧹" \
-        --assignee "Juliotati"
+        --assignee "Juliotati")
 
       if [ $? -ne 0 ]; then
         echo "👻 FAILED to create PR. Missing actions permissions."
         exit 1
       fi
 
-      echo "🤖 PR opened successfully."
+      echo "🤖 PR opened successfully: $pr_url"
+
+      echo "🤖 Approving and merging PR..."
+      gh pr review "$pr_url" --approve
+      gh pr merge "$pr_url" --merge --admin --delete-branch
+
+      # Return to original branch and clean up local patchBranch
+      git checkout "$currentBranch"
+      git branch -D "$patchBranch"
+      echo "🤖 PR approved, merged, and local branch cleaned up."
     fi
 
     echo "🤖 DONE DONE!!"
