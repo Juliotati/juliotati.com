@@ -19,21 +19,26 @@ function brb {
 
 function sort_intl_file_content {
   targetDir="lib/translations"
-  patchBranch="patch-translations"
+
+  # Fallback for branch name if 'git branch' is empty (common in CI)
   currentBranch=$(git branch --show-current)
+  if [ -z "$currentBranch" ]; then
+    currentBranch=${GITHUB_REF_NAME:-"main"}
+    echo "🤖 Detected current branch from GITHUB_REF_NAME: $currentBranch"
+  fi
 
   if [ ! -d "$targetDir" ]; then
     echo "🤷‍ DIRECTORY NOT FOUND: $targetDir"
     exit 1
   fi
 
-  # Safely find files and store them in an array (POSIX & old Bash compatible)
+  # Find all .arb files safely (compatibile with all Bash versions)
   arbFiles=()
   while IFS= read -r line; do
     arbFiles+=("$line")
   done < <(find "$targetDir" -name "*.arb")
 
-  # Check if the array is empty
+  # Check if .arb files are available
   if [ ${#arbFiles[@]} -eq 0 ]; then
     echo "😑 No .arb FILES FOUND IN $targetDir"
     exit 1
@@ -44,45 +49,51 @@ function sort_intl_file_content {
     if [ $? -ne 0 ]; then
       echo "🙂 ERROR: Sorting failed for $file"
       exit 1
+    else
+      echo "🙂 SORTED: $file"
     fi
   done
 
+  # Check if there is any modification in target directory
   if [ -n "$(git status --porcelain "$targetDir")" ]; then
-    git add "$targetDir"
-    git commit -m "chore[🤖]: sort translation files" -- "$targetDir"
+    # Wipe other accidental changes to prevent rebase conflicts
+    git checkout -- .
 
-    # Save any unrelated changes so rebase doesn't fail
-    git stash push --keep-index --include-untracked -m "temp-stash-sorting"
+    # Re-sort (since checkout cleared the tmp files/changes)
+    for file in "${arbFiles[@]}"; do
+      jq -S . "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
+    done
+
+    git add "$targetDir"
+    git commit -m "chore[🤖]: sort translation files"
+    echo "🤖 Created a commit for sorted translation files."
 
     echo "🤖 Attempting to push to $currentBranch..."
-    git pull --rebase origin "$currentBranch"
 
     if git push origin "$currentBranch"; then
-      echo "🤖 Successfully pushed to $currentBranch"
-      git stash pop 2>/dev/null
+       echo "🤖 DONE DONE!!"
+       exit 0
     else
-      echo "🤖 Push to $currentBranch failed. Using $patchBranch..."
+      echo "🤖 Push failed, opening a PR for you..."
 
-      # Reset to fresh patch branch
-      git checkout -b "$patchBranch" || (git checkout "$patchBranch" && git reset --hard HEAD)
+      patchBranch="patch-translations"
+      # Force create the branch to ignore previous state conflicts
+      git checkout -B "$patchBranch"
       git push origin "$patchBranch" --force
 
-      # Check if PR already exists before creating
-      existing_pr=$(gh pr list --head "$patchBranch" --base "$currentBranch" --json number --jq '.[0].number')
+      gh pr create \
+        --base "$currentBranch" \
+        --head "$patchBranch" \
+        --title "chore[🤖]: sort translation files" \
+        --body "Just doing what you're too lazy to do. 🧹" \
+        --assignee "Juliotati"
 
-      if [ -z "$existing_pr" ]; then
-        gh pr create \
-          --base "$currentBranch" \
-          --head "$patchBranch" \
-          --title "chore[🤖]: sort translation files" \
-          --body "Doing what you're too lazy to do and always get wrong in $targetDir." \
-          --assignee "Juliotati"
-      else
-        echo "🤖 PR #$existing_pr already exists, branch updated."
+      if [ $? -ne 0 ]; then
+        echo "👻 FAILED to create PR. Missing actions permissions."
+        exit 1
       fi
 
-      git checkout "$currentBranch"
-      git stash pop 2>/dev/null
+      echo "🤖 PR opened successfully."
     fi
 
     echo "🤖 DONE DONE!!"
