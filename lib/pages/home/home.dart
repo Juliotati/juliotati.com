@@ -5,6 +5,7 @@ import 'dart:developer';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:juliotati/core/config/providers/app_settings_provider.dart';
 import 'package:juliotati/core/extensions/build_context.dart';
 import 'package:juliotati/core/extensions/iterable.dart';
 import 'package:juliotati/core/links.dart';
@@ -13,6 +14,7 @@ import 'package:juliotati/core/widgets/on_hover.dart';
 import 'package:juliotati/gen/assets.gen.dart';
 import 'package:juliotati/translations/l10n.dart';
 import 'package:link_target/link_target.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'widgets/actionable_values.dart';

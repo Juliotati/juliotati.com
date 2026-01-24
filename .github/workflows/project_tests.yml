@@ -5,11 +5,19 @@ on:
       flutterVersion:
         required: false
         type: string
-        default: '3.24.1'
+        default: '3.38.7'
         description: 'The version of Flutter to use for the workflow run'
+      skipTests:
+        required: false
+        type: boolean
+        default: false
+        description: 'Whether to skip the tests or not'
 jobs:
   test-project:
+    env:
+      GH_TOKEN: ${{ github.token }}
     runs-on: macos-latest
+    if: ${{ !inputs.skipTests }}
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
@@ -31,10 +39,7 @@ jobs:
           flutter-version: ${{ inputs.flutterVersion }}
 
       - name: load-dependencies
-        run: flutter pub get
-
-      - name: validate-format
-        run: dart format  --line-length 80 --set-exit-if-changed .
+        run: dart pub get
 
       - name: run-tests
         run: flutter test

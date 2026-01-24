@@ -2,9 +2,9 @@ name: 🚀 Deploy Júlio Tati
 on:
   push:
     paths:
-      - 'lib/**'
-      - 'scripts/all_functions.sh'
       - '.github/workflows/app_cd_web.yml'
+      - 'assets/**'
+      - 'lib/**'
       - 'pubspec.yaml'
     branches:
       - main
@@ -13,17 +13,14 @@ on:
 
 jobs:
   sort-intl-file-contents:
-    uses: Juliotati/juliotati_app/.github/workflows/sort_intl_json.yml@main
+    uses: Juliotati/juliotati.com/.github/workflows/sort_intl_json.yml@main
 
   build-and-deploy:
     needs:
       - sort-intl-file-contents
-    strategy:
-      matrix:
-        target: [ production ]
-    uses: Juliotati/juliotati_app/.github/workflows/cd_web.yml@main
+    uses: Juliotati/juliotati.com/.github/workflows/cd_web.yml@main
     with:
-      target: ${{ matrix.target }}
+      target: 'production'
       projectId: 'juliotatiapp'
     secrets:
       firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JULIOTATIAPP }}

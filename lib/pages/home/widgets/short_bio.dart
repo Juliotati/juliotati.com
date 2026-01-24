@@ -123,8 +123,8 @@ class _ShortBioRotatingTextState extends State<_ShortBioRotatingText> {
                 final fontSize = mobileScreen
                     ? 50.0
                     : smallScreen
-                        ? 70.0
-                        : 85.0;
+                    ? 70.0
+                    : 85.0;
                 return Text(
                   _currentText,
                   key: ValueKey<String>(_currentText),

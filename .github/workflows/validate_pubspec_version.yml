@@ -1,0 +1,39 @@
+name: 🧪 Validate Pubspec Version
+on:
+  workflow_call:
+    inputs:
+      target:
+        required: true
+        type: string
+        description: 'The target environment to deploy to'
+
+jobs:
+  validate-pubspec-version:
+    runs-on: macos-latest
+    environment: ${{ inputs.target }}
+    steps:
+      - name: setup-repo
+        uses: actions/checkout@v4
+
+      - name: get-scripts
+        uses: actions/checkout@v4
+        with:
+          repository: Juliotati/juliotati.com
+          path: scripts
+          sparse-checkout: scripts/
+
+      - name: fetch-base-branch-('${{ github.base_ref }}')
+        run: |
+          echo "Attempting to fetch base branch: ${{ github.base_ref }}"
+
+          # Fetch the specific base branch from the remote and create a local tracking branch.
+          git fetch origin +refs/heads/${{ github.base_ref }}:refs/remotes/origin/${{ github.base_ref }}
+
+          # Ensure a local branch 'stable' (or whatever base_ref is) exists and points to the fetched commit
+          git branch ${{ github.base_ref }} origin/${{ github.base_ref }}
+
+      - name: verify-pubspec-version
+        run: |
+          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/all_functions.sh"
+          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/validate_pubspec_version.sh"
+          bash "${GITHUB_WORKSPACE}/scripts/scripts/validate_pubspec_version.sh"

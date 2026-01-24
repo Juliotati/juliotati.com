@@ -1,3 +1,5 @@
+// dart format width=80
+
 /// GENERATED CODE - DO NOT MODIFY BY HAND
 /// *****************************************************
 ///  FlutterGen
@@ -5,7 +7,7 @@
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
-// ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
+// ignore_for_file: deprecated_member_use,directives_ordering,implicit_dynamic_list_literal,unnecessary_import
 
 import 'package:flutter/widgets.dart';
 
@@ -31,38 +33,24 @@ class $AssetsAppImagesGen {
 class $AssetsCarsGen {
   const $AssetsCarsGen();
 
-  /// File path: assets/cars/ae86_trueno.png
-  AssetGenImage get ae86Trueno =>
-      const AssetGenImage('assets/cars/ae86_trueno.png');
-
-  /// File path: assets/cars/bmw_1_series_hatchback_2017.png
-  AssetGenImage get bmw1SeriesHatchback2017 =>
-      const AssetGenImage('assets/cars/bmw_1_series_hatchback_2017.png');
-
-  /// File path: assets/cars/bmw_m2_comp_2023_black.png
-  AssetGenImage get bmwM2Comp2023Black =>
-      const AssetGenImage('assets/cars/bmw_m2_comp_2023_black.png');
-
-  /// File path: assets/cars/bmw_m2_comp_2023_white.png
-  AssetGenImage get bmwM2Comp2023White =>
-      const AssetGenImage('assets/cars/bmw_m2_comp_2023_white.png');
+  /// File path: assets/cars/116_sportsM.webp
+  AssetGenImage get a116SportsM =>
+      const AssetGenImage('assets/cars/116_sportsM.webp');
 
   /// File path: assets/cars/toyota_gr_86_trueno.png
   AssetGenImage get toyotaGr86Trueno =>
       const AssetGenImage('assets/cars/toyota_gr_86_trueno.png');
 
+  /// File path: assets/cars/truenoAE86.png
+  AssetGenImage get truenoAE86 =>
+      const AssetGenImage('assets/cars/truenoAE86.png');
+
   /// List of all assets
-  List<AssetGenImage> get values => [
-        ae86Trueno,
-        bmw1SeriesHatchback2017,
-        bmwM2Comp2023Black,
-        bmwM2Comp2023White,
-        toyotaGr86Trueno
-      ];
+  List<AssetGenImage> get values => [a116SportsM, toyotaGr86Trueno, truenoAE86];
 }
 
 class Assets {
-  Assets._();
+  const Assets._();
 
   static const $AssetsAppImagesGen appImages = $AssetsAppImagesGen();
   static const $AssetsCarsGen cars = $AssetsCarsGen();
@@ -73,12 +61,14 @@ class AssetGenImage {
     this._assetName, {
     this.size,
     this.flavors = const {},
+    this.animation,
   });
 
   final String _assetName;
 
   final Size? size;
   final Set<String> flavors;
+  final AssetGenImageAnimation? animation;
 
   Image image({
     Key? key,
@@ -98,10 +88,10 @@ class AssetGenImage {
     ImageRepeat repeat = ImageRepeat.noRepeat,
     Rect? centerSlice,
     bool matchTextDirection = false,
-    bool gaplessPlayback = false,
+    bool gaplessPlayback = true,
     bool isAntiAlias = false,
     String? package,
-    FilterQuality filterQuality = FilterQuality.low,
+    FilterQuality filterQuality = FilterQuality.medium,
     int? cacheWidth,
     int? cacheHeight,
   }) {
@@ -133,18 +123,23 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({
-    AssetBundle? bundle,
-    String? package,
-  }) {
-    return AssetImage(
-      _assetName,
-      bundle: bundle,
-      package: package,
-    );
+  ImageProvider provider({AssetBundle? bundle, String? package}) {
+    return AssetImage(_assetName, bundle: bundle, package: package);
   }
 
   String get path => _assetName;
 
   String get keyName => _assetName;
+}
+
+class AssetGenImageAnimation {
+  const AssetGenImageAnimation({
+    required this.isAnimation,
+    required this.duration,
+    required this.frames,
+  });
+
+  final bool isAnimation;
+  final Duration duration;
+  final int frames;
 }

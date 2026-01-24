@@ -4,26 +4,19 @@ part of '../home.dart';
 class _Footer extends StatelessWidget {
   const _Footer({super.key});
 
-  static List<String> images = [
-    Assets.cars.bmwM2Comp2023Black.path,
-    Assets.cars.toyotaGr86Trueno.path,
-    Assets.cars.bmwM2Comp2023White.path,
-    Assets.cars.bmw1SeriesHatchback2017.path,
-    Assets.cars.ae86Trueno.path,
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final car = Assets.cars.values.randomElement.path;
+    log('Current car: 🚙 ${car.split('/').last}');
     return Stack(
       alignment: Alignment.bottomCenter,
       clipBehavior: Clip.none,
       children: [
         ConstrainedBox(
-          constraints: const BoxConstraints(
-            maxHeight: 500,
-            maxWidth: 777,
+          constraints: const BoxConstraints(maxHeight: 500, maxWidth: 777),
+          child: _ChangeLanguageButton(
+            child: Image.asset(car, fit: BoxFit.fitWidth),
           ),
-          child: Image.asset(images.randomElement, fit: BoxFit.fitWidth),
         ),
         const Column(
           mainAxisSize: MainAxisSize.min,
@@ -54,7 +47,7 @@ class _FooterLinks extends StatelessWidget {
           children: [
             _FooterLinksColumn(
               key: const Key('footer_links_column_1'),
-              title: 'Links',
+              title: context.i18n.links,
               links: [
                 _AppLinkText(
                   'SELF.DEV',
@@ -64,21 +57,21 @@ class _FooterLinks extends StatelessWidget {
                   enableHyphen: true,
                 ),
                 _AppLinkText(
-                  'Station (App)',
+                  'Station (${context.i18n.app})',
                   key: const Key('footer_station_link'),
                   url: Links.station,
                   fontSize: linkSize,
                   enableHyphen: true,
                 ),
                 _AppLinkText(
-                  'Despesas (App)',
+                  'Despesas (${context.i18n.app})',
                   key: const Key('footer_despesas_link'),
                   url: Links.despesas,
                   fontSize: linkSize,
                   enableHyphen: true,
                 ),
                 _AppLinkText(
-                  'Link Target (package)',
+                  'Link Target (${context.i18n.package})',
                   key: const Key('footer_link-target_link'),
                   url: Links.linkTarget,
                   fontSize: linkSize,
@@ -88,7 +81,7 @@ class _FooterLinks extends StatelessWidget {
             ),
             _FooterLinksColumn(
               key: const Key('footer_links_column_2'),
-              title: 'Connect',
+              title: context.i18n.connect,
               links: [
                 _AppLinkText(
                   'GitHub',
@@ -134,8 +127,7 @@ class _FooterCopyRights extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final year = DateTime.now().year;
-    final labelSmall = context.textTheme.bodyMedium;
-    final style = labelSmall?.copyWith(letterSpacing: 1.9);
+    final footer = context.i18n.craftedByAndAllRightsReserved(year).split('|');
     return Column(
       children: [
         const SizedBox(height: 30.0),
@@ -148,16 +140,8 @@ class _FooterCopyRights extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: Text(
-                    context.i18n.craftedByAndAllRightsReserved(year),
-                    maxLines: 1,
-                    softWrap: false,
-                    overflow: TextOverflow.fade,
-                    style: style,
-                  ),
-                ),
-                _AppLinkText(url: Links.mailTo, Links.myEmail),
+                Expanded(child: _AppLinkText(url: Links.notion, footer.first)),
+                _AppLinkText(url: Links.mailTo, footer.last),
               ],
             ),
           ),
@@ -186,10 +170,7 @@ class _FooterLinksColumn extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: context.textTheme.displaySmall,
-          ),
+          Text(title, style: context.textTheme.displaySmall),
           const SizedBox(height: 20.0),
           ...links.map(
             (link) => Padding(
@@ -247,7 +228,7 @@ class _AppLinkTextState extends State<_AppLinkText> {
         target: widget.url,
         child: Text.rich(
           TextSpan(
-            text: _linkLabel,
+            text: _linkLabel.trim(),
             onExit: _onExit,
             onEnter: _onEnter,
             recognizer: TapGestureRecognizer()
@@ -259,9 +240,13 @@ class _AppLinkTextState extends State<_AppLinkText> {
           style: context.textTheme.bodyMedium?.copyWith(
             fontWeight: FontWeight.w200,
             fontSize: widget.fontSize,
+            backgroundColor: widget.enableHyphen
+                ? context.theme.scaffoldBackgroundColor.withOpacity(0.55)
+                : null,
             letterSpacing: 1.9,
-            decoration:
-                _isHovering ? TextDecoration.underline : TextDecoration.none,
+            decoration: _isHovering
+                ? TextDecoration.underline
+                : TextDecoration.none,
           ),
         ),
       ),
@@ -307,6 +292,28 @@ class _FooterDivider extends StatelessWidget {
           margin: EdgeInsets.symmetric(horizontal: indent),
         );
       },
+    );
+  }
+}
+
+@immutable
+class _ChangeLanguageButton extends StatelessWidget {
+  const _ChangeLanguageButton({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: InkWell(
+        splashColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        focusColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onTap: context.read<AppSettingsProvider>().nextLanguage,
+        child: child,
+      ),
     );
   }
 }
