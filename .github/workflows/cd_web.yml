@@ -33,8 +33,8 @@ jobs:
     env:
       ENCODED_CONFIGS: ${{ secrets.encodedContent }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'zulu'
@@ -51,8 +51,8 @@ jobs:
         run: |
           flutter pub get
           if [ "$ENCODED_CONFIGS" == "" ]; then
-            echo "⚒️ Building WITHOUT extra config"
-            echo "🔥 Preparing to release with wasm renderer"
+            echo "⚒️ NO extra config NEEDED"
+            echo "🔥 BUILDING RELEASE APP"
             flutter build web --release
             exit 0
           fi
@@ -60,13 +60,11 @@ jobs:
           echo "⚒️ SETTING-UP extra config file"
           echo $ENCODED_CONFIGS | base64 --decode > config.json
 
-          if [ "${{ inputs.useWasm }}" = "false" ]; then
-            echo "🔥 Preparing to release with wasm renderer"
-            flutter build web --dart-define-from-file=config.json
-          fi
+          echo "🔥 BUILDING RELEASE APP"
+          flutter build web --dart-define-from-file=config.json
 
       - name: Install-firebase-tools
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "21.2.0"
       - run: npm install -g firebase-tools@11.0.1

@@ -36,11 +36,6 @@ on:
         type: string
         default: '3.38.7'
         description: 'The version of Flutter to use for the workflow run'
-      useWasm:
-        required: false
-        type: boolean
-        default: true
-        description: 'Whether or not you want web rendered to use wasm'
 
     secrets:
       encodedContent:
@@ -59,8 +54,8 @@ jobs:
     env:
       ENCODED_CONFIGS: ${{ secrets.encodedContent }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'zulu'
@@ -79,28 +74,19 @@ jobs:
           trap 'echo "🚨 web ${{ env.FAILURE_MSG }}"' ERR
           flutter pub get
           if [ "$ENCODED_CONFIGS" == "" ]; then
-            echo "⚒️ Building WITHOUT extra config"
-            if [ "${{ inputs.useWasm }}" = "false" ]; then
-              echo "🔥 Using canvas-kit renderer"
-              flutter build web --release
-            else
-              echo "🔥 Using wasm renderer"
-              flutter build web --wasm
-            fi
+            echo "⚒️ NO extra config NEEDED"
+            echo "🔥 BUILDING RELEASE APP"
+
+            flutter build web --release
             echo "🔥 web ${{ env.SUCCESS_MSG }}"
             exit 0
           fi
 
-          echo "⚒️ SETTING-UP extra config file"
+          echo "⚒️ SETTING-UP extra config"
           echo $ENCODED_CONFIGS | base64 --decode > config.json
 
-          if [ "${{ inputs.useWasm }}" = "false" ]; then
-            echo "🔥 Preparing to release with canvas-kit renderer"
-            flutter build web --release --dart-define-from-file=config.json
-          else
-            echo "🔥 Preparing to release with wasm renderer"
-            flutter build web --wasm --dart-define-from-file=config.json
-          fi
+          echo "🔥 BUILDING RELEASE APP"
+          flutter build web --dart-define-from-file=config.json
           echo "🔥 web ${{ env.SUCCESS_MSG }}"
 
   build-android:
@@ -110,8 +96,8 @@ jobs:
     env:
       ENCODED_CONFIGS: ${{ secrets.encodedContent }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'zulu'
@@ -149,8 +135,8 @@ jobs:
     env:
       ENCODED_CONFIGS: ${{ secrets.encodedContent }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'zulu'
@@ -194,8 +180,8 @@ jobs:
     env:
       ENCODED_CONFIGS: ${{ secrets.encodedContent }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'zulu'
@@ -240,8 +226,8 @@ jobs:
     env:
       ENCODED_CONFIGS: ${{ secrets.encodedContent }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'zulu'
