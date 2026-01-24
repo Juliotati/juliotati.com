@@ -9,13 +9,8 @@ on:
       flutterVersion:
         required: false
         type: string
-        default: '3.32.0'
+        default: '3.38.7'
         description: 'The version of Flutter to use for the workflow run'
-      useWasm:
-        required: false
-        type: boolean
-        default: true
-        description: 'The renderer to use for the workflow run'
       projectId:
         required: true
         type: string
@@ -57,13 +52,8 @@ jobs:
           flutter pub get
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
-            if [ "${{ inputs.useWasm }}" = "false" ]; then
-              echo "🔥 Preparing to release with canvas-kit renderer"
-              flutter build web --release
-            else
-              echo "🔥 Preparing to release with wasm renderer"
-              flutter build web --wasm
-            fi
+            echo "🔥 Preparing to release with wasm renderer"
+            flutter build web --release
             exit 0
           fi
 
@@ -71,11 +61,8 @@ jobs:
           echo $ENCODED_CONFIGS | base64 --decode > config.json
 
           if [ "${{ inputs.useWasm }}" = "false" ]; then
-            echo "🔥 Preparing to release with canvas-kit renderer"
-            flutter build web --release --dart-define-from-file=config.json
-          else
             echo "🔥 Preparing to release with wasm renderer"
-            flutter build web --wasm --dart-define-from-file=config.json
+            flutter build web --dart-define-from-file=config.json
           fi
 
       - name: Install-firebase-tools

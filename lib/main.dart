@@ -23,7 +23,7 @@ class JulioTatiApp extends StatelessWidget {
     return MultiProvider(
       providers: appProviders,
       child: Consumer<AppSettingsProvider>(
-        builder: (context, provider, ___) {
+        builder: (context, provider, _) {
           return MaterialApp.router(
             title: 'Júlio Tati',
             locale: provider.locale,
