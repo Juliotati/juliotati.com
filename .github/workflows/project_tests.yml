@@ -12,6 +12,21 @@ on:
         type: boolean
         default: false
         description: 'Whether to skip the tests or not'
+      hasGoldens:
+        required: false
+        type: boolean
+        default: false
+        description: 'Whether the project has golden tests and a dedicated repo for them'
+      updateGoldensLabel:
+        required: false
+        type: string
+        default: 'UpdateGoldens'
+        description: 'The label used to trigger golden test updates'
+    secrets:
+      GOLDENS_REPO_TOKEN:
+        required: false
+        description: 'The token used to push to the goldens repository'
+
 jobs:
   test-project:
     env:
@@ -21,6 +36,8 @@ jobs:
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
+        with:
+          submodules: ${{ inputs.hasGoldens && 'recursive' || 'false' }}
 
       - name: setup-jdk
         uses: actions/setup-java@v4
@@ -41,5 +58,90 @@ jobs:
       - name: load-dependencies
         run: dart pub get
 
+      - name: check-labels
+        if: inputs.hasGoldens
+        id: labels
+        run: |
+          if echo "${{ github.event.pull_request.labels.*.name }}" | grep -q "${{ inputs.updateGoldensLabel }}"; then
+            echo "update_goldens=true" >> $GITHUB_OUTPUT
+          else
+            echo "update_goldens=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: run-tests
-        run: flutter test
+        run: |
+          if [ "${{ steps.labels.outputs.update_goldens }}" = "true" ]; then
+            flutter test --update-goldens
+          else
+            flutter test
+          fi
+
+      - name: sync-goldens
+        if: inputs.hasGoldens && steps.labels.outputs.update_goldens == 'true'
+        env:
+          GOLDENS_TOKEN: ${{ secrets.GOLDENS_REPO_TOKEN }}
+        run: |
+          PR_BRANCH="${{ github.head_ref }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          GOLDENS_REPO="${{ github.event.repository.name }}-goldens"
+          
+          # Automatically find the submodule folder by checking for one ending with '-goldens' in test/
+          GOLDENS_DIR=$(find test -maxdepth 1 -type d -name "*-goldens" | head -n 1)
+          
+          if [ -z "$GOLDENS_DIR" ]; then
+            echo "❌ No goldens directory found in test/ (expected a directory like test/*-goldens)"
+            exit 1
+          fi
+          
+          echo "📂 Found goldens directory: $GOLDENS_DIR"
+          cd "$GOLDENS_DIR"
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Mirror branch and commit
+          git checkout -b "$PR_BRANCH" || git checkout "$PR_BRANCH"
+          git add .
+          git commit -m "🖼️ Update goldens for $PR_AUTHOR (Timeline PR #$PR_NUMBER)" || echo "No changes to commit"
+          
+          # Push to the goldens repo
+          git push "https://x-access-token:$GOLDENS_TOKEN@github.com/${{ github.repository_owner }}/$GOLDENS_REPO.git" "$PR_BRANCH" --force
+
+      - name: create-goldens-pr
+        if: inputs.hasGoldens && steps.labels.outputs.update_goldens == 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GOLDENS_REPO_TOKEN }}
+          script: |
+            const prAuthor = context.payload.pull_request.user.login;
+            const prNumber = context.payload.pull_request.number;
+            const branchName = context.payload.pull_request.head.ref;
+            const repoOwner = context.repo.owner;
+            const mainRepoName = context.repo.repo;
+            const goldensRepoName = `${mainRepoName}-goldens`;
+            
+            try {
+              const { data: existingPRs } = await github.rest.pulls.list({
+                owner: repoOwner,
+                repo: goldensRepoName,
+                head: `${repoOwner}:${branchName}`,
+                state: 'open'
+              });
+
+              if (existingPRs.length === 0) {
+                await github.rest.pulls.create({
+                  owner: repoOwner,
+                  repo: goldensRepoName,
+                  title: `🖼️ Update goldens for ${prAuthor} (${mainRepoName} PR #${prNumber})`,
+                  head: branchName,
+                  base: 'main',
+                  body: `# DONT MODIFY\nThis PR mirrors changes from ${mainRepoName} repo PR #${prNumber} by @${prAuthor}.`
+                });
+                console.log('✅ Created new PR in timeline-goldens');
+              } else {
+                console.log('🔄 PR already exists in timeline-goldens, updated by push.');
+              }
+            } catch (error) {
+              console.error('❌ Error handling Goldens PR:', error.message);
+            }
