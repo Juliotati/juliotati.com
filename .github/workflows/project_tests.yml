@@ -20,7 +20,7 @@ on:
       updateGoldensLabel:
         required: false
         type: string
-        default: 'UpdateGoldens'
+        default: 'update-goldens'
         description: 'The label used to trigger golden test updates'
     secrets:
       GOLDENS_REPO_TOKEN:
