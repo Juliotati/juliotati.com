@@ -22,6 +22,11 @@ on:
         type: string
         default: 'UpdateGoldens'
         description: 'The label used to trigger golden test updates'
+      runsOn:
+        required: false
+        type: string
+        default: 'macos-latest'
+        description: 'The OS to run the tests on (e.g., ubuntu-latest, macos-latest)'
     secrets:
       GOLDENS_REPO_TOKEN:
         required: false
@@ -31,7 +36,7 @@ jobs:
   test-project:
     env:
       GH_TOKEN: ${{ github.token }}
-    runs-on: macos-latest
+    runs-on: ${{ inputs.runsOn }}
     if: ${{ !inputs.skipTests }}
     steps:
       - name: setup-repo
@@ -48,9 +53,9 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           cache: true
-          cache-key: 'flutter-macos-stable-${{ inputs.flutterVersion }}-x64'
-          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
-          pub-cache-key: 'flutter-pub-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
+          cache-key: 'flutter-${{ inputs.runsOn }}-stable-${{ inputs.flutterVersion }}-x64'
+          cache-path: '${{ runner.tool_cache }}/flutter-${{ inputs.runsOn }}-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-key: 'flutter-pub-${{ inputs.runsOn }}-stable-${{ inputs.flutterVersion }}-x64-hash'
           pub-cache-path: '${{ runner.tool_cache }}/flutter/stable-${{ inputs.flutterVersion }}-x64'
           channel: 'stable'
           flutter-version: ${{ inputs.flutterVersion }}
@@ -86,11 +91,10 @@ jobs:
           PR_NUMBER="${{ github.event.pull_request.number }}"
           GOLDENS_REPO="${{ github.event.repository.name }}-goldens"
           
-          # Automatically find the submodule folder by checking for one ending with '-goldens' in test/
           GOLDENS_DIR=$(find test -maxdepth 1 -type d -name "*-goldens" | head -n 1)
           
           if [ -z "$GOLDENS_DIR" ]; then
-            echo "❌ No goldens directory found in test/ (expected a directory like test/*-goldens)"
+            echo "❌ No goldens directory found in test/"
             exit 1
           fi
           
@@ -100,12 +104,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Mirror branch and commit
           git checkout -b "$PR_BRANCH" || git checkout "$PR_BRANCH"
           git add .
           git commit -m "🖼️ Update goldens for $PR_AUTHOR (Timeline PR #$PR_NUMBER)" || echo "No changes to commit"
           
-          # Push to the goldens repo
           git push "https://x-access-token:$GOLDENS_TOKEN@github.com/${{ github.repository_owner }}/$GOLDENS_REPO.git" "$PR_BRANCH" --force
 
       - name: create-goldens-pr
