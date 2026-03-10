@@ -22,21 +22,22 @@ on:
         type: string
         default: 'UpdateGoldens'
         description: 'The label used to trigger golden test updates'
-      runsOn:
-        required: false
-        type: string
-        default: 'macos-latest'
-        description: 'The OS to run the tests on (e.g., ubuntu-latest, macos-latest)'
     secrets:
       GOLDENS_REPO_TOKEN:
         required: false
-        description: 'The token used to push to the goldens repository'
+        description: |
+          A Personal Access Token (PAT) used to push golden images and manage PRs in the companion goldens repository (e.g., {repo}-goldens).
+          How to get:
+          1. Go to GitHub Settings > Developer Settings > Personal Access Tokens.
+          2. Create a Fine-grained token or Classic token.
+          3. Permissions: 'Contents' (Read/Write) and 'Pull Requests' (Read/Write) for the target goldens repository.
+          4. Store this as a Secret in the main repository named GOLDENS_REPO_TOKEN.
 
 jobs:
   test-project:
     env:
       GH_TOKEN: ${{ github.token }}
-    runs-on: ${{ inputs.runsOn }}
+    runs-on: ubuntu-latest
     if: ${{ !inputs.skipTests }}
     steps:
       - name: setup-repo
@@ -53,9 +54,9 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           cache: true
-          cache-key: 'flutter-${{ inputs.runsOn }}-stable-${{ inputs.flutterVersion }}-x64'
-          cache-path: '${{ runner.tool_cache }}/flutter-${{ inputs.runsOn }}-stable-${{ inputs.flutterVersion }}-x64-hash'
-          pub-cache-key: 'flutter-pub-${{ inputs.runsOn }}-stable-${{ inputs.flutterVersion }}-x64-hash'
+          cache-key: 'flutter-ubuntu-stable-${{ inputs.flutterVersion }}-x64'
+          cache-path: '${{ runner.tool_cache }}/flutter-ubuntu-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-key: 'flutter-pub-ubuntu-stable-${{ inputs.flutterVersion }}-x64-hash'
           pub-cache-path: '${{ runner.tool_cache }}/flutter/stable-${{ inputs.flutterVersion }}-x64'
           channel: 'stable'
           flutter-version: ${{ inputs.flutterVersion }}
