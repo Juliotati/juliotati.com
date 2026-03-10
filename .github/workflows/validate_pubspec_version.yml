@@ -9,7 +9,7 @@ on:
 
 jobs:
   validate-pubspec-version:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     environment: ${{ inputs.target }}
     steps:
       - name: setup-repo
