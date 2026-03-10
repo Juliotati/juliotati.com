@@ -10,6 +10,13 @@ on:
     secrets:
       GOLDENS_REPO_TOKEN:
         required: true
+        description: |
+          A Personal Access Token (PAT) used to push golden images and manage PRs in the companion goldens repository (e.g., {repo}-goldens).
+          How to get:
+          1. Go to GitHub Settings > Developer Settings > Personal Access Tokens.
+          2. Create a Fine-grained token or Classic token.
+          3. Permissions: 'Contents' (Read/Write) and 'Pull Requests' (Read/Write) for the target goldens repository.
+          4. Store this as a Secret in the main repository named GOLDENS_REPO_TOKEN.
 
 jobs:
   cleanup-goldens:
