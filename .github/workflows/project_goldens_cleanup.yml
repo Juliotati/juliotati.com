@@ -1,0 +1,76 @@
+name: 🧹 Project Goldens Cleanup
+on:
+  workflow_call:
+    inputs:
+      goldensRepoName:
+        required: false
+        type: string
+        default: ''
+        description: 'The name of the goldens repository. Defaults to {mainRepoName}-goldens.'
+    secrets:
+      GOLDENS_REPO_TOKEN:
+        required: true
+
+jobs:
+  cleanup-goldens:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync Goldens PR Completion
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GOLDENS_REPO_TOKEN }}
+          script: |
+            const prBranch = context.payload.pull_request.head.ref;
+            const isMerged = context.payload.pull_request.merged;
+            const repoOwner = context.repo.owner;
+            const mainRepoName = context.repo.repo;
+            const goldensRepoName = "${{ inputs.goldensRepoName }}" || `${mainRepoName}-goldens`;
+            
+            try {
+              // 1. Find the corresponding PR in the goldens repo
+              const { data: pulls } = await github.rest.pulls.list({
+                owner: repoOwner,
+                repo: goldensRepoName,
+                head: `${repoOwner}:${prBranch}`,
+                state: 'open'
+              });
+              
+              if (pulls.length > 0) {
+                const goldenPR = pulls[0];
+                
+                if (isMerged) {
+                  // Merge the golden PR
+                  await github.rest.pulls.merge({
+                    owner: repoOwner,
+                    repo: goldensRepoName,
+                    pull_number: goldenPR.number,
+                    merge_method: 'squash'
+                  });
+                  console.log(`✅ Merged Goldens PR #${goldenPR.number} (mirrored branch: ${prBranch})`);
+                } else {
+                  // Close the golden PR without merging
+                  await github.rest.pulls.update({
+                    owner: repoOwner,
+                    repo: goldensRepoName,
+                    pull_number: goldenPR.number,
+                    state: 'closed'
+                  });
+                  console.log(`🚫 Closed Goldens PR #${goldenPR.number} without merging (mirrored branch: ${prBranch})`);
+                }
+              }
+
+              // 2. Always delete the remote branch in the goldens repository regardless of merge status
+              try {
+                await github.rest.git.deleteRef({
+                  owner: repoOwner,
+                  repo: goldensRepoName,
+                  ref: `heads/${prBranch}`
+                });
+                console.log(`🗑️ Deleted remote branch ${prBranch} in ${goldensRepoName}`);
+              } catch (branchError) {
+                console.log(`Branch ${prBranch} might have already been deleted or never existed.`);
+              }
+              
+            } catch (error) {
+              console.error('❌ Error syncing Goldens PR state:', error.message);
+            }
