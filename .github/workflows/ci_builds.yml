@@ -6,6 +6,10 @@ on:
         required: true
         type: string
         description: 'The target environment to build for'
+      buildFlavor:
+        required: false
+        type: string
+        description: 'The build flavor to use (e.g. dev, prod). Appended to supported platforms.'
       buildWeb:
         required: false
         type: boolean
@@ -116,14 +120,19 @@ jobs:
       - name: build-android-app
         run: |
           trap 'echo "🚨 android ${{ env.FAILURE_MSG }}"' ERR
+          FLAVOR_ARG=""
+          if [ "${{ inputs.buildFlavor }}" != "" ]; then
+            FLAVOR_ARG="--flavor ${{ inputs.buildFlavor }}"
+          fi
+
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
             flutter pub get
-            flutter build apk --profile
+            flutter build apk --profile $FLAVOR_ARG
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
             flutter pub get
-            flutter build apk --profile --dart-define-from-file=config.json
+            flutter build apk --profile --dart-define-from-file=config.json $FLAVOR_ARG
           fi
           echo "🔥 android ${{ env.SUCCESS_MSG }}"
 
@@ -164,12 +173,17 @@ jobs:
       - name: build-iOS-app
         run: |
           trap 'echo "🚨 iOS ${{ env.FAILURE_MSG }}"' ERR
+          FLAVOR_ARG=""
+          if [ "${{ inputs.buildFlavor }}" != "" ]; then
+            FLAVOR_ARG="--flavor ${{ inputs.buildFlavor }}"
+          fi
+
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
-            flutter build ios --release --no-codesign
+            flutter build ios --release --no-codesign $FLAVOR_ARG
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
-            flutter build ios --release --no-codesign --dart-define-from-file=config.json
+            flutter build ios --release --no-codesign --dart-define-from-file=config.json $FLAVOR_ARG
           fi
           echo "🔥 iOS ${{ env.SUCCESS_MSG }}"
 
@@ -209,13 +223,18 @@ jobs:
       - name: build-macOS-app
         run: |
           trap 'echo "🚨 macOS ${{ env.FAILURE_MSG }}"' ERR
+          FLAVOR_ARG=""
+          if [ "${{ inputs.buildFlavor }}" != "" ]; then
+            FLAVOR_ARG="--flavor ${{ inputs.buildFlavor }}"
+          fi
+
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
-            flutter build macos --release
+            flutter build macos --release $FLAVOR_ARG
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
             flutter config --enable-macos-desktop
-            flutter build macos --release --dart-define-from-file=config.json
+            flutter build macos --release --dart-define-from-file=config.json $FLAVOR_ARG
           fi
           echo "🔥 macOS ${{ env.SUCCESS_MSG }}"
 
