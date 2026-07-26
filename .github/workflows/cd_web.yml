@@ -26,6 +26,10 @@ on:
         required: true
         description: 'Projects Firebase service account'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build-and-deploy:
     runs-on: macos-latest

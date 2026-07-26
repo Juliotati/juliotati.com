@@ -54,6 +54,10 @@ env:
   SUCCESS_MSG: "build succeeded!! 🚀"
   FAILURE_MSG: "build is K.I.A! 🚨"
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build-web:
     if: ${{ inputs.buildWeb }}

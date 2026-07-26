@@ -18,6 +18,10 @@ on:
           3. Permissions: 'Contents' (Read/Write) and 'Pull Requests' (Read/Write) for the target goldens repository.
           4. Store this as a Secret in the main repository named GOLDENS_REPO_TOKEN.
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   cleanup-goldens:
     runs-on: ubuntu-latest

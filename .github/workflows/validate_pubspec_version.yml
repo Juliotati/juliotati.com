@@ -7,6 +7,10 @@ on:
         type: string
         description: 'The target environment to deploy to'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   validate-pubspec-version:
     runs-on: ubuntu-latest
