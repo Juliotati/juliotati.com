@@ -10,6 +10,10 @@ on:
         required: false
         type: string
         description: 'The build flavor to use (e.g. dev, prod). Appended to supported platforms.'
+      buildTarget:
+        required: false
+        type: string
+        description: 'The target file to build (e.g. lib/main_prod.dart)'
       buildWeb:
         required: false
         type: boolean
@@ -77,11 +81,16 @@ jobs:
         run: |
           trap 'echo "🚨 web ${{ env.FAILURE_MSG }}"' ERR
           flutter pub get
+          TARGET_ARG=""
+          if [ "${{ inputs.buildTarget }}" != "" ]; then
+            TARGET_ARG="--target ${{ inputs.buildTarget }}"
+          fi
+
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ NO extra config NEEDED"
             echo "🔥 BUILDING RELEASE APP"
 
-            flutter build web --release
+            flutter build web --release $TARGET_ARG
             echo "🔥 web ${{ env.SUCCESS_MSG }}"
             exit 0
           fi
@@ -90,7 +99,7 @@ jobs:
           echo $ENCODED_CONFIGS | base64 --decode > config.json
 
           echo "🔥 BUILDING RELEASE APP"
-          flutter build web --dart-define-from-file=config.json
+          flutter build web --dart-define-from-file=config.json $TARGET_ARG
           echo "🔥 web ${{ env.SUCCESS_MSG }}"
 
   build-android:
@@ -121,18 +130,22 @@ jobs:
         run: |
           trap 'echo "🚨 android ${{ env.FAILURE_MSG }}"' ERR
           FLAVOR_ARG=""
+          TARGET_ARG=""
           if [ "${{ inputs.buildFlavor }}" != "" ]; then
             FLAVOR_ARG="--flavor ${{ inputs.buildFlavor }}"
+          fi
+          if [ "${{ inputs.buildTarget }}" != "" ]; then
+            TARGET_ARG="--target ${{ inputs.buildTarget }}"
           fi
 
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
             flutter pub get
-            flutter build apk --profile $FLAVOR_ARG
+            flutter build apk --profile $FLAVOR_ARG $TARGET_ARG
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
             flutter pub get
-            flutter build apk --profile --dart-define-from-file=config.json $FLAVOR_ARG
+            flutter build apk --profile --dart-define-from-file=config.json $FLAVOR_ARG $TARGET_ARG
           fi
           echo "🔥 android ${{ env.SUCCESS_MSG }}"
 
@@ -174,16 +187,20 @@ jobs:
         run: |
           trap 'echo "🚨 iOS ${{ env.FAILURE_MSG }}"' ERR
           FLAVOR_ARG=""
+          TARGET_ARG=""
           if [ "${{ inputs.buildFlavor }}" != "" ]; then
             FLAVOR_ARG="--flavor ${{ inputs.buildFlavor }}"
+          fi
+          if [ "${{ inputs.buildTarget }}" != "" ]; then
+            TARGET_ARG="--target ${{ inputs.buildTarget }}"
           fi
 
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
-            flutter build ios --release --no-codesign $FLAVOR_ARG
+            flutter build ios --release --no-codesign $FLAVOR_ARG $TARGET_ARG
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
-            flutter build ios --release --no-codesign --dart-define-from-file=config.json $FLAVOR_ARG
+            flutter build ios --release --no-codesign --dart-define-from-file=config.json $FLAVOR_ARG $TARGET_ARG
           fi
           echo "🔥 iOS ${{ env.SUCCESS_MSG }}"
 
@@ -224,17 +241,21 @@ jobs:
         run: |
           trap 'echo "🚨 macOS ${{ env.FAILURE_MSG }}"' ERR
           FLAVOR_ARG=""
+          TARGET_ARG=""
           if [ "${{ inputs.buildFlavor }}" != "" ]; then
             FLAVOR_ARG="--flavor ${{ inputs.buildFlavor }}"
+          fi
+          if [ "${{ inputs.buildTarget }}" != "" ]; then
+            TARGET_ARG="--target ${{ inputs.buildTarget }}"
           fi
 
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
-            flutter build macos --release $FLAVOR_ARG
+            flutter build macos --release $FLAVOR_ARG $TARGET_ARG
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
             flutter config --enable-macos-desktop
-            flutter build macos --release --dart-define-from-file=config.json $FLAVOR_ARG
+            flutter build macos --release --dart-define-from-file=config.json $FLAVOR_ARG $TARGET_ARG
           fi
           echo "🔥 macOS ${{ env.SUCCESS_MSG }}"
 
@@ -276,14 +297,19 @@ jobs:
         shell: bash
         run: |
           trap 'echo "🚨 windows ${{ env.FAILURE_MSG }}"' ERR
+          TARGET_ARG=""
+          if [ "${{ inputs.buildTarget }}" != "" ]; then
+            TARGET_ARG="--target ${{ inputs.buildTarget }}"
+          fi
+
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
             flutter pub get
-            flutter build windows --release
+            flutter build windows --release $TARGET_ARG
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
             flutter config --enable-windows-desktop
             flutter pub get
-            flutter build windows --release --dart-define-from-file=config.json
+            flutter build windows --release --dart-define-from-file=config.json $TARGET_ARG
           fi
           echo "🔥 windows ${{ env.SUCCESS_MSG }}"
