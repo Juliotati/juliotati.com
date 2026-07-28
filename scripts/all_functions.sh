@@ -23,7 +23,7 @@ function sort_intl_file_content {
 
   # ── Guard: Skip if the last commit was already from the sort bot ──────────
   LAST_MSG=$(git log -1 --pretty=%s)
-  if [[ "$LAST_MSG" == *"sort translation files"* ]]; then
+  if [[ "$LAST_MSG" == *"sort translation files"* ]] || [[ "$LAST_MSG" == *"patch-translations"* ]]; then
     echo "🤖 Last commit was from the sort bot. Skipping to prevent loop."
     exit 0
   fi
