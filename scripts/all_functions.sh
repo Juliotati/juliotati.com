@@ -77,13 +77,15 @@ function sort_intl_file_content {
     exit 0
   fi
 
-  # There are real changes, commit them
+  # There are real changes — switch to the actual branch BEFORE committing
+  # to avoid orphaning the commit on a detached HEAD.
+  git stash --include-untracked
+  git checkout "$currentBranch" || git checkout -b "$currentBranch"
+  git stash pop
+
   git add "$targetDir"
   git commit -m "chore[🤖]: sort translation files"
   echo "🤖 Created a commit for sorted translation files."
-
-  # IMPORTANT: Ensure we are on the actual branch, not a detached HEAD
-  git checkout "$currentBranch" || git checkout -b "$currentBranch"
 
   echo "🤖 Attempting to push to $currentBranch..."
 
@@ -93,8 +95,15 @@ function sort_intl_file_content {
   else
     echo "🤖 Push failed, opening a PR for you..."
 
+    # Create patch branch from current position (which now has the commit)
     git checkout -B "$patchBranch"
     git push origin "$patchBranch" --force
+
+    # Final safety net: abort if there's actually no diff against the base
+    if git diff --quiet "origin/$currentBranch" -- "$targetDir"; then
+      echo "🙂 No diff against $currentBranch — skipping PR creation."
+      exit 0
+    fi
 
     # Attempt to create PR and capture output/error
     pr_url=$(gh pr create \
