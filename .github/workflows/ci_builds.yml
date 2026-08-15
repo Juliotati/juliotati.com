@@ -6,6 +6,14 @@ on:
         required: true
         type: string
         description: 'The target environment to build for'
+      buildFlavor:
+        required: false
+        type: string
+        description: 'The build flavor to use (e.g. dev, prod). Appended to supported platforms.'
+      buildTarget:
+        required: false
+        type: string
+        description: 'The target file to build (e.g. lib/main_prod.dart)'
       buildWeb:
         required: false
         type: boolean
@@ -36,11 +44,6 @@ on:
         type: string
         default: '3.38.7'
         description: 'The version of Flutter to use for the workflow run'
-      useWasm:
-        required: false
-        type: boolean
-        default: true
-        description: 'Whether or not you want web rendered to use wasm'
 
     secrets:
       encodedContent:
@@ -51,10 +54,14 @@ env:
   SUCCESS_MSG: "build succeeded!! 🚀"
   FAILURE_MSG: "build is K.I.A! 🚨"
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build-web:
     if: ${{ inputs.buildWeb }}
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
       ENCODED_CONFIGS: ${{ secrets.encodedContent }}
@@ -68,9 +75,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           cache: true
-          cache-key: 'flutter-macos-stable-${{ inputs.flutterVersion }}-x64'
-          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
-          pub-cache-key: 'flutter-pub-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
+          cache-key: 'flutter-ubuntu-stable-${{ inputs.flutterVersion }}-x64'
+          cache-path: '${{ runner.tool_cache }}/flutter-ubuntu-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-key: 'flutter-pub-ubuntu-stable-${{ inputs.flutterVersion }}-x64-hash'
           pub-cache-path: '${{ runner.tool_cache }}/flutter/stable-${{ inputs.flutterVersion }}-x64'
           channel: 'stable'
           flutter-version: ${{ inputs.flutterVersion }}
@@ -78,34 +85,55 @@ jobs:
         run: |
           trap 'echo "🚨 web ${{ env.FAILURE_MSG }}"' ERR
           flutter pub get
-          if [ "$ENCODED_CONFIGS" == "" ]; then
-            echo "⚒️ Building WITHOUT extra config"
-            if [ "${{ inputs.useWasm }}" = "false" ]; then
-              echo "🔥 Using canvas-kit renderer"
-              flutter build web --release
+
+          EXPLICIT_TARGET="${{ inputs.buildTarget }}"
+          FLAVOR="${{ inputs.buildFlavor }}"
+          RESOLVED_TARGET=""
+
+          if [ -n "$EXPLICIT_TARGET" ]; then
+            if [ -f "$EXPLICIT_TARGET" ]; then
+              RESOLVED_TARGET="$EXPLICIT_TARGET"
             else
-              echo "🔥 Using wasm renderer"
-              flutter build web --wasm
+              echo "🚨 Specified buildTarget '$EXPLICIT_TARGET' not found on disk!"
+              exit 1
             fi
+          elif [ -n "$FLAVOR" ] && [ -f "lib/main_${FLAVOR}.dart" ]; then
+            RESOLVED_TARGET="lib/main_${FLAVOR}.dart"
+            echo "🎯 Auto-detected flavor target: $RESOLVED_TARGET"
+          elif [ -f "lib/main.dart" ]; then
+            RESOLVED_TARGET="lib/main.dart"
+            echo "🎯 Defaulting to target: $RESOLVED_TARGET"
+          else
+            echo "🚨 Could not resolve a valid Flutter entrypoint!"
+            echo "Checked locations:"
+            [ -n "$EXPLICIT_TARGET" ] && echo "  - explicit target: '$EXPLICIT_TARGET' (not found)"
+            [ -n "$FLAVOR" ] && echo "  - flavor target: 'lib/main_${FLAVOR}.dart' (not found)"
+            echo "  - default target: 'lib/main.dart' (not found)"
+            echo "Please provide 'buildTarget' in your workflow inputs."
+            exit 1
+          fi
+
+          TARGET_ARG="--target $RESOLVED_TARGET"
+
+          if [ "$ENCODED_CONFIGS" == "" ]; then
+            echo "⚒️ NO extra config NEEDED"
+            echo "🔥 BUILDING RELEASE APP"
+
+            flutter build web --release $TARGET_ARG
             echo "🔥 web ${{ env.SUCCESS_MSG }}"
             exit 0
           fi
 
-          echo "⚒️ SETTING-UP extra config file"
+          echo "⚒️ SETTING-UP extra config"
           echo $ENCODED_CONFIGS | base64 --decode > config.json
 
-          if [ "${{ inputs.useWasm }}" = "false" ]; then
-            echo "🔥 Preparing to release with canvas-kit renderer"
-            flutter build web --release --dart-define-from-file=config.json
-          else
-            echo "🔥 Preparing to release with wasm renderer"
-            flutter build web --wasm --dart-define-from-file=config.json
-          fi
+          echo "🔥 BUILDING RELEASE APP"
+          flutter build web --dart-define-from-file=config.json $TARGET_ARG
           echo "🔥 web ${{ env.SUCCESS_MSG }}"
 
   build-android:
     if: ${{ inputs.buildAndroid }}
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     environment: ${{ inputs.buildEnvironment }}
     env:
       ENCODED_CONFIGS: ${{ secrets.encodedContent }}
@@ -120,9 +148,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           cache: true
-          cache-key: 'flutter-macos-stable-${{ inputs.flutterVersion }}-x64'
-          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
-          pub-cache-key: 'flutter-pub-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
+          cache-key: 'flutter-ubuntu-stable-${{ inputs.flutterVersion }}-x64'
+          cache-path: '${{ runner.tool_cache }}/flutter-ubuntu-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-key: 'flutter-pub-ubuntu-stable-${{ inputs.flutterVersion }}-x64-hash'
           pub-cache-path: '${{ runner.tool_cache }}/flutter/stable-${{ inputs.flutterVersion }}-x64'
           channel: 'stable'
           flutter-version: ${{ inputs.flutterVersion }}
@@ -130,14 +158,48 @@ jobs:
       - name: build-android-app
         run: |
           trap 'echo "🚨 android ${{ env.FAILURE_MSG }}"' ERR
+
+          EXPLICIT_TARGET="${{ inputs.buildTarget }}"
+          FLAVOR="${{ inputs.buildFlavor }}"
+          RESOLVED_TARGET=""
+
+          if [ -n "$EXPLICIT_TARGET" ]; then
+            if [ -f "$EXPLICIT_TARGET" ]; then
+              RESOLVED_TARGET="$EXPLICIT_TARGET"
+            else
+              echo "🚨 Specified buildTarget '$EXPLICIT_TARGET' not found on disk!"
+              exit 1
+            fi
+          elif [ -n "$FLAVOR" ] && [ -f "lib/main_${FLAVOR}.dart" ]; then
+            RESOLVED_TARGET="lib/main_${FLAVOR}.dart"
+            echo "🎯 Auto-detected flavor target: $RESOLVED_TARGET"
+          elif [ -f "lib/main.dart" ]; then
+            RESOLVED_TARGET="lib/main.dart"
+            echo "🎯 Defaulting to target: $RESOLVED_TARGET"
+          else
+            echo "🚨 Could not resolve a valid Flutter entrypoint!"
+            echo "Checked locations:"
+            [ -n "$EXPLICIT_TARGET" ] && echo "  - explicit target: '$EXPLICIT_TARGET' (not found)"
+            [ -n "$FLAVOR" ] && echo "  - flavor target: 'lib/main_${FLAVOR}.dart' (not found)"
+            echo "  - default target: 'lib/main.dart' (not found)"
+            echo "Please provide 'buildTarget' in your workflow inputs."
+            exit 1
+          fi
+
+          FLAVOR_ARG=""
+          TARGET_ARG="--target $RESOLVED_TARGET"
+          if [ -n "$FLAVOR" ]; then
+            FLAVOR_ARG="--flavor $FLAVOR"
+          fi
+
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
             flutter pub get
-            flutter build apk --profile
+            flutter build apk --profile $FLAVOR_ARG $TARGET_ARG
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
             flutter pub get
-            flutter build apk --profile --dart-define-from-file=config.json
+            flutter build apk --profile --dart-define-from-file=config.json $FLAVOR_ARG $TARGET_ARG
           fi
           echo "🔥 android ${{ env.SUCCESS_MSG }}"
 
@@ -178,12 +240,46 @@ jobs:
       - name: build-iOS-app
         run: |
           trap 'echo "🚨 iOS ${{ env.FAILURE_MSG }}"' ERR
+
+          EXPLICIT_TARGET="${{ inputs.buildTarget }}"
+          FLAVOR="${{ inputs.buildFlavor }}"
+          RESOLVED_TARGET=""
+
+          if [ -n "$EXPLICIT_TARGET" ]; then
+            if [ -f "$EXPLICIT_TARGET" ]; then
+              RESOLVED_TARGET="$EXPLICIT_TARGET"
+            else
+              echo "🚨 Specified buildTarget '$EXPLICIT_TARGET' not found on disk!"
+              exit 1
+            fi
+          elif [ -n "$FLAVOR" ] && [ -f "lib/main_${FLAVOR}.dart" ]; then
+            RESOLVED_TARGET="lib/main_${FLAVOR}.dart"
+            echo "🎯 Auto-detected flavor target: $RESOLVED_TARGET"
+          elif [ -f "lib/main.dart" ]; then
+            RESOLVED_TARGET="lib/main.dart"
+            echo "🎯 Defaulting to target: $RESOLVED_TARGET"
+          else
+            echo "🚨 Could not resolve a valid Flutter entrypoint!"
+            echo "Checked locations:"
+            [ -n "$EXPLICIT_TARGET" ] && echo "  - explicit target: '$EXPLICIT_TARGET' (not found)"
+            [ -n "$FLAVOR" ] && echo "  - flavor target: 'lib/main_${FLAVOR}.dart' (not found)"
+            echo "  - default target: 'lib/main.dart' (not found)"
+            echo "Please provide 'buildTarget' in your workflow inputs."
+            exit 1
+          fi
+
+          FLAVOR_ARG=""
+          TARGET_ARG="--target $RESOLVED_TARGET"
+          if [ -n "$FLAVOR" ]; then
+            FLAVOR_ARG="--flavor $FLAVOR"
+          fi
+
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
-            flutter build ios --release --no-codesign
+            flutter build ios --release --no-codesign $FLAVOR_ARG $TARGET_ARG
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
-            flutter build ios --release --no-codesign --dart-define-from-file=config.json
+            flutter build ios --release --no-codesign --dart-define-from-file=config.json $FLAVOR_ARG $TARGET_ARG
           fi
           echo "🔥 iOS ${{ env.SUCCESS_MSG }}"
 
@@ -223,13 +319,47 @@ jobs:
       - name: build-macOS-app
         run: |
           trap 'echo "🚨 macOS ${{ env.FAILURE_MSG }}"' ERR
+
+          EXPLICIT_TARGET="${{ inputs.buildTarget }}"
+          FLAVOR="${{ inputs.buildFlavor }}"
+          RESOLVED_TARGET=""
+
+          if [ -n "$EXPLICIT_TARGET" ]; then
+            if [ -f "$EXPLICIT_TARGET" ]; then
+              RESOLVED_TARGET="$EXPLICIT_TARGET"
+            else
+              echo "🚨 Specified buildTarget '$EXPLICIT_TARGET' not found on disk!"
+              exit 1
+            fi
+          elif [ -n "$FLAVOR" ] && [ -f "lib/main_${FLAVOR}.dart" ]; then
+            RESOLVED_TARGET="lib/main_${FLAVOR}.dart"
+            echo "🎯 Auto-detected flavor target: $RESOLVED_TARGET"
+          elif [ -f "lib/main.dart" ]; then
+            RESOLVED_TARGET="lib/main.dart"
+            echo "🎯 Defaulting to target: $RESOLVED_TARGET"
+          else
+            echo "🚨 Could not resolve a valid Flutter entrypoint!"
+            echo "Checked locations:"
+            [ -n "$EXPLICIT_TARGET" ] && echo "  - explicit target: '$EXPLICIT_TARGET' (not found)"
+            [ -n "$FLAVOR" ] && echo "  - flavor target: 'lib/main_${FLAVOR}.dart' (not found)"
+            echo "  - default target: 'lib/main.dart' (not found)"
+            echo "Please provide 'buildTarget' in your workflow inputs."
+            exit 1
+          fi
+
+          FLAVOR_ARG=""
+          TARGET_ARG="--target $RESOLVED_TARGET"
+          if [ -n "$FLAVOR" ]; then
+            FLAVOR_ARG="--flavor $FLAVOR"
+          fi
+
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
-            flutter build macos --release
+            flutter build macos --release $FLAVOR_ARG $TARGET_ARG
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
             flutter config --enable-macos-desktop
-            flutter build macos --release --dart-define-from-file=config.json
+            flutter build macos --release --dart-define-from-file=config.json $FLAVOR_ARG $TARGET_ARG
           fi
           echo "🔥 macOS ${{ env.SUCCESS_MSG }}"
 
@@ -250,9 +380,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           cache: true
-          cache-key: 'flutter-macos-stable-${{ inputs.flutterVersion }}-x64'
-          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
-          pub-cache-key: 'flutter-pub-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
+          cache-key: 'flutter-windows-stable-${{ inputs.flutterVersion }}-x64'
+          cache-path: '${{ runner.tool_cache }}/flutter-windows-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-key: 'flutter-pub-windows-stable-${{ inputs.flutterVersion }}-x64-hash'
           pub-cache-path: '${{ runner.tool_cache }}/flutter/stable-${{ inputs.flutterVersion }}-x64'
           channel: 'stable'
           flutter-version: ${{ inputs.flutterVersion }}
@@ -271,14 +401,45 @@ jobs:
         shell: bash
         run: |
           trap 'echo "🚨 windows ${{ env.FAILURE_MSG }}"' ERR
+
+          EXPLICIT_TARGET="${{ inputs.buildTarget }}"
+          FLAVOR="${{ inputs.buildFlavor }}"
+          RESOLVED_TARGET=""
+
+          if [ -n "$EXPLICIT_TARGET" ]; then
+            if [ -f "$EXPLICIT_TARGET" ]; then
+              RESOLVED_TARGET="$EXPLICIT_TARGET"
+            else
+              echo "🚨 Specified buildTarget '$EXPLICIT_TARGET' not found on disk!"
+              exit 1
+            fi
+          elif [ -n "$FLAVOR" ] && [ -f "lib/main_${FLAVOR}.dart" ]; then
+            RESOLVED_TARGET="lib/main_${FLAVOR}.dart"
+            echo "🎯 Auto-detected flavor target: $RESOLVED_TARGET"
+          elif [ -f "lib/main.dart" ]; then
+            RESOLVED_TARGET="lib/main.dart"
+            echo "🎯 Defaulting to target: $RESOLVED_TARGET"
+          else
+            echo "🚨 Could not resolve a valid Flutter entrypoint!"
+            echo "Checked locations:"
+            [ -n "$EXPLICIT_TARGET" ] && echo "  - explicit target: '$EXPLICIT_TARGET' (not found)"
+            [ -n "$FLAVOR" ] && echo "  - flavor target: 'lib/main_${FLAVOR}.dart' (not found)"
+            echo "  - default target: 'lib/main.dart' (not found)"
+            echo "Please provide 'buildTarget' in your workflow inputs."
+            exit 1
+          fi
+
+          TARGET_ARG="--target $RESOLVED_TARGET"
+
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
             flutter pub get
-            flutter build windows --release
+            flutter build windows --release $TARGET_ARG
           else
             echo $ENCODED_CONFIGS | base64 --decode > config.json
             flutter config --enable-windows-desktop
             flutter pub get
-            flutter build windows --release --dart-define-from-file=config.json
+            flutter build windows --release --dart-define-from-file=config.json $TARGET_ARG
           fi
           echo "🔥 windows ${{ env.SUCCESS_MSG }}"
+

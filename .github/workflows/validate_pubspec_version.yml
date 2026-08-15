@@ -7,9 +7,13 @@ on:
         type: string
         description: 'The target environment to deploy to'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   validate-pubspec-version:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     environment: ${{ inputs.target }}
     steps:
       - name: setup-repo
@@ -35,5 +39,5 @@ jobs:
       - name: verify-pubspec-version
         run: |
           chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/all_functions.sh"
-          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/validate_pubspec_version.sh"
-          bash "${GITHUB_WORKSPACE}/scripts/scripts/validate_pubspec_version.sh"
+          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/verify_pubspec_version.sh"
+          bash "${GITHUB_WORKSPACE}/scripts/scripts/verify_pubspec_version.sh"
