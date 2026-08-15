@@ -85,10 +85,35 @@ jobs:
         run: |
           trap 'echo "🚨 web ${{ env.FAILURE_MSG }}"' ERR
           flutter pub get
-          TARGET_ARG=""
-          if [ "${{ inputs.buildTarget }}" != "" ]; then
-            TARGET_ARG="--target ${{ inputs.buildTarget }}"
+
+          EXPLICIT_TARGET="${{ inputs.buildTarget }}"
+          FLAVOR="${{ inputs.buildFlavor }}"
+          RESOLVED_TARGET=""
+
+          if [ -n "$EXPLICIT_TARGET" ]; then
+            if [ -f "$EXPLICIT_TARGET" ]; then
+              RESOLVED_TARGET="$EXPLICIT_TARGET"
+            else
+              echo "🚨 Specified buildTarget '$EXPLICIT_TARGET' not found on disk!"
+              exit 1
+            fi
+          elif [ -n "$FLAVOR" ] && [ -f "lib/main_${FLAVOR}.dart" ]; then
+            RESOLVED_TARGET="lib/main_${FLAVOR}.dart"
+            echo "🎯 Auto-detected flavor target: $RESOLVED_TARGET"
+          elif [ -f "lib/main.dart" ]; then
+            RESOLVED_TARGET="lib/main.dart"
+            echo "🎯 Defaulting to target: $RESOLVED_TARGET"
+          else
+            echo "🚨 Could not resolve a valid Flutter entrypoint!"
+            echo "Checked locations:"
+            [ -n "$EXPLICIT_TARGET" ] && echo "  - explicit target: '$EXPLICIT_TARGET' (not found)"
+            [ -n "$FLAVOR" ] && echo "  - flavor target: 'lib/main_${FLAVOR}.dart' (not found)"
+            echo "  - default target: 'lib/main.dart' (not found)"
+            echo "Please provide 'buildTarget' in your workflow inputs."
+            exit 1
           fi
+
+          TARGET_ARG="--target $RESOLVED_TARGET"
 
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ NO extra config NEEDED"
@@ -133,13 +158,38 @@ jobs:
       - name: build-android-app
         run: |
           trap 'echo "🚨 android ${{ env.FAILURE_MSG }}"' ERR
-          FLAVOR_ARG=""
-          TARGET_ARG=""
-          if [ "${{ inputs.buildFlavor }}" != "" ]; then
-            FLAVOR_ARG="--flavor ${{ inputs.buildFlavor }}"
+
+          EXPLICIT_TARGET="${{ inputs.buildTarget }}"
+          FLAVOR="${{ inputs.buildFlavor }}"
+          RESOLVED_TARGET=""
+
+          if [ -n "$EXPLICIT_TARGET" ]; then
+            if [ -f "$EXPLICIT_TARGET" ]; then
+              RESOLVED_TARGET="$EXPLICIT_TARGET"
+            else
+              echo "🚨 Specified buildTarget '$EXPLICIT_TARGET' not found on disk!"
+              exit 1
+            fi
+          elif [ -n "$FLAVOR" ] && [ -f "lib/main_${FLAVOR}.dart" ]; then
+            RESOLVED_TARGET="lib/main_${FLAVOR}.dart"
+            echo "🎯 Auto-detected flavor target: $RESOLVED_TARGET"
+          elif [ -f "lib/main.dart" ]; then
+            RESOLVED_TARGET="lib/main.dart"
+            echo "🎯 Defaulting to target: $RESOLVED_TARGET"
+          else
+            echo "🚨 Could not resolve a valid Flutter entrypoint!"
+            echo "Checked locations:"
+            [ -n "$EXPLICIT_TARGET" ] && echo "  - explicit target: '$EXPLICIT_TARGET' (not found)"
+            [ -n "$FLAVOR" ] && echo "  - flavor target: 'lib/main_${FLAVOR}.dart' (not found)"
+            echo "  - default target: 'lib/main.dart' (not found)"
+            echo "Please provide 'buildTarget' in your workflow inputs."
+            exit 1
           fi
-          if [ "${{ inputs.buildTarget }}" != "" ]; then
-            TARGET_ARG="--target ${{ inputs.buildTarget }}"
+
+          FLAVOR_ARG=""
+          TARGET_ARG="--target $RESOLVED_TARGET"
+          if [ -n "$FLAVOR" ]; then
+            FLAVOR_ARG="--flavor $FLAVOR"
           fi
 
           if [ "$ENCODED_CONFIGS" == "" ]; then
@@ -190,13 +240,38 @@ jobs:
       - name: build-iOS-app
         run: |
           trap 'echo "🚨 iOS ${{ env.FAILURE_MSG }}"' ERR
-          FLAVOR_ARG=""
-          TARGET_ARG=""
-          if [ "${{ inputs.buildFlavor }}" != "" ]; then
-            FLAVOR_ARG="--flavor ${{ inputs.buildFlavor }}"
+
+          EXPLICIT_TARGET="${{ inputs.buildTarget }}"
+          FLAVOR="${{ inputs.buildFlavor }}"
+          RESOLVED_TARGET=""
+
+          if [ -n "$EXPLICIT_TARGET" ]; then
+            if [ -f "$EXPLICIT_TARGET" ]; then
+              RESOLVED_TARGET="$EXPLICIT_TARGET"
+            else
+              echo "🚨 Specified buildTarget '$EXPLICIT_TARGET' not found on disk!"
+              exit 1
+            fi
+          elif [ -n "$FLAVOR" ] && [ -f "lib/main_${FLAVOR}.dart" ]; then
+            RESOLVED_TARGET="lib/main_${FLAVOR}.dart"
+            echo "🎯 Auto-detected flavor target: $RESOLVED_TARGET"
+          elif [ -f "lib/main.dart" ]; then
+            RESOLVED_TARGET="lib/main.dart"
+            echo "🎯 Defaulting to target: $RESOLVED_TARGET"
+          else
+            echo "🚨 Could not resolve a valid Flutter entrypoint!"
+            echo "Checked locations:"
+            [ -n "$EXPLICIT_TARGET" ] && echo "  - explicit target: '$EXPLICIT_TARGET' (not found)"
+            [ -n "$FLAVOR" ] && echo "  - flavor target: 'lib/main_${FLAVOR}.dart' (not found)"
+            echo "  - default target: 'lib/main.dart' (not found)"
+            echo "Please provide 'buildTarget' in your workflow inputs."
+            exit 1
           fi
-          if [ "${{ inputs.buildTarget }}" != "" ]; then
-            TARGET_ARG="--target ${{ inputs.buildTarget }}"
+
+          FLAVOR_ARG=""
+          TARGET_ARG="--target $RESOLVED_TARGET"
+          if [ -n "$FLAVOR" ]; then
+            FLAVOR_ARG="--flavor $FLAVOR"
           fi
 
           if [ "$ENCODED_CONFIGS" == "" ]; then
@@ -244,13 +319,38 @@ jobs:
       - name: build-macOS-app
         run: |
           trap 'echo "🚨 macOS ${{ env.FAILURE_MSG }}"' ERR
-          FLAVOR_ARG=""
-          TARGET_ARG=""
-          if [ "${{ inputs.buildFlavor }}" != "" ]; then
-            FLAVOR_ARG="--flavor ${{ inputs.buildFlavor }}"
+
+          EXPLICIT_TARGET="${{ inputs.buildTarget }}"
+          FLAVOR="${{ inputs.buildFlavor }}"
+          RESOLVED_TARGET=""
+
+          if [ -n "$EXPLICIT_TARGET" ]; then
+            if [ -f "$EXPLICIT_TARGET" ]; then
+              RESOLVED_TARGET="$EXPLICIT_TARGET"
+            else
+              echo "🚨 Specified buildTarget '$EXPLICIT_TARGET' not found on disk!"
+              exit 1
+            fi
+          elif [ -n "$FLAVOR" ] && [ -f "lib/main_${FLAVOR}.dart" ]; then
+            RESOLVED_TARGET="lib/main_${FLAVOR}.dart"
+            echo "🎯 Auto-detected flavor target: $RESOLVED_TARGET"
+          elif [ -f "lib/main.dart" ]; then
+            RESOLVED_TARGET="lib/main.dart"
+            echo "🎯 Defaulting to target: $RESOLVED_TARGET"
+          else
+            echo "🚨 Could not resolve a valid Flutter entrypoint!"
+            echo "Checked locations:"
+            [ -n "$EXPLICIT_TARGET" ] && echo "  - explicit target: '$EXPLICIT_TARGET' (not found)"
+            [ -n "$FLAVOR" ] && echo "  - flavor target: 'lib/main_${FLAVOR}.dart' (not found)"
+            echo "  - default target: 'lib/main.dart' (not found)"
+            echo "Please provide 'buildTarget' in your workflow inputs."
+            exit 1
           fi
-          if [ "${{ inputs.buildTarget }}" != "" ]; then
-            TARGET_ARG="--target ${{ inputs.buildTarget }}"
+
+          FLAVOR_ARG=""
+          TARGET_ARG="--target $RESOLVED_TARGET"
+          if [ -n "$FLAVOR" ]; then
+            FLAVOR_ARG="--flavor $FLAVOR"
           fi
 
           if [ "$ENCODED_CONFIGS" == "" ]; then
@@ -301,10 +401,35 @@ jobs:
         shell: bash
         run: |
           trap 'echo "🚨 windows ${{ env.FAILURE_MSG }}"' ERR
-          TARGET_ARG=""
-          if [ "${{ inputs.buildTarget }}" != "" ]; then
-            TARGET_ARG="--target ${{ inputs.buildTarget }}"
+
+          EXPLICIT_TARGET="${{ inputs.buildTarget }}"
+          FLAVOR="${{ inputs.buildFlavor }}"
+          RESOLVED_TARGET=""
+
+          if [ -n "$EXPLICIT_TARGET" ]; then
+            if [ -f "$EXPLICIT_TARGET" ]; then
+              RESOLVED_TARGET="$EXPLICIT_TARGET"
+            else
+              echo "🚨 Specified buildTarget '$EXPLICIT_TARGET' not found on disk!"
+              exit 1
+            fi
+          elif [ -n "$FLAVOR" ] && [ -f "lib/main_${FLAVOR}.dart" ]; then
+            RESOLVED_TARGET="lib/main_${FLAVOR}.dart"
+            echo "🎯 Auto-detected flavor target: $RESOLVED_TARGET"
+          elif [ -f "lib/main.dart" ]; then
+            RESOLVED_TARGET="lib/main.dart"
+            echo "🎯 Defaulting to target: $RESOLVED_TARGET"
+          else
+            echo "🚨 Could not resolve a valid Flutter entrypoint!"
+            echo "Checked locations:"
+            [ -n "$EXPLICIT_TARGET" ] && echo "  - explicit target: '$EXPLICIT_TARGET' (not found)"
+            [ -n "$FLAVOR" ] && echo "  - flavor target: 'lib/main_${FLAVOR}.dart' (not found)"
+            echo "  - default target: 'lib/main.dart' (not found)"
+            echo "Please provide 'buildTarget' in your workflow inputs."
+            exit 1
           fi
+
+          TARGET_ARG="--target $RESOLVED_TARGET"
 
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ Building WITHOUT extra config"
@@ -317,3 +442,4 @@ jobs:
             flutter build windows --release --dart-define-from-file=config.json $TARGET_ARG
           fi
           echo "🔥 windows ${{ env.SUCCESS_MSG }}"
+
