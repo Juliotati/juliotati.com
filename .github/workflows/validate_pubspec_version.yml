@@ -39,5 +39,5 @@ jobs:
       - name: verify-pubspec-version
         run: |
           chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/all_functions.sh"
-          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/validate_pubspec_version.sh"
-          bash "${GITHUB_WORKSPACE}/scripts/scripts/validate_pubspec_version.sh"
+          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/verify_pubspec_version.sh"
+          bash "${GITHUB_WORKSPACE}/scripts/scripts/verify_pubspec_version.sh"
