@@ -11,6 +11,10 @@ on:
 
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   sort-intl-file-contents:
     uses: Juliotati/juliotati.com/.github/workflows/sort_intl_json.yml@main

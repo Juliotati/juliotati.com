@@ -21,6 +21,13 @@ function sort_intl_file_content {
   targetDir="lib/translations"
   patchBranch="patch-translations"
 
+  # ── Guard: Skip if the last commit was already from the sort bot ──────────
+  LAST_MSG=$(git log -1 --pretty=%s)
+  if [[ "$LAST_MSG" == *"sort translation files"* ]] || [[ "$LAST_MSG" == *"patch-translations"* ]]; then
+    echo "🤖 Last commit was from the sort bot. Skipping to prevent loop."
+    exit 0
+  fi
+
   # If GITHUB_HEAD_REF exists, we are in a PR, so use the source branch.
   if [ -n "$GITHUB_HEAD_REF" ]; then
     currentBranch="$GITHUB_HEAD_REF"
@@ -64,72 +71,74 @@ function sort_intl_file_content {
     fi
   done
 
-  # Check if there is any modification in target directory
-  if [ -n "$(git status --porcelain "$targetDir")" ]; then
-    # Wipe other accidental changes to prevent rebase conflicts
-    git checkout -- .
-
-    # Re-sort (since checkout cleared the tmp files/changes)
-    for file in "${arbFiles[@]}"; do
-      jq -S . "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
-    done
-
-    git add "$targetDir"
-    git commit -m "chore[🤖]: sort translation files"
-    echo "🤖 Created a commit for sorted translation files."
-
-    # IMPORTANT: Ensure we are on the actual branch, not a detached HEAD
-    git checkout "$currentBranch" || git checkout -b "$currentBranch"
-
-    echo "🤖 Attempting to push to $currentBranch..."
-
-    if git push origin "$currentBranch"; then
-       echo "🤖 DONE DONE!!"
-       exit 0
-    else
-      echo "🤖 Push failed, opening a PR for you..."
-
-      git checkout -B "$patchBranch"
-      git push origin "$patchBranch" --force
-
-      # Attempt to create PR and capture output/error
-      pr_url=$(gh pr create \
-        --base "$currentBranch" \
-        --head "$patchBranch" \
-        --title "chore[🤖]: sort translation files" \
-        --body "Just doing what you're too lazy to do. 🧹" \
-        --assignee "Juliotati" 2>&1)
-
-      # Check if PR creation failed because it already exists
-      if [[ "$pr_url" == *"already exists"* ]]; then
-        echo "🤖 PR already exists. Fetching existing PR info..."
-        pr_url=$(gh pr list --head "$patchBranch" --base "$currentBranch" --json url --jq '.[0].url')
-      fi
-
-      # Validate if we have a valid URL or if a real error occurred
-      if [[ -z "$pr_url" || "$pr_url" == *"error"* ]]; then
-        echo "👻 FAILED to create PR. Missing actions permissions."
-        exit 1
-      fi
-
-      echo "🤖 PR opened successfully: $pr_url"
-
-      echo "🤖 Approving and merging PR..."
-      # Suppress error on review in case it was already approved
-      gh pr review "$pr_url" --approve 2>/dev/null
-      gh pr merge "$pr_url" --merge --admin --delete-branch
-
-      # Return to original branch and clean up local patchBranch
-      git checkout "$currentBranch"
-      git branch -D "$patchBranch" 2>/dev/null
-      echo "🤖 PR approved, merged, and local branch cleaned up."
-    fi
-
-    echo "🤖 DONE DONE!!"
+  # ── Check if sorting actually produced any real changes ──────────────────
+  if git diff --quiet "$targetDir"; then
+    echo "🙂 No changes detected — files are already sorted."
     exit 0
   fi
 
-  echo "🙂 No changes detected"
+  # There are real changes — switch to the actual branch BEFORE committing
+  # to avoid orphaning the commit on a detached HEAD.
+  git stash --include-untracked
+  git checkout "$currentBranch" || git checkout -b "$currentBranch"
+  git stash pop
+
+  git add "$targetDir"
+  git commit -m "chore[🤖]: sort translation files"
+  echo "🤖 Created a commit for sorted translation files."
+
+  echo "🤖 Attempting to push to $currentBranch..."
+
+  if git push origin "$currentBranch"; then
+     echo "🤖 DONE DONE!!"
+     exit 0
+  else
+    echo "🤖 Push failed, opening a PR for you..."
+
+    # Create patch branch from current position (which now has the commit)
+    git checkout -B "$patchBranch"
+    git push origin "$patchBranch" --force
+
+    # Final safety net: abort if there's actually no diff against the base
+    if git diff --quiet "origin/$currentBranch" -- "$targetDir"; then
+      echo "🙂 No diff against $currentBranch — skipping PR creation."
+      exit 0
+    fi
+
+    # Attempt to create PR and capture output/error
+    pr_url=$(gh pr create \
+      --base "$currentBranch" \
+      --head "$patchBranch" \
+      --title "chore[🤖]: sort translation files" \
+      --body "Just doing what you're too lazy to do. 🧹" \
+      --assignee "Juliotati" 2>&1)
+
+    # Check if PR creation failed because it already exists
+    if [[ "$pr_url" == *"already exists"* ]]; then
+      echo "🤖 PR already exists. Fetching existing PR info..."
+      pr_url=$(gh pr list --head "$patchBranch" --base "$currentBranch" --json url --jq '.[0].url')
+    fi
+
+    # Validate if we have a valid URL or if a real error occurred
+    if [[ -z "$pr_url" || "$pr_url" == *"error"* ]]; then
+      echo "👻 FAILED to create PR. Missing actions permissions."
+      exit 1
+    fi
+
+    echo "🤖 PR opened successfully: $pr_url"
+
+    echo "🤖 Approving and merging PR..."
+    # Suppress error on review in case it was already approved
+    gh pr review "$pr_url" --approve 2>/dev/null
+    gh pr merge "$pr_url" --merge --admin --delete-branch
+
+    # Return to original branch and clean up local patchBranch
+    git checkout "$currentBranch"
+    git branch -D "$patchBranch" 2>/dev/null
+    echo "🤖 PR approved, merged, and local branch cleaned up."
+  fi
+
+  echo "🤖 DONE DONE!!"
   exit 0
 }
 

@@ -8,12 +8,14 @@ permissions:
 
 jobs:
   sort-intl-json-contents:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       - name: get-scripts
         uses: actions/checkout@v4
