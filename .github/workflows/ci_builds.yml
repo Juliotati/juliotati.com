@@ -42,7 +42,7 @@ on:
       flutterVersion:
         required: false
         type: string
-        default: '3.38.7'
+        default: '3.47.5'
         description: 'The version of Flutter to use for the workflow run'
 
     secrets:
