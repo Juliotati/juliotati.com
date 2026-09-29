@@ -21,6 +21,13 @@ function sort_intl_file_content {
   targetDir="lib/translations"
   patchBranch="patch-translations"
 
+  # ── Guard: Skip if the last commit was already from the sort bot ──────────
+  LAST_MSG=$(git log -1 --pretty=%s)
+  if [[ "$LAST_MSG" == *"sort translation files"* ]] || [[ "$LAST_MSG" == *"patch-translations"* ]]; then
+    echo "🤖 Last commit was from the sort bot. Skipping to prevent loop."
+    exit 0
+  fi
+
   # If GITHUB_HEAD_REF exists, we are in a PR, so use the source branch.
   if [ -n "$GITHUB_HEAD_REF" ]; then
     currentBranch="$GITHUB_HEAD_REF"
@@ -64,72 +71,74 @@ function sort_intl_file_content {
     fi
   done
 
-  # Check if there is any modification in target directory
-  if [ -n "$(git status --porcelain "$targetDir")" ]; then
-    # Wipe other accidental changes to prevent rebase conflicts
-    git checkout -- .
-
-    # Re-sort (since checkout cleared the tmp files/changes)
-    for file in "${arbFiles[@]}"; do
-      jq -S . "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
-    done
-
-    git add "$targetDir"
-    git commit -m "chore[🤖]: sort translation files"
-    echo "🤖 Created a commit for sorted translation files."
-
-    # IMPORTANT: Ensure we are on the actual branch, not a detached HEAD
-    git checkout "$currentBranch" || git checkout -b "$currentBranch"
-
-    echo "🤖 Attempting to push to $currentBranch..."
-
-    if git push origin "$currentBranch"; then
-       echo "🤖 DONE DONE!!"
-       exit 0
-    else
-      echo "🤖 Push failed, opening a PR for you..."
-
-      git checkout -B "$patchBranch"
-      git push origin "$patchBranch" --force
-
-      # Attempt to create PR and capture output/error
-      pr_url=$(gh pr create \
-        --base "$currentBranch" \
-        --head "$patchBranch" \
-        --title "chore[🤖]: sort translation files" \
-        --body "Just doing what you're too lazy to do. 🧹" \
-        --assignee "Juliotati" 2>&1)
-
-      # Check if PR creation failed because it already exists
-      if [[ "$pr_url" == *"already exists"* ]]; then
-        echo "🤖 PR already exists. Fetching existing PR info..."
-        pr_url=$(gh pr list --head "$patchBranch" --base "$currentBranch" --json url --jq '.[0].url')
-      fi
-
-      # Validate if we have a valid URL or if a real error occurred
-      if [[ -z "$pr_url" || "$pr_url" == *"error"* ]]; then
-        echo "👻 FAILED to create PR. Missing actions permissions."
-        exit 1
-      fi
-
-      echo "🤖 PR opened successfully: $pr_url"
-
-      echo "🤖 Approving and merging PR..."
-      # Suppress error on review in case it was already approved
-      gh pr review "$pr_url" --approve 2>/dev/null
-      gh pr merge "$pr_url" --merge --admin --delete-branch
-
-      # Return to original branch and clean up local patchBranch
-      git checkout "$currentBranch"
-      git branch -D "$patchBranch" 2>/dev/null
-      echo "🤖 PR approved, merged, and local branch cleaned up."
-    fi
-
-    echo "🤖 DONE DONE!!"
+  # ── Check if sorting actually produced any real changes ──────────────────
+  if git diff --quiet "$targetDir"; then
+    echo "🙂 No changes detected — files are already sorted."
     exit 0
   fi
 
-  echo "🙂 No changes detected"
+  # There are real changes — switch to the actual branch BEFORE committing
+  # to avoid orphaning the commit on a detached HEAD.
+  git stash --include-untracked
+  git checkout "$currentBranch" || git checkout -b "$currentBranch"
+  git stash pop
+
+  git add "$targetDir"
+  git commit -m "chore[🤖]: sort translation files"
+  echo "🤖 Created a commit for sorted translation files."
+
+  echo "🤖 Attempting to push to $currentBranch..."
+
+  if git push origin "$currentBranch"; then
+     echo "🤖 DONE DONE!!"
+     exit 0
+  else
+    echo "🤖 Push failed, opening a PR for you..."
+
+    # Create patch branch from current position (which now has the commit)
+    git checkout -B "$patchBranch"
+    git push origin "$patchBranch" --force
+
+    # Final safety net: abort if there's actually no diff against the base
+    if git diff --quiet "origin/$currentBranch" -- "$targetDir"; then
+      echo "🙂 No diff against $currentBranch — skipping PR creation."
+      exit 0
+    fi
+
+    # Attempt to create PR and capture output/error
+    pr_url=$(gh pr create \
+      --base "$currentBranch" \
+      --head "$patchBranch" \
+      --title "chore[🤖]: sort translation files" \
+      --body "Just doing what you're too lazy to do. 🧹" \
+      --assignee "Juliotati" 2>&1)
+
+    # Check if PR creation failed because it already exists
+    if [[ "$pr_url" == *"already exists"* ]]; then
+      echo "🤖 PR already exists. Fetching existing PR info..."
+      pr_url=$(gh pr list --head "$patchBranch" --base "$currentBranch" --json url --jq '.[0].url')
+    fi
+
+    # Validate if we have a valid URL or if a real error occurred
+    if [[ -z "$pr_url" || "$pr_url" == *"error"* ]]; then
+      echo "👻 FAILED to create PR. Missing actions permissions."
+      exit 1
+    fi
+
+    echo "🤖 PR opened successfully: $pr_url"
+
+    echo "🤖 Approving and merging PR..."
+    # Suppress error on review in case it was already approved
+    gh pr review "$pr_url" --approve 2>/dev/null
+    gh pr merge "$pr_url" --merge --admin --delete-branch
+
+    # Return to original branch and clean up local patchBranch
+    git checkout "$currentBranch"
+    git branch -D "$patchBranch" 2>/dev/null
+    echo "🤖 PR approved, merged, and local branch cleaned up."
+  fi
+
+  echo "🤖 DONE DONE!!"
   exit 0
 }
 
@@ -195,48 +204,40 @@ function verify_config_content {
 }
 
 function verify_pubspec_version() {
-  # 1. grab the semantic "version" value from pubspec.yaml source branch as a string
-  # 2. grab the semantic "version" value from pubspec.yaml source branch as a string
-  # 3. The version have a "+" for that shows the build number, on the right side of the "+"
-  # 4. verify that the build number is greater in the source branch than the stable branch
-  # 5. also verify that the version is greater that in the base branch
-  # e.g.
-  #    0.1.0+1 > 1.1.0+0 // false
-  #    1.1.0+1 > 1.0.0+1 // false
-  #    1.1.1+1 > 1.1.1+0 // false
-  #    1.1.1+1 > 1.1.2+1 // false
-  #    1.1.1+1 > 1.1.1+2 // false (todo looks like this case in not being handled)
-  #    1.1.1+1 > 1.1.2+2 // true
-  #    1.1.1+1 > 1.2.0+2 // true
-
   source_version=$(grep -E '^version:' pubspec.yaml | awk '{print $2}')
-  base_version=$(git show $GITHUB_BASE_REF:pubspec.yaml | grep -E '^version:' | awk '{print $2}')
-  source_version_number=$(echo $source_version | cut -d '+' -f 1)
-  base_version_number=$(echo $base_version | cut -d '+' -f 1)
-  source_build_number=$(echo $source_version | cut -d '+' -f 2)
-  base_build_number=$(echo $base_version | cut -d '+' -f 2)
+  base_version=$(git show "$GITHUB_BASE_REF:pubspec.yaml" | grep -E '^version:' | awk '{print $2}')
+
   if [[ -z "$source_version" || -z "$base_version" ]]; then
-      echo "❗️ Error: version not found in pubspec.yaml"
-      exit 1
+    echo "❗️ Error: version not found in pubspec.yaml"
+    exit 1
   fi
-  if [[ "$source_version_number" == "$base_version_number" && "$source_build_number" -le "$base_build_number" ]]; then
-      echo "✋️ Hold on, source v($source_version) MUST be greater than base v($base_version)"
-      exit 1
+
+  source_version_number=$(echo "$source_version" | cut -d '+' -f 1)
+  base_version_number=$(echo "$base_version" | cut -d '+' -f 1)
+  source_build_number=$(echo "$source_version" | cut -d '+' -f 2)
+  base_build_number=$(echo "$base_version" | cut -d '+' -f 2)
+
+  echo "Source version: $source_version"
+  echo "Base version: $base_version"
+  echo "Source version number: $source_version_number"
+  echo "Base version number: $base_version_number"
+  echo "Source build number: $source_build_number"
+  echo "Base build number: $base_build_number"
+
+  # 1. Check build number: must strictly increase
+  if (( source_build_number <= base_build_number )); then
+    echo "🛑 source build ($source_build_number) MUST be greater than base build ($base_build_number)"
+    exit 1
   fi
-    echo "Source version: $source_version"
-    echo "Base version: $base_version"
-    echo "Source version number: $source_version_number"
-    echo "Base version number: $base_version_number"
-    echo "Source build number: $source_build_number"
-    echo "Base build number: $base_build_number"
-  if [[ "$source_version_number" < "$base_version_number" ]]; then
-      echo "✋️ source v($source_version_number) MUST be greater than base v($base_version_number)"
-      exit 1
-  elif [[ "$source_version_number" == "$base_version_number" && "$source_build_number" -le "$base_build_number" ]]; then
-      echo "🛑️ source build ($source_build_number) MUST be greater than base build ($base_build_number)"
-      exit 1
-  else
-      echo "✅ pubspec version looks valid"
+
+  # 2. Check semver: source cannot be older than base
+  lowest_version=$(printf '%s\n%s' "$source_version_number" "$base_version_number" | sort -V | head -n 1)
+
+  if [[ "$source_version_number" != "$base_version_number" && "$lowest_version" == "$source_version_number" ]]; then
+    echo "✋️ source v($source_version_number) MUST be greater than or equal to base v($base_version_number)"
+    exit 1
   fi
+
+  echo "✅ pubspec version looks valid"
   echo "🫡 You're good to go, source v$source_version is greater than base v$base_version"
 }

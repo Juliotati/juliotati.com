@@ -12,15 +12,42 @@ on:
         type: boolean
         default: false
         description: 'Whether to skip the tests or not'
+      hasGoldens:
+        required: false
+        type: boolean
+        default: false
+        description: 'Whether the project has golden tests and a dedicated repo for them'
+      updateGoldensLabel:
+        required: false
+        type: string
+        default: 'update-goldens'
+        description: 'The label used to trigger golden test updates'
+    secrets:
+      GOLDENS_REPO_TOKEN:
+        required: false
+        description: |
+          A Personal Access Token (PAT) used to push golden images and manage PRs in the companion goldens repository (e.g., {repo}-goldens).
+          How to get:
+          1. Go to GitHub Settings > Developer Settings > Personal Access Tokens.
+          2. Create a Fine-grained token or Classic token.
+          3. Permissions: 'Contents' (Read/Write) and 'Pull Requests' (Read/Write) for the target goldens repository.
+          4. Store this as a Secret in the main repository named GOLDENS_REPO_TOKEN.
+
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   test-project:
     env:
       GH_TOKEN: ${{ github.token }}
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     if: ${{ !inputs.skipTests }}
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
+        with:
+          submodules: ${{ inputs.hasGoldens && 'recursive' || 'false' }}
 
       - name: setup-jdk
         uses: actions/setup-java@v4
@@ -31,9 +58,9 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           cache: true
-          cache-key: 'flutter-macos-stable-${{ inputs.flutterVersion }}-x64'
-          cache-path: '${{ runner.tool_cache }}/flutter-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
-          pub-cache-key: 'flutter-pub-macos-stable-${{ inputs.flutterVersion }}-x64-hash'
+          cache-key: 'flutter-ubuntu-stable-${{ inputs.flutterVersion }}-x64'
+          cache-path: '${{ runner.tool_cache }}/flutter-ubuntu-stable-${{ inputs.flutterVersion }}-x64-hash'
+          pub-cache-key: 'flutter-pub-ubuntu-stable-${{ inputs.flutterVersion }}-x64-hash'
           pub-cache-path: '${{ runner.tool_cache }}/flutter/stable-${{ inputs.flutterVersion }}-x64'
           channel: 'stable'
           flutter-version: ${{ inputs.flutterVersion }}
@@ -41,5 +68,87 @@ jobs:
       - name: load-dependencies
         run: dart pub get
 
+      - name: check-labels
+        if: inputs.hasGoldens
+        id: labels
+        run: |
+          if echo "${{ github.event.pull_request.labels.*.name }}" | grep -q "${{ inputs.updateGoldensLabel }}"; then
+            echo "update_goldens=true" >> $GITHUB_OUTPUT
+          else
+            echo "update_goldens=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: run-tests
-        run: flutter test
+        run: |
+          if [ "${{ steps.labels.outputs.update_goldens }}" = "true" ]; then
+            flutter test --update-goldens
+          else
+            flutter test
+          fi
+
+      - name: sync-goldens
+        if: inputs.hasGoldens && steps.labels.outputs.update_goldens == 'true'
+        env:
+          GOLDENS_TOKEN: ${{ secrets.GOLDENS_REPO_TOKEN }}
+        run: |
+          PR_BRANCH="${{ github.head_ref }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          GOLDENS_REPO="${{ github.event.repository.name }}-goldens"
+          
+          GOLDENS_DIR=$(find test -maxdepth 1 -type d -name "*-goldens" | head -n 1)
+          
+          if [ -z "$GOLDENS_DIR" ]; then
+            echo "❌ No goldens directory found in test/"
+            exit 1
+          fi
+          
+          echo "📂 Found goldens directory: $GOLDENS_DIR"
+          cd "$GOLDENS_DIR"
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git checkout -b "$PR_BRANCH" || git checkout "$PR_BRANCH"
+          git add .
+          git commit -m "🖼️ Update goldens for $PR_AUTHOR (Timeline PR #$PR_NUMBER)" || echo "No changes to commit"
+          
+          git push "https://x-access-token:$GOLDENS_TOKEN@github.com/${{ github.repository_owner }}/$GOLDENS_REPO.git" "$PR_BRANCH" --force
+
+      - name: create-goldens-pr
+        if: inputs.hasGoldens && steps.labels.outputs.update_goldens == 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GOLDENS_REPO_TOKEN }}
+          script: |
+            const prAuthor = context.payload.pull_request.user.login;
+            const prNumber = context.payload.pull_request.number;
+            const branchName = context.payload.pull_request.head.ref;
+            const repoOwner = context.repo.owner;
+            const mainRepoName = context.repo.repo;
+            const goldensRepoName = `${mainRepoName}-goldens`;
+            
+            try {
+              const { data: existingPRs } = await github.rest.pulls.list({
+                owner: repoOwner,
+                repo: goldensRepoName,
+                head: `${repoOwner}:${branchName}`,
+                state: 'open'
+              });
+
+              if (existingPRs.length === 0) {
+                await github.rest.pulls.create({
+                  owner: repoOwner,
+                  repo: goldensRepoName,
+                  title: `🖼️ Update goldens for ${prAuthor} (${mainRepoName} PR #${prNumber})`,
+                  head: branchName,
+                  base: 'main',
+                  body: `# DONT MODIFY\nThis PR mirrors changes from ${mainRepoName} repo PR #${prNumber} by @${prAuthor}.`
+                });
+                console.log('✅ Created new PR in timeline-goldens');
+              } else {
+                console.log('🔄 PR already exists in timeline-goldens, updated by push.');
+              }
+            } catch (error) {
+              console.error('❌ Error handling Goldens PR:', error.message);
+            }
