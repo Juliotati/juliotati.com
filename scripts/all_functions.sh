@@ -1,6 +1,14 @@
 #!/bin/bash
 
 function change_to_root_dir {
+  # If GITHUB_WORKSPACE is set, jump there directly
+  if [ -n "$GITHUB_WORKSPACE" ] && [ -d "$GITHUB_WORKSPACE" ]; then
+    echo "🔎 Jumping into GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+    cd "$GITHUB_WORKSPACE" || exit 1
+    echo "🤺 Wallah! $PWD"
+    return
+  fi
+
   # Always change to root directory while pubspec.yaml is not in the current directory but don't go
   # past the project root directory
   echo "🔎 Jumping into root directory..."
@@ -44,6 +52,11 @@ function sort_intl_file_content {
   # Remove the 'refs/heads/' prefix if present
   currentBranch=${currentBranch#refs/heads/}
 
+  # Switch to branch to avoid detached HEAD
+  if [ -n "$currentBranch" ]; then
+    git checkout "$currentBranch" 2>/dev/null || git checkout -b "$currentBranch" 2>/dev/null || true
+  fi
+
   if [ ! -d "$targetDir" ]; then
     echo "🤷‍ DIRECTORY NOT FOUND: $targetDir"
     exit 1
@@ -77,14 +90,15 @@ function sort_intl_file_content {
     exit 0
   fi
 
-  # There are real changes — switch to the actual branch BEFORE committing
-  # to avoid orphaning the commit on a detached HEAD.
-  git stash --include-untracked
-  git checkout "$currentBranch" || git checkout -b "$currentBranch"
-  git stash pop
+  # Configure git bot identity
+  git config user.name "github-actions[bot]"
+  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
   git add "$targetDir"
-  git commit -m "chore[🤖]: sort translation files"
+  if ! git commit -m "chore[🤖]: sort translation files"; then
+    echo "❌ Failed to create commit for sorted translation files."
+    exit 1
+  fi
   echo "🤖 Created a commit for sorted translation files."
 
   echo "🤖 Attempting to push to $currentBranch..."
@@ -97,7 +111,10 @@ function sort_intl_file_content {
 
     # Create patch branch from current position (which now has the commit)
     git checkout -B "$patchBranch"
-    git push origin "$patchBranch" --force
+    if ! git push origin "$patchBranch" --force; then
+      echo "👻 Failed to push patch branch $patchBranch."
+      exit 1
+    fi
 
     # Final safety net: abort if there's actually no diff against the base
     if git diff --quiet "origin/$currentBranch" -- "$targetDir"; then
@@ -121,7 +138,7 @@ function sort_intl_file_content {
 
     # Validate if we have a valid URL or if a real error occurred
     if [[ -z "$pr_url" || "$pr_url" == *"error"* ]]; then
-      echo "👻 FAILED to create PR. Missing actions permissions."
+      echo "👻 FAILED to create PR. Missing actions permissions: $pr_url"
       exit 1
     fi
 

@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Juliotati/juliotati.com
-          path: scripts
+          path: .shared-scripts
           sparse-checkout: scripts/
 
       - name: fetch-base-branch-('${{ github.base_ref }}')
@@ -38,6 +38,6 @@ jobs:
 
       - name: verify-pubspec-version
         run: |
-          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/all_functions.sh"
-          chmod +x "${GITHUB_WORKSPACE}/scripts/scripts/verify_pubspec_version.sh"
-          bash "${GITHUB_WORKSPACE}/scripts/scripts/verify_pubspec_version.sh"
+          chmod +x "${GITHUB_WORKSPACE}/.shared-scripts/scripts/all_functions.sh"
+          chmod +x "${GITHUB_WORKSPACE}/.shared-scripts/scripts/verify_pubspec_version.sh"
+          bash "${GITHUB_WORKSPACE}/.shared-scripts/scripts/verify_pubspec_version.sh"
