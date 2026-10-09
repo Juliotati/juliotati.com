@@ -22,6 +22,11 @@ on:
         type: string
         default: 'update-goldens'
         description: 'The label used to trigger golden test updates'
+      totalShards:
+        required: false
+        type: number
+        default: 1
+        description: 'The number of concurrent test shards to run'
     secrets:
       GOLDENS_REPO_TOKEN:
         required: false
@@ -38,11 +43,29 @@ permissions:
   pull-requests: write
 
 jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    if: ${{ !inputs.skipTests }}
+    outputs:
+      shards: ${{ steps.set-shards.outputs.shards }}
+    steps:
+      - id: set-shards
+        run: |
+          TOTAL=${{ inputs.totalShards }}
+          SHARDS=$(node -e "console.log(JSON.stringify(Array.from({length: $TOTAL}, (_, i) => i)))")
+          echo "shards=$SHARDS" >> $GITHUB_OUTPUT
+
   test-project:
+    needs: generate-matrix
     env:
       GH_TOKEN: ${{ github.token }}
     runs-on: ubuntu-latest
     if: ${{ !inputs.skipTests }}
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: ${{ fromJSON(needs.generate-matrix.outputs.shards) }}
+    name: "test-project (shard ${{ matrix.shardIndex }}/${{ inputs.totalShards }})"
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
@@ -77,9 +100,22 @@ jobs:
       - name: run-tests
         run: |
           if [ "${{ steps.labels.outputs.update_goldens }}" = "true" ]; then
-            flutter test --update-goldens
+            GOLDENS_FLAG="--update-goldens"
           else
-            flutter test
+            GOLDENS_FLAG=""
+          fi
+
+          if [ "${{ inputs.totalShards }}" -gt 1 ]; then
+            set +e
+            flutter test $GOLDENS_FLAG --total-shards=${{ inputs.totalShards }} --shard-index=${{ matrix.shardIndex }}
+            EXIT_CODE=$?
+            if [ $EXIT_CODE -eq 79 ]; then
+              echo "ℹ️ No tests allocated to this shard. Passing."
+              exit 0
+            fi
+            exit $EXIT_CODE
+          else
+            flutter test $GOLDENS_FLAG
           fi
 
       - name: sync-goldens
