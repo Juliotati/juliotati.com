@@ -55,7 +55,7 @@ jobs:
           SHARDS=$(node -e "console.log(JSON.stringify(Array.from({length: $TOTAL}, (_, i) => i)))")
           echo "shards=$SHARDS" >> $GITHUB_OUTPUT
 
-  test-project:
+  test-shards:
     needs: generate-matrix
     env:
       GH_TOKEN: ${{ github.token }}
@@ -65,7 +65,7 @@ jobs:
       fail-fast: false
       matrix:
         shardIndex: ${{ fromJSON(needs.generate-matrix.outputs.shards) }}
-    name: "test-project (shard ${{ matrix.shardIndex }}/${{ inputs.totalShards }})"
+    name: "test-shards (${{ matrix.shardIndex }}/${{ inputs.totalShards }})"
     steps:
       - name: setup-repo
         uses: actions/checkout@v4
@@ -182,3 +182,20 @@ jobs:
             } catch (error) {
               console.error('❌ Error handling Goldens PR:', error.message);
             }
+
+  test-project:
+    needs: [generate-matrix, test-shards]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: verify-test-results
+        run: |
+          if [ "${{ inputs.skipTests }}" = "true" ]; then
+            echo "⏭️ Tests were skipped by workflow input."
+            exit 0
+          fi
+          if [ "${{ needs.test-shards.result }}" != "success" ]; then
+            echo "❌ Test shards failed with result: ${{ needs.test-shards.result }}"
+            exit 1
+          fi
+          echo "🎉 All test shards passed successfully!"
