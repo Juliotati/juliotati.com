@@ -5,7 +5,7 @@ on:
       flutterVersion:
         required: false
         type: string
-        default: '3.38.7'
+        default: '3.47.5'
         description: 'The version of Flutter to use for the workflow run'
       skipTests:
         required: false
@@ -57,13 +57,9 @@ jobs:
 
       - uses: subosito/flutter-action@v2
         with:
-          cache: true
-          cache-key: 'flutter-ubuntu-stable-${{ inputs.flutterVersion }}-x64'
-          cache-path: '${{ runner.tool_cache }}/flutter-ubuntu-stable-${{ inputs.flutterVersion }}-x64-hash'
-          pub-cache-key: 'flutter-pub-ubuntu-stable-${{ inputs.flutterVersion }}-x64-hash'
-          pub-cache-path: '${{ runner.tool_cache }}/flutter/stable-${{ inputs.flutterVersion }}-x64'
           channel: 'stable'
           flutter-version: ${{ inputs.flutterVersion }}
+          cache: true
 
       - name: load-dependencies
         run: dart pub get
