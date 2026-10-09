@@ -106,14 +106,12 @@ jobs:
           fi
 
           if [ "${{ inputs.totalShards }}" -gt 1 ]; then
-            set +e
-            flutter test $GOLDENS_FLAG --total-shards=${{ inputs.totalShards }} --shard-index=${{ matrix.shardIndex }}
-            EXIT_CODE=$?
-            if [ $EXIT_CODE -eq 79 ]; then
-              echo "ℹ️ No tests allocated to this shard. Passing."
+            TEST_FILES=$(find test -name "*_test.dart" | sort | awk "NR % ${{ inputs.totalShards }} == ${{ matrix.shardIndex }}")
+            if [ -z "$TEST_FILES" ]; then
+              echo "ℹ️ No test files allocated to this shard. Passing."
               exit 0
             fi
-            exit $EXIT_CODE
+            flutter test $GOLDENS_FLAG $TEST_FILES
           else
             flutter test $GOLDENS_FLAG
           fi
