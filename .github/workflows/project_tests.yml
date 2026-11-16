@@ -5,7 +5,7 @@ on:
       flutterVersion:
         required: false
         type: string
-        default: '3.47.5'
+        default: '3.50.0'
         description: 'The version of Flutter to use for the workflow run'
       skipTests:
         required: false
