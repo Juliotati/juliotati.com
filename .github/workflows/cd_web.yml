@@ -54,10 +54,14 @@ jobs:
       - name: build-web
         run: |
           flutter pub get
+          WASM_FLAGS=""
+          if flutter build web --help --verbose 2>&1 | grep -q -- 'enable-wasm-deferred-loading'; then
+            WASM_FLAGS="--wasm --enable-wasm-deferred-loading"
+          fi
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ NO extra config NEEDED"
             echo "🔥 BUILDING RELEASE APP"
-            flutter build web --release
+            flutter build web --release $WASM_FLAGS
             exit 0
           fi
 
@@ -65,7 +69,7 @@ jobs:
           echo $ENCODED_CONFIGS | base64 --decode > config.json
 
           echo "🔥 BUILDING RELEASE APP"
-          flutter build web --dart-define-from-file=config.json
+          flutter build web --dart-define-from-file=config.json $WASM_FLAGS
 
       - name: Install-firebase-tools
         uses: actions/setup-node@v6

@@ -114,12 +114,16 @@ jobs:
           fi
 
           TARGET_ARG="--target $RESOLVED_TARGET"
+          WASM_FLAGS=""
+          if flutter build web --help --verbose 2>&1 | grep -q -- 'enable-wasm-deferred-loading'; then
+            WASM_FLAGS="--wasm --enable-wasm-deferred-loading"
+          fi
 
           if [ "$ENCODED_CONFIGS" == "" ]; then
             echo "⚒️ NO extra config NEEDED"
             echo "🔥 BUILDING RELEASE APP"
 
-            flutter build web --release $TARGET_ARG
+            flutter build web --release $TARGET_ARG $WASM_FLAGS
             echo "🔥 web ${{ env.SUCCESS_MSG }}"
             exit 0
           fi
@@ -128,7 +132,7 @@ jobs:
           echo $ENCODED_CONFIGS | base64 --decode > config.json
 
           echo "🔥 BUILDING RELEASE APP"
-          flutter build web --dart-define-from-file=config.json $TARGET_ARG
+          flutter build web --dart-define-from-file=config.json $TARGET_ARG $WASM_FLAGS
           echo "🔥 web ${{ env.SUCCESS_MSG }}"
 
   build-android:
